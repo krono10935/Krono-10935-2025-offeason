@@ -8,6 +8,7 @@ import frc.robot.Robot;
 
 public class Gripper extends SubsystemBase{
     private final GripperIO io;
+    private final GripperInputsAutoLogged inputs = new GripperInputsAutoLogged();
     private boolean hasCoral;
     private boolean hasAlgae;
 
@@ -18,7 +19,7 @@ public class Gripper extends SubsystemBase{
             io = new GripperIOSim();
         }
 
-        hasCoral = GripperConstants.START_WITH_CORAL;
+        hasCoral = GripperConstants.START_WITH_CORAL; 
         hasAlgae = GripperConstants.START_WITH_ALGAE;
     }
 
@@ -60,8 +61,10 @@ public class Gripper extends SubsystemBase{
 
     @Override
     public void periodic(){
+        io.updateInputs(inputs);
+        Logger.processInputs(getName(), inputs);
 
         String currentCommandName = getCurrentCommand() == null ? "Null" : getCurrentCommand().getName();
-        Logger.recordOutput("Gripper/Current Command", currentCommandName);
+        Logger.recordOutput("Gripper/Current Command ", currentCommandName);
     }
 }
