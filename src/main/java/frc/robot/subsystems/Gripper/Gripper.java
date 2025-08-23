@@ -19,7 +19,7 @@ public class Gripper extends SubsystemBase{
             io = new GripperIOSim();
         }
 
-        hasCoral = GripperConstants.START_WITH_CORAL; 
+        hasCoral = GripperConstants.START_WITH_CORAL;
         hasAlgae = GripperConstants.START_WITH_ALGAE;
     }
 
@@ -65,6 +65,6 @@ public class Gripper extends SubsystemBase{
         Logger.processInputs(getName(), inputs);
 
         String currentCommandName = getCurrentCommand() == null ? "Null" : getCurrentCommand().getName();
-        Logger.recordOutput("Gripper/Current Command ", currentCommandName);
+        Logger.recordOutput("Gripper/Current Command", currentCommandName);
     }
 }
