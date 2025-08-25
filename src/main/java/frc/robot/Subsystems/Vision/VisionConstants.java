@@ -5,7 +5,6 @@
 package frc.robot.Subsystems.Vision;
 
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -34,22 +33,34 @@ public class VisionConstants {
         );
         
        
-        // the main strategy for the camera
+        /**
+         * The main strategy for the camera
+         */
         public final PhotonPoseEstimator.PoseStrategy MAIN_STRATEGY;
         
-        // the alternate strategy for the camera
+       /**
+        * The alternate strategy for the camera
+        */
         public final PhotonPoseEstimator.PoseStrategy ALTERNATE_STRATEGY;
 
-        // the name of the camera
+        /**
+         * The name of the camera
+         */
         public final String CAMERA_NAME;
 
-        // the transform from the robot to the camera
+        /**
+         * The transform from the robot to the camera
+         */ 
         public final Transform3d ROBOT_TO_CAMERA;
 
-        // the standard deviation factor for XY and Theta
+        /**
+         * The standard deviation factor for XY
+         */
         public final double XY_STD_FACTOR;
 
-        // the standard deviation factor for Theta
+        /**
+         * The standard deviation factor for Theta
+         */
         public final double THETA_STD_FACTOR;
 
         // Constructor for the camera constants
@@ -66,6 +77,8 @@ public class VisionConstants {
 
         
     }
-    // the field layout for the 2025 Reefscape field
+    /**
+     * The field layout for the 2025 FRC game "Reefscape"
+     */
     public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
 }

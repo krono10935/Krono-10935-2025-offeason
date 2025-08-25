@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
-  public Vision() {}
+  private final VisionInputsAutoLogged inputs = new VisionInputsAutoLogged();
+  public Vision() {
+    
+  }
 
   @Override
   public void periodic() {
