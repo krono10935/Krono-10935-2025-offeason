@@ -14,11 +14,13 @@ public class GripperIOReal implements GripperIO {
 
     @Override
     public void setTorque(double torque) {
-        motor.setControl(torque, ControlMode.TORQUE);
+        // Use slot 1 of the PIDF config for torque
+        motor.setControl(torque, ControlMode.TORQUE, 1);
     }
 
     @Override
     public void keepPosition() {
+        // Use slot 0 of the PIDF config for the position mode
         motor.setControl(motor.getPosition(), ControlMode.POSITION);
     }
 
@@ -34,6 +36,6 @@ public class GripperIOReal implements GripperIO {
 
     @Override
     public void updateInputs(GripperInputs inputs) {
-
+        inputs.temperature = motor.getSensorData().temperature(); // In celsius
     }
 }
