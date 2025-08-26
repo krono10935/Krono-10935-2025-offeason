@@ -28,8 +28,8 @@ public class VisionConstants {
                 new Rotation3d(0, 0, 0)
                 
             ),
-            0.1, // XY standard deviation
-            0.1, // Theta standard deviation
+            0.1, // XY standard deviation factor
+            0.1, // Theta standard deviation factor
              0.05,// Minimum XY standard deviation
               Math.toRadians(5)// Minimum Theta standard deviation
             
@@ -59,25 +59,26 @@ public class VisionConstants {
         /**
          * The standard deviation factor for XY
          */
-        public final double XY_STD_FACTOR;
+        public final double XY_STD_DEV_FACTOR;
 
         /**
          * The standard deviation factor for Theta
          */
-        public final double THETA_STD_FACTOR;
+        public final double THETA_STD_DEV_FACTOR;
         /**
          * The minimum standard deviation for XY (in meters)
          */
-        public final double MIN_XY_STD; 
+        public final double MIN_XY_STD_DEV; 
         /**
          * The minimum standard deviation for Theta (in radians)
          */
-        public final double MIN_THETA_STD; 
+        public final double MIN_THETA_STD_DEV; 
 
         // Constructor for the camera constants
         CamerasConstants(
         PhotonPoseEstimator.PoseStrategy mainStrategy,
-        PhotonPoseEstimator.PoseStrategy alternateStrategy, String cameraName, 
+        PhotonPoseEstimator.PoseStrategy alternateStrategy, 
+        String cameraName, 
         Transform3d robotToCamera,
         double xyStdFactor,
         double thetaStdFactor,
@@ -93,13 +94,13 @@ public class VisionConstants {
             this.ROBOT_TO_CAMERA = robotToCamera;
 
             //TODO: determaine unit for standard deviation factor
-            this.XY_STD_FACTOR = xyStdFactor;
+            this.XY_STD_DEV_FACTOR = xyStdFactor;
 
-            this.THETA_STD_FACTOR = thetaStdFactor;
+            this.THETA_STD_DEV_FACTOR = thetaStdFactor;
 
-            this.MIN_XY_STD = minXYStd;
+            this.MIN_XY_STD_DEV = minXYStd;
 
-            this.MIN_THETA_STD = minThetaStd;
+            this.MIN_THETA_STD_DEV = minThetaStd;
         }
 
 

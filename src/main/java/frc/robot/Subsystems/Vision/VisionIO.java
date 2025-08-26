@@ -35,7 +35,13 @@ public interface VisionIO {
         /**
          * An empty VisionFrame instance representing no detected target.
          */
-        public static final VisionFrame EMPTY = new VisionFrame(false, 0.0, 0.0, new Pose3d(), 1.0, 0.0, 0);
+        public static final VisionFrame EMPTY = new VisionFrame(false,
+         0.0,
+         0.0,
+         new Pose3d(),
+         1.0,
+         0.0,
+         0);
     }
 
     /**
