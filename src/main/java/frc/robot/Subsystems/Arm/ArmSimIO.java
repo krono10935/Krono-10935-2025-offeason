@@ -20,18 +20,6 @@ public class ArmSimIO implements ArmIO{
     }
 
     @Override
-    public double currentAngle() {
-
-        return armMotorSim.getPosition();
-    }
-
-    @Override
-    public Pose3d getGripperPose() {
-
-        return null;
-    }
-
-    @Override
     public void setAngle(double angle) {
 
         armMotorSim.setControl(angle, Controller.ControlMode.POSITION);
@@ -48,7 +36,7 @@ public class ArmSimIO implements ArmIO{
 
     @Override
     public void update(ArmInputs inputs) {
-
         inputs.atSetPoint = armMotorSim.atSetpoint();
+        inputs.currentAngle = armMotorSim.getPosition();
     }
 }

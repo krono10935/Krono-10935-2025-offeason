@@ -53,7 +53,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double currentAngle() {
-        return io.currentAngle();
+        return inputs.currentAngle;
     }
 
 
