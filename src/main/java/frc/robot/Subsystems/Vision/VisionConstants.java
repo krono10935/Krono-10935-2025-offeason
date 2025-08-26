@@ -17,7 +17,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 public class VisionConstants {
     
     // enum with all the camera constants
-    enum camerasConstants {
+    enum CamerasConstants {
         // Define the camera constants for the front camera
         FRONT_CAMERA(
             PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
@@ -29,7 +29,10 @@ public class VisionConstants {
                 
             ),
             0.1, // XY standard deviation
-            0.1 // Theta standard deviation
+            0.1, // Theta standard deviation
+             0.05,// Minimum XY standard deviation
+              Math.toRadians(5)// Minimum Theta standard deviation
+            
         );
         
        
@@ -62,16 +65,41 @@ public class VisionConstants {
          * The standard deviation factor for Theta
          */
         public final double THETA_STD_FACTOR;
+        /**
+         * The minimum standard deviation for XY (in meters)
+         */
+        public final double MIN_XY_STD; 
+        /**
+         * The minimum standard deviation for Theta (in radians)
+         */
+        public final double MIN_THETA_STD; 
 
         // Constructor for the camera constants
-        camerasConstants(PhotonPoseEstimator.PoseStrategy mainStrategy, PhotonPoseEstimator.PoseStrategy alternateStrategy, String cameraName, Transform3d robotToCamera, double xyStdFactor, double thetaStdFactor) {
+        CamerasConstants(
+        PhotonPoseEstimator.PoseStrategy mainStrategy,
+        PhotonPoseEstimator.PoseStrategy alternateStrategy, String cameraName, 
+        Transform3d robotToCamera,
+        double xyStdFactor,
+        double thetaStdFactor,
+        double minXYStd,
+        double minThetaStd) {
+            
             this.MAIN_STRATEGY = mainStrategy;
+
             this.ALTERNATE_STRATEGY = alternateStrategy;
+
             this.CAMERA_NAME = cameraName;
+
             this.ROBOT_TO_CAMERA = robotToCamera;
+
             //TODO: determaine unit for standard deviation factor
             this.XY_STD_FACTOR = xyStdFactor;
+
             this.THETA_STD_FACTOR = thetaStdFactor;
+
+            this.MIN_XY_STD = minXYStd;
+
+            this.MIN_THETA_STD = minThetaStd;
         }
 
 
