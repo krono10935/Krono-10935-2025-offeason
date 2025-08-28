@@ -20,7 +20,7 @@ public interface GyroIO {
 
     }
 
-    public double getAngle();
+    public Rotation2d getAngle();
 
 
     public void updateInputs(GyroIOInputs inputs);

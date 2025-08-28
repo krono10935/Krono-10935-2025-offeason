@@ -34,7 +34,7 @@ public class Swerve extends Drivetrain {
         gyroIO = new GyroIOReal();
 
         for(int i=0;i<4;i++){
-            io[i] = new SwerveModuleBasic();
+            io[i] = new SwerveModuleBasic(SwerveModuleConstants.values()[i]);
             modulePositions[i] = io[i].getPosition();
         }
 
