@@ -27,19 +27,19 @@ public class VisionIOPhoton implements VisionIO {
         /**
          * the refrence pose supplier
          */
-        private final Supplier<Pose2d> referencePoseSupplier;
+        private final Supplier<Pose2d> lastPoseSupplier;
 
         /**
          * this build the poseEstimator using PhotonVision
          * @param camerasConstants refrence to the Constants
-         * @param referencePoseSupplier the refrence pose supplier
+         * @param LastPoseSupplier the last pose supplier
          */
-        public VisionIOPhoton(CamerasConstants camerasConstants, Supplier<Pose2d> referencePoseSupplier){
+        public VisionIOPhoton(CamerasConstants camerasConstants, Supplier<Pose2d> lastPoseSupplier){
         
             camera = new PhotonCamera(camerasConstants.CAMERA_NAME);
             poseEstimator = new PhotonPoseEstimator(VisionConstants.FIELD_LAYOUT, camerasConstants.MAIN_STRATEGY, camerasConstants.ROBOT_TO_CAMERA );
             poseEstimator.setMultiTagFallbackStrategy(camerasConstants.ALTERNATE_STRATEGY);
-            this.referencePoseSupplier = referencePoseSupplier;
+            this.lastPoseSupplier = lastPoseSupplier;
         }
 
     /**
@@ -59,7 +59,7 @@ public class VisionIOPhoton implements VisionIO {
         /**
          * Update the pose estimator with the current reference pose (from a supplier).
          */
-        poseEstimator.setReferencePose(referencePoseSupplier.get());
+        poseEstimator.setReferencePose(lastPoseSupplier.get());
 
         /**
          * Attempt to estimate the robot's pose using the photon result.

@@ -15,7 +15,20 @@ import edu.wpi.first.math.geometry.Translation3d;
 
 
 public class VisionConstants {
-    
+    /**
+     * Max height deviation for vision targets (in meters)
+     */
+    public static final double MAX_HEIGHT_DEV = 0.1;
+    /**
+     * Max ambiguity for multi-tag targets (0 to 1)
+     */
+    public static final double MAX_MULTI_AMBIGUTY = 0.3;
+    /**
+     * Max ambiguity for single-tag targets (0 to 1)
+     */
+    public static final double MAX_SINGLE_AMBIGUTY = 0.1;
+
+
     // enum with all the camera constants
     enum CamerasConstants {
         // Define the camera constants for the front camera
