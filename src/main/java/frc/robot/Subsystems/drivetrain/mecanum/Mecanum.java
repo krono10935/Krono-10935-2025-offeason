@@ -1,6 +1,10 @@
 package frc.robot.Subsystems.drivetrain.mecanum;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import frc.robot.Subsystems.drivetrain.Drivetrain;
 
 public class Mecanum extends Drivetrain{
@@ -8,6 +12,21 @@ public class Mecanum extends Drivetrain{
 
     @Override
     protected void setChassisSpeed(ChassisSpeeds speeds) {
+
+    }
+
+    @Override
+    public void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> stdDevs) {
+
+    }
+
+    @Override
+    public Pose2d getEstimatedPosition() {
+        return null;
+    }
+
+    @Override
+    protected void updateInputs(DrivetrainInputs inputs) {
 
     }
 }

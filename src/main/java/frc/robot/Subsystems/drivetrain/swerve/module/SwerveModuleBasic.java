@@ -1,4 +1,4 @@
 package frc.robot.Subsystems.drivetrain.swerve.module;
 
-public class SwerveModuleBasic {
+public class SwerveModuleBasic extends SwerveModuleIO{
 }
