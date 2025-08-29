@@ -8,6 +8,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.drivetrain.gyro.GyroIO;
+import frc.robot.Subsystems.drivetrain.gyro.GyroIOReal;
 import frc.robot.Subsystems.drivetrain.mecanum.Mecanum;
 import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 import org.littletonrobotics.junction.AutoLog;
@@ -21,6 +23,7 @@ public abstract class Drivetrain extends SubsystemBase {
         public ChassisSpeeds speeds = new ChassisSpeeds();
     }
 
+    protected final GyroIO gyroIO;
 
     private final DrivetrainInputsAutoLogged inputs = new DrivetrainInputsAutoLogged();
 
@@ -30,6 +33,7 @@ public abstract class Drivetrain extends SubsystemBase {
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
         //       such as SpeedControllers, Encoders, DigitalInputs, etc.
+        gyroIO = new GyroIOReal();
     }
 
     /**
@@ -90,8 +94,10 @@ public abstract class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        inputs.gyroAngle = gyroIO.getAngle();
         updateInputs(inputs);
         Logger.processInputs("drivetrain", inputs);
+        Logger.recordOutput("drivetrain/estimated pose", getEstimatedPosition());
     }
 
     /**

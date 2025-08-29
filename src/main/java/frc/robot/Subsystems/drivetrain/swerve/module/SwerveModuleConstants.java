@@ -1,6 +1,5 @@
 package frc.robot.Subsystems.drivetrain.swerve.module;
 
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import io.github.captainsoccer.basicmotor.ctre.talonfx.BasicTalonFXConfig;
 

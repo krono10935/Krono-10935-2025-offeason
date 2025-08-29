@@ -12,4 +12,10 @@ public class SwerveModuleBasic extends SwerveModuleIO {
         drivingMotor = new BasicTalonFX(constants.drivingConfig);
         steeringMotor = new BasicTalonFX(constants.steeringConfig);
     }
+
+    @Override
+    public void setTargetVelocity(double speedMetersPerSecond) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setTargetVelocity'");
+    }
 }

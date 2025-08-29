@@ -1,21 +1,40 @@
 package frc.robot.Subsystems.drivetrain.swerve.module;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public abstract class SwerveModuleIO {
 
-    private SwerveModulePosition position;
-    protected SwerveModuleState targetState = new SwerveModuleState();
-    public SwerveModuleState getTargetState(){
-        return targetState;
-    }
+    private SwerveModuleState currentState = new SwerveModuleState();
 
-    public void setTargetState(SwerveModuleState targetState){
-        this.targetState = targetState;
+    private SwerveModulePosition position;
+
+    public abstract void setTargetState(SwerveModuleState targetState);
+    
+    public SwerveModuleState getState(){
+        return currentState;
     }
 
     public SwerveModulePosition getPosition(){
         return position;
     }
+
+    public abstract void setTargetVelocity(double speedMetersPerSecond);
+
+
+    public void update(){
+        currentState.angle = Rotation2d.fromRotations(getSteerAngle());
+        position.angle = currentState.angle;
+        currentState.speedMetersPerSecond = getDriveVelocity();
+        position.distanceMeters = getDriveDistance();
+
+    }
+
+    protected abstract double getDriveVelocity();
+    protected abstract double getDriveDistance();
+    protected abstract double getSteerAngle();
+
+    public abstract void setBrakeMode(boolean isBrake);
+
 }
