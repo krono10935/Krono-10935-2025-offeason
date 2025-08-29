@@ -28,15 +28,11 @@ public abstract class Drivetrain extends SubsystemBase {
 
 
     protected Drivetrain() {
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
-        //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
-        //       such as SpeedControllers, Encoders, DigitalInputs, etc.
         gyroIO = new GyroIONavx();
     }
 
     /**
-     * drives the robot at relative speed
+     * Drives the robot at relative speed
      *
      * @param speeds the target speed of the robot
      */
@@ -47,14 +43,14 @@ public abstract class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * forwards the speeds to the implementation
+     * Forwards the speeds to the implementation
      *
      * @param speeds the target speed of the robot
      */
     protected abstract void setChassisSpeed(ChassisSpeeds speeds);
 
     /**
-     * return the latest gyro angle
+     * Return the latest gyro angle
      * (counter clockwise positive)
      *
      * @return the gyro angle
@@ -64,7 +60,7 @@ public abstract class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * return the latest speeds of the robot
+     * Return the latest speeds of the robot
      *
      * @return speeds
      */
@@ -73,9 +69,9 @@ public abstract class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * adds the vision measurement
+     * Adds the vision measurement
      *
-     * @param pose      the position the vision think the robot is there
+     * @param pose      the position where the vision think the robot is there
      * @param timestamp the time when the pose was taken
      * @param stdDevs   A Vector with 3 parameters in the following order:
      *                  X standard deviation (in meters).
@@ -85,7 +81,7 @@ public abstract class Drivetrain extends SubsystemBase {
     public abstract void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> stdDevs);
 
     /**
-     * return the latest position of the robot
+     * Return the latest position of the robot
      *
      * @return the latest pose
      */
@@ -100,16 +96,24 @@ public abstract class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * update the inputs from the sensors
+     * Update the inputs from the sensors
      * @param inputs the inputs that stores the data
      */
     protected abstract void updateInputs(DrivetrainInputs inputs);
 
+    /**
+     * Reset the gyro and the pose estimator states
+     * @param newPose
+     */
     public void reset(Pose2d newPose){
         gyroIO.reset(newPose.getRotation());
         resetPose(newPose);
     }
 
+    /**
+     * Resets the pose of the pose estimator
+     * @param newPose
+     */
     protected abstract void resetPose(Pose2d newPose);
 }
 

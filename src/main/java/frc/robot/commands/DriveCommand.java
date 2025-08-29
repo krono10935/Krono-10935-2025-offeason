@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainConstants;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DriveCommand extends Command {
-  /** Creates a new DriveCommand. */
   private final Drivetrain drivetrain;
   private final CommandXboxController controller;
 
@@ -30,7 +28,6 @@ public class DriveCommand extends Command {
     addRequirements(drivetrain);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double speed = lerp(controller.getRightTriggerAxis());
@@ -43,14 +40,29 @@ public class DriveCommand extends Command {
     drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, thetaSpeed, drivetrain.getGyroAngle()));
   }
 
+  /**
+   * Calculate the linear lerp of a {@code value}
+   * @param value
+   * @return the linear lerp of a {@code value}
+   */
   private static double lerp(double value){
     return MIN_LINEAR_SPEED + (MAX_LINEAR_SPEED - MIN_LINEAR_SPEED) * value;
   }
 
+  /**
+   * Calculate the angular lerp of a {@code value}
+   * @param value
+   * @return the angular lerp of a {@code value}
+   */
   private static double angularLerp(double value){
     return MIN_ANGULAR_SPEED + (MAX_ANGULAR_SPEED - MIN_ANGULAR_SPEED) * value;
   }
 
+  /**
+   * Calculate if the value is passed the deadband value
+   * @param value
+   * @return 0 if the absolute {@code value} is less than deadband, otherwise {@code value}
+   */
   private static double deadband(double value){
     if (Math.abs(value) < DEADBAND){
       return 0;

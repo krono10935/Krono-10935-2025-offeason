@@ -9,7 +9,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 /** Add your docs here. */
 public interface GyroIO {
     
+    /**
+     * @return Get the new gyro angle
+     */
     Rotation2d update();
 
+    /**
+     * Reset the gyro angle to another angle
+     */
     void reset(Rotation2d angle);
 }

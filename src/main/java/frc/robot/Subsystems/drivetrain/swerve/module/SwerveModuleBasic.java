@@ -61,8 +61,13 @@ public class SwerveModuleBasic extends SwerveModuleIO {
         steeringMotor.setIdleMode(idleMode);
     }
 
+    /**
+     * Auto configs a CANCoder for the module
+     * @param constants
+     * @return A configured CANCoder for the module
+     */
     private static CANcoder createCANcoder(SwerveModuleConstants constants){
-        CANcoder encoder = new CANcoder(constants.CANCODER_ID);
+        CANcoder encoder = new CANcoder(constants.CAN_CODER_ID);
         var config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;

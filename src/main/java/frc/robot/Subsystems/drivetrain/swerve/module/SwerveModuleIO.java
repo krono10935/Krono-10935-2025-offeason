@@ -16,6 +16,10 @@ public abstract class SwerveModuleIO {
         this.constants = constants;
     }
 
+    /**
+     * Set the motors to the target state of the system
+     * @param targetState
+     */
     public abstract void setTargetState(SwerveModuleState targetState);
 
     public SwerveModuleState getState(){
@@ -26,6 +30,9 @@ public abstract class SwerveModuleIO {
         return position;
     }
 
+    /**
+     * Update the module's attributes
+     */
     public void update(){
         currentState.angle = Rotation2d.fromRotations(getSteerAngle());
         position.angle = currentState.angle;
@@ -34,10 +41,25 @@ public abstract class SwerveModuleIO {
 
     }
 
+    /**
+     * @return The drive motor speed in meters per second
+     */
     protected abstract double getDriveVelocity();
+
+    /**
+     * @return The drive motor position in meters
+     */
     protected abstract double getDriveDistance();
+
+    /**
+     * @return The steer motor position in rotations
+     */
     protected abstract double getSteerAngle();
 
+    /**
+     * Set if the module is Brake or Coast
+     * @param isBrake
+     */
     public abstract void setBrakeMode(boolean isBrake);
 
 }
