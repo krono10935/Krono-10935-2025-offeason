@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.drivetrain.gyro;
+package frc.robot.subsystems.drivetrain.gyro;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;

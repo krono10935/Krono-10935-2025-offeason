@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.drivetrain.swerve.module;
+package frc.robot.subsystems.drivetrain.swerve.module;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import io.github.captainsoccer.basicmotor.ctre.talonfx.BasicTalonFXConfig;
@@ -21,7 +21,6 @@ public enum SwerveModuleConstants {
     private SwerveModuleConstants(int steerID, int driveID){
         STEERING_CONFIG.motorConfig.id = steerID;   
         DRIVING_CONFIG.motorConfig.id = driveID;
-
     }
 
 
