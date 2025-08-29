@@ -9,24 +9,28 @@ public enum SwerveModuleConstants {
     BACK_LEFT(4,5), 
     BACK_RIGHT(6,7);
 
-    public final BasicTalonFXConfig steeringConfig = new BasicTalonFXConfig();
-    public final BasicTalonFXConfig drivingConfig = new BasicTalonFXConfig();
+    public final BasicTalonFXConfig STEERING_CONFIG = new BasicTalonFXConfig();
+    public final BasicTalonFXConfig DRIVING_CONFIG = new BasicTalonFXConfig();
 
-    public final Translation2d translation2d = new Translation2d();
+    public final Translation2d TRANSLATION = new Translation2d();
+
+    public final int CANCODER_ID; 
+    public final double ZERO_OFFSET;
 
 
     private SwerveModuleConstants(int steerID, int driveID){
-        steeringConfig.motorConfig.id = steerID;   
-        drivingConfig.motorConfig.id = driveID;
+        STEERING_CONFIG.motorConfig.id = steerID;   
+        DRIVING_CONFIG.motorConfig.id = driveID;
+
     }
 
 
     public static Translation2d[] getModuleTranslations(){
         return new Translation2d[]{
-            FRONT_LEFT.translation2d,
-            FRONT_RIGHT.translation2d,
-            BACK_LEFT.translation2d,
-            BACK_RIGHT.translation2d
+            FRONT_LEFT.TRANSLATION,
+            FRONT_RIGHT.TRANSLATION,
+            BACK_LEFT.TRANSLATION,
+            BACK_RIGHT.TRANSLATION
         };
     }
 }

@@ -6,12 +6,18 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public abstract class SwerveModuleIO {
 
-    private SwerveModuleState currentState = new SwerveModuleState();
+    public final SwerveModuleConstants constants;
 
-    private SwerveModulePosition position;
+    private final SwerveModuleState currentState = new SwerveModuleState();
+
+    private final SwerveModulePosition position = new SwerveModulePosition();
+
+    protected SwerveModuleIO(SwerveModuleConstants constants){
+        this.constants = constants;
+    }
 
     public abstract void setTargetState(SwerveModuleState targetState);
-    
+
     public SwerveModuleState getState(){
         return currentState;
     }
@@ -19,9 +25,6 @@ public abstract class SwerveModuleIO {
     public SwerveModulePosition getPosition(){
         return position;
     }
-
-    public abstract void setTargetVelocity(double speedMetersPerSecond);
-
 
     public void update(){
         currentState.angle = Rotation2d.fromRotations(getSteerAngle());

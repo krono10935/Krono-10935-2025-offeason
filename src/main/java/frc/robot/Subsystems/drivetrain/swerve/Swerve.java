@@ -41,12 +41,13 @@ public class Swerve extends Drivetrain {
     public Swerve(){
         for(int i=0;i<4;i++){
             io[i] = new SwerveModuleBasic(SwerveModuleConstants.values()[i]);
+            inputs.moduleStates[i] = io[i].getState();
             modulePositions[i] = io[i].getPosition();
         }
 
         kinematics = new SwerveDriveKinematics(SwerveModuleConstants.getModuleTranslations());
 
-        poseEstimator = new SwerveDrivePoseEstimator(kinematics, gyroIO.getAngle(), modulePositions, DrivetrainConstants.startPose2d);
+        poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), modulePositions, DrivetrainConstants.startPose2d);
 
         var setBrake = new InstantCommand(() -> setBrakeMode(true))
                                 .ignoringDisable(true);
@@ -103,5 +104,10 @@ public class Swerve extends Drivetrain {
         for (SwerveModuleIO module : io){
             module.setBrakeMode(isBrake);
         }
+    }
+
+    @Override
+    protected void resetPose(Pose2d newPose) {
+        poseEstimator.resetPosition(newPose.getRotation(), modulePositions, newPose);
     }
 }

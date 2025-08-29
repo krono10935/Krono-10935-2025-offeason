@@ -29,4 +29,10 @@ public class Mecanum extends Drivetrain{
     protected void updateInputs(DrivetrainInputs inputs) {
 
     }
+
+    @Override
+    protected void resetPose(Pose2d newPose) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'resetPose'");
+    }
 }

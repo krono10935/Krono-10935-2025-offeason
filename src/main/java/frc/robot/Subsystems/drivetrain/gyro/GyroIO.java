@@ -9,19 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 /** Add your docs here. */
 public interface GyroIO {
     
-    public static class GyroIOInputs{
-        public Rotation2d angle = new Rotation2d();
-        public double yaw = 0;
-        public double pitch = 0;
-        public double roll = 0;
-        public double yawRate = 0;
-        public double accelerationX = 0;
-        public double accelerationY = 0;
+    Rotation2d update();
 
-    }
-
-    public Rotation2d getAngle();
-
-
-    public void updateInputs(GyroIOInputs inputs);
+    void reset(Rotation2d angle);
 }
