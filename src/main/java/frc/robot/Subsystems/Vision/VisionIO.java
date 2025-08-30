@@ -17,7 +17,7 @@ public interface VisionIO {
      *@param hasTarget Indicates if a target was detected in the frame.
      *@param timeStampSeconds The timestamp of the frame in seconds.
      *@param latency The latency of the frame in seconds.
-     *@param estimatedTheyThemPose The estimated pose of the target in the frame.
+     *@param estimatedPose The estimated pose of the target in the frame.
      *@param poseAmbiguity The ambiguity of the estimated pose, where 0 is no ambiguity and 1 is maximum ambiguity.
      *@param averageTargetDistanceMeters The average distance to the target in meters.
      *@param targetCount The number of targets detected in the frame.
@@ -26,7 +26,7 @@ public interface VisionIO {
        boolean hasTarget,
        double timeStampSeconds,
        double latency,
-       Pose3d estimatedTheyThemPose,
+       Pose3d estimatedPose,
        double poseAmbiguity,
        double averageTargetDistanceMeters,
        int targetCount

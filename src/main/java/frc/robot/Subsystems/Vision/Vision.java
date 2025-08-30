@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Vision;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -32,9 +33,6 @@ import frc.robot.Subsystems.Vision.VisionConstants.CamerasConstants;
  */
 public class Vision extends SubsystemBase {
 
-  /** Auto-logged input container for vision data (AdvantageKit integration). */
-  private final VisionInputsAutoLogged inputs = new VisionInputsAutoLogged();
-
   /**
    * A functional interface used by the {@link Vision} subsystem to provide validated
    * pose estimates to a consumer, typically the robot's pose estimator.
@@ -59,8 +57,6 @@ public class Vision extends SubsystemBase {
   private static class VisionCamera {
       /** The hardware/software interface for the camera (e.g., PhotonVision). */
       private final VisionIO camera;
-      /** Human-readable name of the camera (used for logging). */
-      private final String cameraName;
       /** Auto-logged input container for this specific camera. */
       private final VisionInputsAutoLogged inputs;
       /** Calibration and tuning constants specific to this camera. */
@@ -75,7 +71,6 @@ public class Vision extends SubsystemBase {
        */
       public VisionCamera(VisionIO camera, String cameraName, CamerasConstants constants) {
           this.camera = camera;
-          this.cameraName = cameraName;
           this.inputs = new VisionInputsAutoLogged();
           this.constants = constants;
       }
@@ -84,10 +79,10 @@ public class Vision extends SubsystemBase {
        * Creates a {@code VisionCamera} using constants and a reference pose supplier.
        *
        * @param constants The camera calibration constants.
-       * @param referencePoseSupplier A supplier providing the robot's current estimated pose.
+       * @param lastPose A supplier providing the robot's current estimated pose.
        */
-      public VisionCamera(CamerasConstants constants, Supplier<Pose2d> referencePoseSupplier) {
-          this(new VisionIOPhoton(constants, referencePoseSupplier), constants.CAMERA_NAME, constants);
+      public VisionCamera(CamerasConstants constants, Supplier<Pose2d> lastPose) {
+          this(new VisionIOPhoton(constants, lastPose), constants.CAMERA_NAME, constants);
       }
 
       /**
@@ -95,13 +90,7 @@ public class Vision extends SubsystemBase {
        */
       public void update() {
           camera.update(inputs);
-      }
-
-      /**
-       * Logs the inputs of this camera to AdvantageKit.
-       */
-      public void log() {
-          Logger.processInputs(cameraName, inputs);
+          Logger.processInputs(constants.CAMERA_NAME, inputs);
       }
   }
   
@@ -115,17 +104,17 @@ public class Vision extends SubsystemBase {
    * defined in {@link CamerasConstants}.
    *
    * @param poseConsumer The consumer that will receive validated pose estimates.
-   * @param referncePoseSupplier Supplier providing the current reference robot pose.
+   * @param lastPose Supplier providing the current reference robot pose.
    * @param ignoreFunnel A flag supplier to determine whether pose funneling should be ignored.
    */
-  public Vision(VisionConsumer poseConsumer, Supplier<Pose2d> referncePoseSupplier, Supplier<Boolean> ignoreFunnel) {
+  public Vision(VisionConsumer poseConsumer, Supplier<Pose2d> lastPose) {
       int numOfCameras = CamerasConstants.values().length;
 
       cameras = new VisionCamera[numOfCameras];
       CamerasConstants[] constants = CamerasConstants.values();
 
       for (int i = 0; i < numOfCameras; i++) {
-          cameras[i] = new VisionCamera(constants[i], referncePoseSupplier);
+          cameras[i] = new VisionCamera(constants[i], lastPose);
       }
 
       this.consumer = poseConsumer;
@@ -180,20 +169,8 @@ public class Vision extends SubsystemBase {
       double linearStdDev = Math.max(stdDevFactor * camera.constants.XY_STD_DEV_FACTOR, camera.constants.MIN_XY_STD_DEV);
       double angularStdDev = Math.max(stdDevFactor * camera.constants.THETA_STD_DEV_FACTOR, camera.constants.MIN_THETA_STD_DEV);
 
-      if (tagCount > 2) {
-          linearStdDev *= camera.constants.XY_STD_DEV_FACTOR;
-          angularStdDev *= camera.constants.THETA_STD_DEV_FACTOR;
-      }
-
       return VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev);
   }
-
-  /** Collection of valid poses that passed all validation checks. */
-  private final ArrayList<Pose3d> validPoses = new ArrayList<>();
-  /** Collection of poses rejected for being invalid or ambiguous. */
-  private final ArrayList<Pose3d> rejectedPoses = new ArrayList<>();
-  /** List of detected tag locations in the field coordinate system. */
-  private final ArrayList<Translation3d> targetLocations = new ArrayList<>();
 
   /**
    * The periodic update method:
@@ -208,41 +185,46 @@ public class Vision extends SubsystemBase {
    */
   @Override
   public void periodic() {
+      /** Collection of valid poses that passed all validation checks. */
+      final ArrayList<Pose3d> validPoses = new ArrayList<>();
+      /** Collection of poses rejected for being invalid or ambiguous. */
+      final ArrayList<Pose3d> rejectedPoses = new ArrayList<>();
+      /** List of detected tag locations in the field coordinate system. */
+      final ArrayList<Translation3d> targetLocations = new ArrayList<>();
+
       for (VisionCamera camera : cameras) {
           camera.update();
-          camera.log();
           
-          SmartDashboard.putBoolean(camera.cameraName + " Connected", camera.inputs.isConnected);
+          SmartDashboard.putBoolean(camera.constants.CAMERA_NAME + " Connected", camera.inputs.isConnected);
 
           for (int i = 0; i < camera.inputs.targetIDs.length; i++) {
               Optional<Pose3d> targetPose = VisionConstants.FIELD_LAYOUT.getTagPose(camera.inputs.targetIDs[i]);
-              targetPose.ifPresent(pose3d -> targetLocations.add(pose3d.getTranslation()));
+              Consumer<Pose3d> addPoseToTargetLocations = pose3d -> targetLocations.add(pose3d.getTranslation());
+              targetPose.ifPresent(addPoseToTargetLocations);
           }
-
-          Logger.recordOutput("Vision/" + camera.cameraName + "/Target Locations", targetLocations.toArray(new Translation3d[0]));
 
           for (VisionIO.VisionFrame frame : camera.inputs.visionFrames) {
               if (!frame.hasTarget()) continue;
 
-              if (!checkPoseLocation(frame.estimatedTheyThemPose())) {
-                  rejectedPoses.add(frame.estimatedTheyThemPose());
+              if (!checkPoseLocation(frame.estimatedPose())) {
+                  rejectedPoses.add(frame.estimatedPose());
                   continue;
               }
 
               if (!checkPoseAmbiguity(frame.poseAmbiguity(), frame)) {
-                  rejectedPoses.add(frame.estimatedTheyThemPose());
+                  rejectedPoses.add(frame.estimatedPose());
                   continue;
               }
 
               var stdDevs = getStdDevs(frame.averageTargetDistanceMeters(), frame.targetCount(), camera);
 
-              consumer.accept(frame.estimatedTheyThemPose().toPose2d(), frame.timeStampSeconds(), stdDevs);
+              consumer.accept(frame.estimatedPose().toPose2d(), frame.timeStampSeconds(), stdDevs);
 
-              validPoses.add(frame.estimatedTheyThemPose());
+              validPoses.add(frame.estimatedPose());
           }
-
-          Logger.recordOutput("Vision/" + camera.cameraName + "/Valid Poses", validPoses.toArray(new Pose3d[0]));
-          Logger.recordOutput("Vision/" + camera.cameraName + "/Rejected Poses", rejectedPoses.toArray(new Pose3d[0]));
       }
+      Logger.recordOutput("Vision/Target Locations", targetLocations.toArray(new Translation3d[0]));
+      Logger.recordOutput("Vision/Valid Poses", validPoses.toArray(new Pose3d[0]));
+      Logger.recordOutput("Vision/Rejected Poses", rejectedPoses.toArray(new Pose3d[0]));
   }
 }

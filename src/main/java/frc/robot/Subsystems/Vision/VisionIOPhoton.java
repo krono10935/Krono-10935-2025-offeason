@@ -17,21 +17,21 @@ import frc.robot.Subsystems.Vision.VisionConstants.CamerasConstants;
 
 public class VisionIOPhoton implements VisionIO {
         /**
-         * the camera
+         * The camera
          */
         private final PhotonCamera camera;
         /**
-         * the pose estimator
+         * The pose estimator
          */
         private final PhotonPoseEstimator poseEstimator;
         /**
-         * the refrence pose supplier
+         * The reference pose supplier
          */
         private final Supplier<Pose2d> lastPoseSupplier;
 
         /**
-         * this build the poseEstimator using PhotonVision
-         * @param camerasConstants refrence to the Constants
+         * This builds the poseEstimator using PhotonVision
+         * @param camerasConstants reference to the Constants
          * @param LastPoseSupplier the last pose supplier
          */
         public VisionIOPhoton(CamerasConstants camerasConstants, Supplier<Pose2d> lastPoseSupplier){
@@ -45,57 +45,41 @@ public class VisionIOPhoton implements VisionIO {
     /**
      * Generate a vision frame from a PhotonVision result.
      *
-     * @param result the photon result containing detected targets and pose info
+     * @param result the Photon result containing detected targets and pose info
      * @return a VisionFrame object representing the processed vision data
      */
     private VisionFrame generateFrame(PhotonPipelineResult result) {
-        /**
-         * If there are no detected targets in the result, return an empty vision frame.
-         */
+        // If there are no detected targets in the result, return an empty vision frame.
         if (!result.hasTargets()) {
             return VisionFrame.EMPTY;
         }
 
-        /**
-         * Update the pose estimator with the current reference pose (from a supplier).
-         */
+        
+        // Update the pose estimator with the current reference pose (from a supplier).
+        
         poseEstimator.setReferencePose(lastPoseSupplier.get());
 
-        /**
-         * Attempt to estimate the robot's pose using the photon result.
-         */
+        // Attempt to estimate the robot's pose using the photon result.
         Optional<EstimatedRobotPose> estimatedPose = poseEstimator.update(result);
 
-        /**
-         * If no pose estimation was possible, return an empty vision frame.
-         */
+        // If no pose estimation was possible, return an empty vision frame.
         if (estimatedPose.isEmpty()) {
             return VisionFrame.EMPTY;
         }
 
-        /**
-         * Extract the valid estimated robot pose.
-         */
+        // Extract the valid estimated robot pose.
         EstimatedRobotPose pose = estimatedPose.get();
 
-        /**
-         * Variables to store pose ambiguity and average distance to detected targets.
-         */
+        // Variables to store pose ambiguity and average distance to detected targets.
         double poseAmbiguity;
         double TargetDistanceSumMeters = 0.0;
 
-        /**
-         * If the multitag solver was used (multiple tags detected together).
-         */
+        // If the multitag solver was used (multiple tags detected together).
         if (result.multitagResult.isPresent()) {
-            /**
-             * Get ambiguity value from the multitag result.
-             */
+            // Get ambiguity value from the multitag result.
             poseAmbiguity = result.multitagResult.get().estimatedPose.ambiguity;
 
-            /**
-             * Compute the average distance to all detected targets.
-             */
+            // Compute the average distance to all detected targets.
             for (var target : result.targets) {
                 double distanceToTag = target.getBestCameraToTarget()
                                             .getTranslation()
@@ -103,25 +87,19 @@ public class VisionIOPhoton implements VisionIO {
                 TargetDistanceSumMeters += distanceToTag;
             }
         } 
-        /**
-         * If only a single tag was detected.
-         */
+        // If only a single tag was detected.
         else {
-            /**
-             * Use ambiguity from the first target.
-             */
+            // Use ambiguity from the first target.
             poseAmbiguity = result.getTargets().get(0).poseAmbiguity;
 
-            /**
-             * Compute the distance to the first target.
-             */
+            // Compute the distance to the first target.
             TargetDistanceSumMeters = result.getTargets().get(0)
                                                 .getBestCameraToTarget()
                                                 .getTranslation()
                                                 .getNorm();
         }
 
-        /**
+        /*
          * Return a VisionFrame containing:
          * - a flag indicating vision data is valid
          * - the timestamp from PhotonVision
@@ -149,53 +127,36 @@ public class VisionIOPhoton implements VisionIO {
      */
     @Override
     public void update(VisionInputs inputs) {
-        /**
-         * Check if the camera is connected.
-         */
+        // Check if the camera is connected.
         inputs.isConnected = camera.isConnected();
 
-        /**
-         * If the camera is not connected, set visionFrames to an empty frame and return.
-         */
+        // If the camera is not connected, set visionFrames to an empty frame and return.
         if (!inputs.isConnected) {
             inputs.visionFrames = new VisionFrame[]{VisionFrame.EMPTY};
             return;
         }
 
-        /**
-         * Retrieve all unread results from the camera.
-         */
+        // Retrieve all unread results from the camera.
         var result = camera.getAllUnreadResults();
 
-        /**
-         * Initialize the array of vision frames to match the number of results.
-         */
+        // Initialize the array of vision frames to match the number of results.
         inputs.visionFrames = new VisionFrame[result.size()];
-        /**
-         * List to collect all detected target IDs.
-         */
+        // List to collect all detected target IDs.
         ArrayList<Integer> ids = new ArrayList<>();
-        /**
-         * Process each PhotonVision result into a VisionFrame.
-         */
+        
+        // Process each PhotonVision result into a VisionFrame.
         for (int i = 0; i < result.size(); i++) {
-            /**
-             * Convert the result into a VisionFrame and store it.
-             */
+            // Convert the result into a VisionFrame and store it.
             inputs.visionFrames[i] = generateFrame(result.get(i));
 
-            /**
-             * Collect the fiducial IDs of all detected targets in this result.
-             */
+            // Collect the fiducial IDs of all detected targets in this result.
             for (var target : result.get(i).targets) {
                 ids.add(target.getFiducialId());
             }
 
             
         }
-        /**
-             * Store the collected target IDs as an int array in the inputs.
-             */
+        // Store the collected target IDs as an int array in the inputs.
         inputs.targetIDs = ids.stream().mapToInt(Integer::intValue).toArray();
     }
 
