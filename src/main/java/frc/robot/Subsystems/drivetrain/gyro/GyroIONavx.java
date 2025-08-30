@@ -1,8 +1,7 @@
-package frc.robot.subsystems.drivetrain.gyro;
+package frc.robot.Subsystems.drivetrain.gyro;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public class GyroIONavx implements GyroIO {
@@ -10,7 +9,7 @@ public class GyroIONavx implements GyroIO {
     private final AHRS navx;
     private Rotation2d gyroOffset = Rotation2d.kZero;
 
-    public GyroIONavx(){
+    public GyroIONavx() {
         navx = new AHRS(NavXComType.kMXP_SPI);
     }
 
@@ -24,5 +23,4 @@ public class GyroIONavx implements GyroIO {
         navx.reset();
         gyroOffset = angle;
     }
-    
 }

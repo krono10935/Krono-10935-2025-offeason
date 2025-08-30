@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain.swerve.module;
+package frc.robot.Subsystems.drivetrain.swerve.module;
 
 import io.github.captainsoccer.basicmotor.ctre.talonfx.BasicTalonFX;
 import org.littletonrobotics.junction.Logger;

@@ -1,8 +1,8 @@
-package frc.robot.subsystems.drivetrain;
+package frc.robot.Subsystems.drivetrain;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.subsystems.drivetrain.swerve.module.SwerveModuleConstants;
+import frc.robot.Subsystems.drivetrain.swerve.module.SwerveModuleConstants;
 
 public class DrivetrainConstants {
     public enum HolonomicType{

@@ -1,11 +1,11 @@
-package frc.robot.subsystems.drivetrain.mecanum;
+package frc.robot.Subsystems.drivetrain.mecanum;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.Subsystems.drivetrain.Drivetrain;
 
 public class Mecanum extends Drivetrain{
 
