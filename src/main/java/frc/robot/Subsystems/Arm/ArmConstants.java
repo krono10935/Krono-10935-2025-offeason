@@ -18,5 +18,13 @@ public class ArmConstants {
 
         //config.simulationConfig.kV
         //config.simulationConfig.kA
+
+    }
+
+
+    public enum desiredAngles {
+        L1,
+        L2,
+        L3,
     }
 }
