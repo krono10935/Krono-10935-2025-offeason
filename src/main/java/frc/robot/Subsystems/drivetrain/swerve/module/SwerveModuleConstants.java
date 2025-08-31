@@ -15,51 +15,52 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
 
 public enum SwerveModuleConstants {
     FRONT_LEFT(
-        0, 0, 0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,
-        0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,0,
-        new Translation2d()),
-        
-        
+            0, 0, 0,
+            new PIDGains(5, 0, 0, 0, 0, 0),
+            new FeedForwardsGains(3),
+            1.2,
+            0,
+            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            new FeedForwardsGains(0),
+            1.7245, 0.15,
+            new Translation2d(0.29, 0.29)),
+
+
     FRONT_RIGHT(
-        0, 0, 0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,
-        0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,0,
-        new Translation2d()), 
+            0, 0, 0,
+            new PIDGains(5, 0, 0, 0, 0, 0),
+            new FeedForwardsGains(3),
+            1.2,
+            0,
+            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            new FeedForwardsGains(0),
+            1.7245, 0.15,
+            new Translation2d(0.29, -0.29)),
 
 
     BACK_LEFT(
-        0, 0, 0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,
-        0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,0,
-        new Translation2d()), 
+            0, 0, 0,
+            new PIDGains(5, 0, 0, 0, 0, 0),
+            new FeedForwardsGains(3),
+            1.2,
+            0,
+            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            new FeedForwardsGains(0),
+            1.7245, 0.15,
+            new Translation2d(-0.29, 0.29)),
 
-        
+
     BACK_RIGHT(
-        0, 0, 0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,
-        0,
-        new PIDGains(0,0,0,0,0,0), 
-        new FeedForwardsGains(0),
-        0,0,
-        new Translation2d());
+            0, 0, 0,
+            new PIDGains(5, 0, 0, 0, 0, 0),
+            new FeedForwardsGains(3),
+            1.2,
+            0,
+            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            new FeedForwardsGains(0),
+            1.7245, 0.15,
+            new Translation2d(-0.29, -0.29));
+
 
     public static final double WHEEL_RADIUS_METERS = 0.0508;
     public static final double DRIVE_GEAR_RATIO = 5.14;
@@ -109,7 +110,7 @@ public enum SwerveModuleConstants {
 
     public final Translation2d TRANSLATION;
 
-    public final int CAN_CODER_ID; 
+    public final int CAN_CODER_ID;
     public final double ZERO_OFFSET;
 
     public final String NAME;
@@ -133,7 +134,7 @@ public enum SwerveModuleConstants {
 
         CAN_CODER_ID = canCoderID;
         ZERO_OFFSET = zeroOffset;
-        
+
         DRIVING_CONFIG = getDriveMotorCommonConfig();
 
         DRIVING_CONFIG.motorConfig.name = NAME + " Drive Motor";
@@ -144,7 +145,7 @@ public enum SwerveModuleConstants {
 
         DRIVING_CONFIG.simulationConfig.kA = driveKA;
         DRIVING_CONFIG.simulationConfig.kV = driveFeedForwards.getSetpointFeedForward();
-        
+
         STEERING_CONFIG = getSteerMotorCommonConfig();
 
         STEERING_CONFIG.motorConfig.name = NAME + " Steer Motor";
@@ -161,8 +162,8 @@ public enum SwerveModuleConstants {
     /**
      * @return Array of all the translations from the robot to the module;
      */
-    public static Translation2d[] getModuleTranslations(){
-         ArrayList<Translation2d> translations = new ArrayList<>();
+    public static Translation2d[] getModuleTranslations() {
+        ArrayList<Translation2d> translations = new ArrayList<>();
 
         for (SwerveModuleConstants constants : SwerveModuleConstants.values()) {
             translations.add(constants.TRANSLATION);

@@ -22,16 +22,6 @@ public class RobotContainer {
     drivetrain = new Swerve();
     driveController = new CommandXboxController(0);
 
-    Command driveCommand = new DriveCommand(drivetrain, driveController);
-
-    var setDefaultCommand = new InstantCommand(() -> drivetrain.setDefaultCommand(driveCommand))
-                                    .ignoringDisable(true);
-
-    var removeDefaultCommand = new InstantCommand(() -> drivetrain.removeDefaultCommand())
-                                    .ignoringDisable(true);
-
-    // Set drive command to on only after teleop starts to avoid misfortunate mistakes.
-    new Trigger(RobotState::isTeleop).onTrue(setDefaultCommand).onFalse(removeDefaultCommand);
     configureBindings();
   }
 

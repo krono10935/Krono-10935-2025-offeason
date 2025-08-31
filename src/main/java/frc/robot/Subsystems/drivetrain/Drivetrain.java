@@ -98,6 +98,10 @@ public abstract class Drivetrain extends SubsystemBase {
         updateInputs(inputs);
         Logger.processInputs("drivetrain", inputs);
         Logger.recordOutput("drivetrain/estimated pose", getEstimatedPosition());
+
+        String currentCommand = getCurrentCommand() == null ? "None" : getCurrentCommand().getName();
+
+        Logger.recordOutput("drivetrain/current command", currentCommand);
     }
 
     /**

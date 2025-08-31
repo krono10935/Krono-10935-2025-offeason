@@ -28,15 +28,11 @@ public class DriveCommand extends Command {
     addRequirements(drivetrain);
   }
 
-  public DriveCommand(Drivetrain drivetrain, CommandXboxController driveController, Drivetrain drivetrain1, CommandXboxController controller) {
-      this.drivetrain = drivetrain;
-      this.controller = driveController;
-  }
 
   @Override
   public void execute() {
-    double speed = lerp(controller.getRightTriggerAxis());
-    double angularSpeed = angularLerp(controller.getRightTriggerAxis());
+    double speed = lerp(1 - controller.getRightTriggerAxis());
+    double angularSpeed = angularLerp(1 - controller.getRightTriggerAxis());
 
     double xSpeed = deadband(-controller.getLeftX()) * speed;
     double ySpeed = deadband(-controller.getLeftY()) * speed;
