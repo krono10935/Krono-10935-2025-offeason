@@ -1,6 +1,8 @@
 package frc.robot.Subsystems.drivetrain.swerve.module;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import io.github.captainsoccer.basicmotor.ctre.talonfx.BasicTalonFX;
+import io.github.captainsoccer.basicmotor.sim.motor.BasicMotorSim;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -21,15 +23,24 @@ public class SwerveModuleBasic extends SwerveModuleIO {
 
     public SwerveModuleBasic(SwerveModuleConstants constants){
         super(constants);
-        drivingMotor = new BasicTalonFX(constants.DRIVING_CONFIG);
-        steeringMotor = new BasicTalonFX(constants.STEERING_CONFIG);
 
-        canCoder = createCANcoder(constants);
+        if (RobotBase.isReal()) {
+            drivingMotor = new BasicTalonFX(constants.DRIVING_CONFIG);
+            steeringMotor = new BasicTalonFX(constants.STEERING_CONFIG);
 
-        ((BasicTalonFX) steeringMotor).useRemoteCanCoder(canCoder, constants.STEERING_CONFIG.motorConfig.gearRatio);
+            canCoder = createCANcoder(constants);
 
-        canCoder.getMagnetHealth().setUpdateFrequency(4);
-        canCoder.optimizeBusUtilization();
+            ((BasicTalonFX) steeringMotor).useRemoteCanCoder(canCoder, constants.STEERING_CONFIG.motorConfig.gearRatio);
+
+            canCoder.getMagnetHealth().setUpdateFrequency(4);
+            canCoder.optimizeBusUtilization();
+        }
+        else{
+            drivingMotor = new BasicMotorSim(constants.DRIVING_CONFIG);
+            steeringMotor = new BasicMotorSim(constants.STEERING_CONFIG);
+
+            canCoder = null;
+        }
     }
 
     @Override
@@ -80,6 +91,8 @@ public class SwerveModuleBasic extends SwerveModuleIO {
     @Override
     public void update(){
         super.update();
-        Logger.recordOutput("basic module/" + constants.name() + "/magenet health", canCoder.getMagnetHealth().getName());
+        if (canCoder != null)
+            Logger.recordOutput("basic module/" + constants.name() + "/magnet health",
+                    canCoder.getMagnetHealth().getName());
     }
 }

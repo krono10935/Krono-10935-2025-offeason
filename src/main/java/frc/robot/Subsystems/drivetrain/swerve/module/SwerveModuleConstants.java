@@ -62,7 +62,7 @@ public enum SwerveModuleConstants {
         new Translation2d());
 
     public static final double WHEEL_RADIUS_METERS = 0.0508;
-    public static final double DRIVE_GEAR_RATIO = 1; //TODO gear ratio
+    public static final double DRIVE_GEAR_RATIO = 5.14;
     public static final int DRIVE_CURRENT_LIMIT = 100;
 
     /**
@@ -83,7 +83,6 @@ public enum SwerveModuleConstants {
     }
 
     public static final double STEER_GEAR_RATIO = 12.8;
-    public static final DCMotor STEER_MOTOR_TYPE = DCMotor.getFalcon500(1);
     public static final int STEER_CURRENT_LIMIT = 60;
 
     /**
