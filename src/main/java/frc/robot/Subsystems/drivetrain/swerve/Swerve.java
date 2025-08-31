@@ -30,6 +30,7 @@ public class Swerve extends Drivetrain {
     }
 
     private final SwerveModuleIO[] io = new SwerveModuleIO[4];
+
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
 
     private final SwerveDriveKinematics kinematics;

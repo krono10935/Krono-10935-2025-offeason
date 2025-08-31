@@ -12,7 +12,6 @@ import io.github.captainsoccer.basicmotor.ctre.talonfx.BasicTalonFXConfig;
 import io.github.captainsoccer.basicmotor.gains.ConstraintsGains.ConstraintType;
 import io.github.captainsoccer.basicmotor.gains.FeedForwardsGains;
 import io.github.captainsoccer.basicmotor.gains.PIDGains;
-import io.github.captainsoccer.basicmotor.rev.BasicSparkConfig;
 
 public enum SwerveModuleConstants {
     FRONT_LEFT(
@@ -62,11 +61,9 @@ public enum SwerveModuleConstants {
         0,0,
         new Translation2d());
 
-    public static final double MAX_WHEEL_SPEED = 0;
-    public static final double WHEEL_RADIUS_METERS = 0;
-    public static final double DRIVE_GEAR_RATIO = 1;
-    public static final DCMotor DRIVE_MOTOR_TYPE = DCMotor.getKrakenX60(1);
-    public static final int DRIVE_CURRENT_LIMIT = 0;
+    public static final double WHEEL_RADIUS_METERS = 0.0508;
+    public static final double DRIVE_GEAR_RATIO = 1; //TODO gear ratio
+    public static final int DRIVE_CURRENT_LIMIT = 100;
 
     /**
      * @return Common drive motor config
@@ -76,7 +73,7 @@ public enum SwerveModuleConstants {
 
         config.motorConfig.gearRatio = DRIVE_GEAR_RATIO;
         config.motorConfig.unitConversion = 2 * Math.PI * WHEEL_RADIUS_METERS;
-        config.motorConfig.idleMode = IdleMode.BRAKE;
+        config.motorConfig.idleMode = IdleMode.COAST;
         config.motorConfig.motorType = DCMotor.getKrakenX60(1);
 
         config.currentLimitConfig.statorCurrentLimit = DRIVE_CURRENT_LIMIT;
@@ -85,21 +82,21 @@ public enum SwerveModuleConstants {
         return config;
     }
 
-    public static final double STEER_GEAR_RATIO = 1;
-    public static final DCMotor STEER_MOTOR_TYPE = DCMotor.getKrakenX60(1);
-    public static final int STEER_CURRENT_LIMIT = 0;
+    public static final double STEER_GEAR_RATIO = 12.8;
+    public static final DCMotor STEER_MOTOR_TYPE = DCMotor.getFalcon500(1);
+    public static final int STEER_CURRENT_LIMIT = 60;
 
     /**
      * @return Common steer motor config
      */
     private static BasicMotorConfig getSteerMotorCommonConfig() {
-        var config = new BasicSparkConfig();
+        var config = new BasicTalonFXConfig();
 
         config.motorConfig.gearRatio = STEER_GEAR_RATIO;
-        config.motorConfig.idleMode = IdleMode.BRAKE;
+        config.motorConfig.idleMode = IdleMode.COAST;
         config.motorConfig.motorType = DCMotor.getFalcon500(1);
 
-        config.currentLimitConfig.freeSpeedCurrentLimit = STEER_CURRENT_LIMIT;
+        config.currentLimitConfig.statorCurrentLimit = STEER_CURRENT_LIMIT;
 
         config.constraintsConfig.constraintType = ConstraintType.CONTINUOUS;
         config.constraintsConfig.maxValue = 0.5;
@@ -111,7 +108,7 @@ public enum SwerveModuleConstants {
     public final BasicMotorConfig STEERING_CONFIG;
     public final BasicMotorConfig DRIVING_CONFIG;
 
-    public final Translation2d TRANSLATION = new Translation2d();
+    public final Translation2d TRANSLATION;
 
     public final int CAN_CODER_ID; 
     public final double ZERO_OFFSET;
@@ -133,9 +130,10 @@ public enum SwerveModuleConstants {
             Translation2d location) {
 
         this.NAME = this.name();
+        this.TRANSLATION = location;
 
         CAN_CODER_ID = canCoderID;
-        ZERO_OFFSET = zeroOffset;   
+        ZERO_OFFSET = zeroOffset;
         
         DRIVING_CONFIG = getDriveMotorCommonConfig();
 
@@ -144,6 +142,9 @@ public enum SwerveModuleConstants {
 
         DRIVING_CONFIG.slot0Config.pidConfig = PIDConfig.fromGains(drivePIDGains);
         DRIVING_CONFIG.slot0Config.feedForwardConfig = FeedForwardConfig.fromFeedForwards(driveFeedForwards);
+
+        DRIVING_CONFIG.simulationConfig.kA = driveKA;
+        DRIVING_CONFIG.simulationConfig.kV = driveFeedForwards.getSetpointFeedForward();
         
         STEERING_CONFIG = getSteerMotorCommonConfig();
 
@@ -151,6 +152,9 @@ public enum SwerveModuleConstants {
         STEERING_CONFIG.motorConfig.id = steerMotorID;
         STEERING_CONFIG.slot0Config.pidConfig = PIDConfig.fromGains(steerPIDGains);
         STEERING_CONFIG.slot0Config.feedForwardConfig = FeedForwardConfig.fromFeedForwards(steerFeedForwards);
+
+        STEERING_CONFIG.simulationConfig.kV = steerKV;
+        STEERING_CONFIG.simulationConfig.kA = steerKA;
 
     }
 
