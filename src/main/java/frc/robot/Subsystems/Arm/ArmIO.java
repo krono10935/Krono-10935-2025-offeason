@@ -1,18 +1,39 @@
-package frc.robot.Subsystems.Arm;
+package frc.robot.subsystems.Arm;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface ArmIO {
+import io.github.captainsoccer.basicmotor.BasicMotor;
+import io.github.captainsoccer.basicmotor.controllers.Controller;
+
+public abstract class ArmIO {
     @AutoLog
-    class ArmInputs {
+    public static class ArmInputs {
         public boolean atSetPoint;
         public double currentAngle;
     }
 
-    void setAngle(double angle);
+    protected BasicMotor motor;
 
-    void resetEncoder();
+    public void setAngle(double radians) {
+        motor.setControl(convertFromRadiansToRotations(radians), Controller.ControlMode.POSITION);
 
-    void update(ArmInputs inputs);
+    }
+
+    public void resetEncoder() {
+        motor.resetEncoder(0);
+    }
+
+    public void update(ArmInputs inputs) {
+        inputs.atSetPoint = motor.atSetpoint();
+        inputs.currentAngle = convertFromRotationsToRadians(motor.getPosition());
+    }
+
+    private double convertFromRadiansToRotations(double radians){
+        return 2 * Math.PI * radians;
+    }
+
+    private double convertFromRotationsToRadians(double rotations){
+        return rotations / 2 * Math.PI;
+    }
 
 }

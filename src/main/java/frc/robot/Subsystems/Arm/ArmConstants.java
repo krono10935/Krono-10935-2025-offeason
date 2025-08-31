@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Arm;
+package frc.robot.subsystems.Arm;
 
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;
@@ -23,8 +23,14 @@ public class ArmConstants {
 
 
     public enum desiredAngles {
-        L1,
-        L2,
-        L3,
+        L1(Math.PI),
+        L2(0.5*Math.PI),
+        L3(2*Math.PI);
+
+        public double angle; // Angle in radians
+
+        private desiredAngles(double angle){
+            this.angle = angle;
+        }
     }
 }

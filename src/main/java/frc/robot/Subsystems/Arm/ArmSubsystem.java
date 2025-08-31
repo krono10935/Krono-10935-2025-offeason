@@ -1,38 +1,15 @@
-package frc.robot.Subsystems.Arm;
+package frc.robot.subsystems.Arm;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
 
 public class ArmSubsystem extends SubsystemBase {
-    /**
-     * The Singleton instance of this ArmSubsystem. Code should use
-     * the {@link #getInstance()} method to get the single instance (rather
-     * than trying to construct an instance of this class.)
-     */
-
     private final ArmIO io;
     private final ArmInputsAutoLogged inputs  = new ArmInputsAutoLogged();
-    private static ArmSubsystem INSTANCE;
 
-    /**
-     * Returns the Singleton instance of this ArmSubsystem. This static method
-     * should be used, rather than the constructor, to get the single instance
-     * of this class. For example: {@code ArmSubsystem.getInstance();}
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static ArmSubsystem getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ArmSubsystem();
-        }
-        return INSTANCE;
-    }
-
-    /**
-     * Creates a new instance of this ArmSubsystem. This constructor
-     * is private since this class is a Singleton. Code should use
-     * the {@link #getInstance()} method to get the singleton instance.
-     */
-    private ArmSubsystem() {
+    
+    public ArmSubsystem() {
         io = RobotBase.isReal() ? new ArmRealMotorIO() : new ArmSimIO();
 
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
@@ -52,10 +29,12 @@ public class ArmSubsystem extends SubsystemBase {
         io.setAngle(angle);
     }
 
+    public void setAngleByLevel(ArmConstants.desiredAngles level){
+        io.setAngle(level.angle);
+    }
+
     public double currentAngle() {
         return inputs.currentAngle;
     }
-
-
 }
 
