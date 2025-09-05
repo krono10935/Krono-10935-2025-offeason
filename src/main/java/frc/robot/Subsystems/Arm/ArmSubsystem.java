@@ -1,8 +1,8 @@
-package frc.robot.subsystems.Arm;
+package frc.robot.Subsystems.Arm;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
+//import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
 
 public class ArmSubsystem extends SubsystemBase {
     private final ArmIO io;
@@ -36,5 +36,7 @@ public class ArmSubsystem extends SubsystemBase {
     public double currentAngle() {
         return inputs.currentAngle;
     }
+
+
 }
 

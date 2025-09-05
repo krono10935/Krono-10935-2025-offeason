@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Arm;
+package frc.robot.Subsystems.Arm;
 
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;
@@ -16,8 +16,11 @@ public class ArmConstants {
         config.pidConfig.kI = 0.1;
         config.pidConfig.kD = 0.1;
 
-        //config.simulationConfig.kV
-        //config.simulationConfig.kA
+        config.simulationConfig.kV = 0;
+        config.simulationConfig.kA = 0;
+        config.simulationConfig.armSimConfig.simulateGravity = true;
+        config.simulationConfig.armSimConfig.armlengthMeters = 0.55;
+        config.simulationConfig.armSimConfig.startingAngle = 0;
 
     }
 
