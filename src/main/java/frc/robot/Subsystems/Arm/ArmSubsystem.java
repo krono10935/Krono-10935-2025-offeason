@@ -13,7 +13,7 @@ public class ArmSubsystem extends SubsystemBase {
     
     public ArmSubsystem() {
         io = RobotBase.isReal() ? new ArmRealMotorIO() : new ArmSimIO();
-        io.resetEncoder();
+        
     }
 
 
@@ -23,13 +23,13 @@ public class ArmSubsystem extends SubsystemBase {
         Logger.processInputs(getName(), inputs);
 
         String currentCommandName = (getCurrentCommand() ==null) ? "Null" : getCurrentCommand().getName();
-        Logger.recordOutput("Arm/CurrentCommand", currentCommandName);;
+        Logger.recordOutput("Arm/CurrentCommand", currentCommandName);
     }
 
     public void setPos(double pos) {
         io.setMotorPos(pos);
     }
-
+    
     public void setPosByLevel(ArmConstants.desiredPositions level){
         io.setMotorPos(level.pos);
     }

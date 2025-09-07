@@ -3,6 +3,7 @@ package frc.robot.Subsystems.Arm;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
+import io.github.captainsoccer.basicmotor.measurements.Measurements;
 import io.github.captainsoccer.basicmotor.sim.arm.BasicArmSim;
 
 public class ArmSimIO implements ArmIO{
@@ -13,6 +14,7 @@ public class ArmSimIO implements ArmIO{
     
     public ArmSimIO() {
         motor = new BasicArmSim(ArmConstants.config);
+        
     }
 
     @Override

@@ -16,11 +16,15 @@ public class ArmConstants {
         config.pidConfig.kI = 0.1;
         config.pidConfig.kD = 0.1;
 
-        config.simulationConfig.kV = 0;
-        config.simulationConfig.kA = 0;
+        config.simulationConfig.kV = 1;
+        config.simulationConfig.kA = 1;
         config.simulationConfig.armSimConfig.simulateGravity = true;
         config.simulationConfig.armSimConfig.armlengthMeters = 0.55;
         config.simulationConfig.armSimConfig.startingAngle = 0;
+        config.simulationConfig.velocityStandardDeviation=0.01;
+        config.simulationConfig.positionStandardDeviation=0.01;
+        config.simulationConfig.momentOfInertia=0;
+        
 
     }
 
