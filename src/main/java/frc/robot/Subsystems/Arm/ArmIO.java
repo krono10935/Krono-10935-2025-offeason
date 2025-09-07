@@ -9,17 +9,28 @@ public interface ArmIO {
     @AutoLog
     public static class ArmInputs {
         public boolean atSetPoint;
-        public double currentAngle;
+        public double currentPos; //absolute
     }
 
-
-    public void setAngle(double radians);
-
+    /*
+     * reset the encoder of the arm motor
+     */
     public void resetEncoder();
 
+    /*
+     * update the auto logged inputs
+     */
     public void update(ArmInputs inputs);
 
-    public double convertFromRadiansToRotations(double radians);
+    /*
+     * set the armMotor position (absolute)
+     */
+    public void setMotorPos(double pos);
 
-    public double convertFromRotationsToRadians(double rotations);
+    /*
+     * is the arm at it's setpoint
+     */
+    public boolean atSetPoint();
+
+
 }

@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Arm;
 
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller;
+import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
 import io.github.captainsoccer.basicmotor.sim.arm.BasicArmSim;
 
 public class ArmSimIO implements ArmIO{
@@ -9,31 +10,30 @@ public class ArmSimIO implements ArmIO{
 
     BasicMotor motor;
 
-
+    
     public ArmSimIO() {
         motor = new BasicArmSim(ArmConstants.config);
     }
 
-
-    public void setAngle(double radians) {
-        motor.setControl(convertFromRadiansToRotations(radians), Controller.ControlMode.POSITION);
-
-    }
-
+    @Override
     public void resetEncoder() {
         motor.resetEncoder(0);
     }
+    @Override
+    public void setMotorPos(double pos){
+        motor.setControl(pos, ControlMode.PROFILED_POSITION);
+    }
 
+    @Override
     public void update(ArmInputs inputs) {
         inputs.atSetPoint = motor.atSetpoint();
-        inputs.currentAngle = convertFromRotationsToRadians(motor.getPosition());
+        inputs.currentPos = motor.getPosition();
     }
 
-    public double convertFromRadiansToRotations(double radians){
-        return 2 * Math.PI * radians;
+    @Override
+    public boolean atSetPoint(){
+        return motor.atSetpoint();
     }
 
-    public double convertFromRotationsToRadians(double rotations){
-        return rotations / 2 * Math.PI;
-    }
+   
 }

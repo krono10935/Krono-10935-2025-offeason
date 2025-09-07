@@ -25,15 +25,15 @@ public class ArmConstants {
     }
 
 
-    public enum desiredAngles {
+    public enum desiredPositions {
         L1(Math.PI),
         L2(0.5*Math.PI),
         L3(2*Math.PI);
 
-        public double angle; // Angle in radians
+        public double pos; // Angle in radians
 
-        private desiredAngles(double angle){
-            this.angle = angle;
+        private desiredPositions(double pos){
+            this.pos=pos;
         }
     }
 }
