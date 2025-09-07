@@ -4,13 +4,13 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
 
 
 public class Gripper extends SubsystemBase{
     private final GripperIO io;
     private final GripperInputsAutoLogged inputs = new GripperInputsAutoLogged();
-    private boolean hasCoral;
-    private boolean hasAlgae;
+    private GamePiece currGamePiece;
 
     public Gripper(){
         if (Robot.isReal()){
@@ -19,43 +19,28 @@ public class Gripper extends SubsystemBase{
             io = new GripperIOSim();
         }
 
-        hasCoral = GripperConstants.START_WITH_CORAL; // Change to be based on whether or not the robot is on field
-        hasAlgae = GripperConstants.START_WITH_ALGAE;
+        currGamePiece = GripperConstants.START_WITH_CORAL ? GamePiece.Coral : GamePiece.None;
     }
 
     /**
-     * Make the Gripper grab a coral
+     * Make the gripper hold in the current position
      */
-    public void grabCoral(){
-        io.setPercentOutput(GripperConstants.CORAL_INTAKE_POWER);
-    }
-
-    /**
-     * Make the gripper hold the coral in the current position
-     */
-    public void holdCoral(){
+    public void keepPosition(){
         io.keepPosition();
     }
 
     /**
-     * Releases a held coral
+     * Set percent output
      */
-    public void releaseCoral(){
-        io.setPercentOutput(GripperConstants.CORAL_EJECT_POWER);
+    public void setPercentOutput(double ejectPower){
+        io.setPercentOutput(ejectPower);
     }
 
     /**
-     * Holds an algae
+     * Sets torque
      */
-    public void holdAlgae(){
-        io.setTorque(GripperConstants.ALGAE_TORQUE); // Use torque to grip better the algae
-    }
-
-    /**
-     * Release a held algae
-     */
-    public void releaseAlgae(){
-        stopMotor();
+    public void setTorque(double torque){
+        io.setTorque(torque); // Use torque to grip better the algae
     }
 
     /**
@@ -66,35 +51,19 @@ public class Gripper extends SubsystemBase{
     }
 
     /**
-     * Does the gripper have a coral held
-     * @return boolean for if the Gripper is holding a coral
+     * Which gamepiece is held
+     * @return GamePiece for the piece held
      */
-    public boolean getHasCoral(){
-        return hasCoral;
+    public GamePiece getGamePiece(){
+        return currGamePiece;
     }
 
     /**
-     * Used to make the Gripper know if it is holding a coral.
+     * Used to make the Gripper know what is being held
      * @param hasCoral
      */
-    public void setHasCoral(boolean hasCoral){
-        this.hasCoral = hasCoral;
-    }
-
-    /**
-     * Does the gripper have an algae held
-     * @return boolean for if the Gripper is holding a coral
-     */
-    public boolean getHasAlgae(){
-        return hasAlgae;
-    }
-
-    /**
-     * Used to tell the Gripper if it is holding an algae
-     * @param hasAlgae
-     */
-    public void setHasAlgae(boolean hasAlgae){
-        this.hasAlgae = hasAlgae;
+    public void setGamePiece(GamePiece gamePiece){
+        this.currGamePiece = gamePiece;
     }
 
     public boolean isMotorOverheating(){

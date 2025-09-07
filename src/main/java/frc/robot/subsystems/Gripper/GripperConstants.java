@@ -11,12 +11,12 @@ public class GripperConstants {
     public enum GamePiece{
         None,
         Coral,
-        Algae;
+        Algae,
+        Unknown;
     }
 
     public static final double MAX_MOTOR_TEMPERATURE = 40;
     public static final boolean START_WITH_CORAL = false;
-    public static final boolean START_WITH_ALGAE = false;
 
     public static final double WHEEL_RADIUS = 0; // in meters 
 

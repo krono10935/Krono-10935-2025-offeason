@@ -11,53 +11,23 @@ import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class HoldCommand extends Command {
   /** Creates a new IntakeCommand. */
-  Gripper gripper;
-  GamePiece gamePiece;
-  public HoldCommand(Gripper gripper, GamePiece gamePiece) {
+  private Gripper gripper;
+  private GamePiece gamePiece;
+  public HoldCommand(Gripper gripper) {
     this.gripper = gripper;
-    this.gamePiece = gamePiece;
+    gamePiece = gripper.getGamePiece();
     addRequirements(gripper);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    switch (gamePiece) {
-      case None:
-        
-        break;
-    
-      case Coral:
-
-        gripper.holdCoral();
-
-      case Algae:
-
-        gripper.holdAlgae();
-
-      default:
-      
-        break;
-    }
+  public void initialize(){
+    gamePiece = gripper.getGamePiece();
   }
 
   @Override
   public boolean isFinished(){
-    switch (gamePiece){
-      case None:
-
-        return true;
-
-      case Coral:
-
-        return false;
-      
-      case Algae:
-
-        return gripper.isMotorOverheating();
-
-      default:
-        return true;
+    if (gamePiece == GamePiece.Algae || gamePiece == GamePiece.Unknown){
+      return gripper.isMotorOverheating();
     }
+    return false;
   }
 }

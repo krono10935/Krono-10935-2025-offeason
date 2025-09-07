@@ -6,13 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Gripper.Gripper;
+import frc.robot.subsystems.Gripper.GripperConstants;
 import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeCommand extends Command {
   /** Creates a new IntakeCommand. */
-  Gripper gripper;
-  GamePiece gamePiece;
+  private Gripper gripper;
+  private final GamePiece gamePiece;
   public IntakeCommand(Gripper gripper, GamePiece gamePiece) {
     this.gripper = gripper;
     this.gamePiece = gamePiece;
@@ -23,17 +24,13 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {
     switch (gamePiece) {
-      case None:
+      case None, Algae, Unknown:
         
         break;
     
       case Coral:
 
-        gripper.grabCoral();
-
-      case Algae:
-
-        break;
+        gripper.setPercentOutput(GripperConstants.CORAL_INTAKE_POWER);
 
       default:
 
@@ -44,5 +41,33 @@ public class IntakeCommand extends Command {
   @Override
   public boolean isFinished(){
     return true;
+  }
+
+  @Override
+  public void end(boolean interuptted){
+    if (interuptted){
+      gripper.setGamePiece(GamePiece.Unknown);
+    } else {
+      gripper.setGamePiece(gamePiece);
+
+      switch (gamePiece){
+        case None, Unknown:
+
+          gripper.stopMotor();
+
+        case Coral:
+
+          gripper.keepPosition();
+
+        case Algae:
+
+          gripper.setTorque(GripperConstants.ALGAE_TORQUE);
+
+        default:
+
+          gripper.stopMotor();
+
+      }
+    }
   }
 }
