@@ -4,7 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
+import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
 
 public class ArmSubsystem extends SubsystemBase {
     private final ArmIO io;

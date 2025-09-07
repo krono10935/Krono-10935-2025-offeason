@@ -14,6 +14,8 @@ public class setArmPositionCommand extends Command {
   double desiredPos;
   public setArmPositionCommand(ArmSubsystem arm ,double pos) {
     // Use addRequirements() here to declare subsystem dependencies.
+
+    addRequirements(arm);
     this.desiredPos=pos;
     this.arm=arm;
 
