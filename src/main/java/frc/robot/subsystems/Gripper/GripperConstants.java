@@ -8,6 +8,13 @@ import io.github.captainsoccer.basicmotor.rev.BasicSparkConfig;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
 
 public class GripperConstants {
+    public enum GamePiece{
+        None,
+        Coral,
+        Algae;
+    }
+
+    public static final double MAX_MOTOR_TEMPERATURE = 40;
     public static final boolean START_WITH_CORAL = false;
     public static final boolean START_WITH_ALGAE = false;
 

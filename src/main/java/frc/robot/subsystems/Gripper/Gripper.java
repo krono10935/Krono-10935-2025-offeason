@@ -55,6 +55,13 @@ public class Gripper extends SubsystemBase{
      * Release a held algae
      */
     public void releaseAlgae(){
+        stopMotor();
+    }
+
+    /**
+     * Stop motor
+     */
+    public void stopMotor(){
         io.stopMotor();
     }
 
@@ -88,6 +95,10 @@ public class Gripper extends SubsystemBase{
      */
     public void setHasAlgae(boolean hasAlgae){
         this.hasAlgae = hasAlgae;
+    }
+
+    public boolean isMotorOverheating(){
+        return inputs.temperature >= GripperConstants.MAX_MOTOR_TEMPERATURE;
     }
 
     @Override
