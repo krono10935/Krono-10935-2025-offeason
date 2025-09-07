@@ -12,8 +12,8 @@ import frc.robot.commands.setArmPositionCommand;
 public class RobotContainer {
   public RobotContainer() {
     configureBindings();
-    ArmSubsystem arm = new ArmSubsystem();
-    new setArmPositionCommand(arm, 0.5);
+    
+    
   }
 
   private void configureBindings() {}

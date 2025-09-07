@@ -12,18 +12,18 @@ public class ArmConstants {
         config.motorConfig.idleMode = BasicMotor.IdleMode.BRAKE;
         //config.motorConfig.gearRatio
 
-        config.pidConfig.kP = 0.1;
-        config.pidConfig.kI = 0.1;
-        config.pidConfig.kD = 0.1;
+        config.pidConfig.kP = 100;
+        config.pidConfig.kI = 10;
+        config.pidConfig.kD = 1;
 
         config.simulationConfig.kV = 1;
         config.simulationConfig.kA = 1;
-        config.simulationConfig.armSimConfig.simulateGravity = true;
+        config.simulationConfig.armSimConfig.simulateGravity = false;
         config.simulationConfig.armSimConfig.armlengthMeters = 0.55;
         config.simulationConfig.armSimConfig.startingAngle = 0;
         config.simulationConfig.velocityStandardDeviation=0.01;
         config.simulationConfig.positionStandardDeviation=0.01;
-        config.simulationConfig.momentOfInertia=0;
+        config.simulationConfig.momentOfInertia=0.01;
         
 
     }
