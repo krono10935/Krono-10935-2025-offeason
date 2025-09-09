@@ -1,6 +1,8 @@
 package frc.robot.subsystems.drivetrain.swerve;
 
 
+import java.util.function.BooleanSupplier;
+
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
@@ -40,7 +42,8 @@ public class Swerve extends Drivetrain {
 
     private final SwerveInputsAutoLogged inputs = new SwerveInputsAutoLogged();
 
-    public Swerve(){
+    public Swerve(BooleanSupplier isRedAlliance){
+        super(isRedAlliance);
         for(int i=0;i<4;i++){
             io[i] = new SwerveModuleBasic(SwerveModuleConstants.values()[i]);
             inputs.moduleStates[i] = io[i].getState();

@@ -14,6 +14,8 @@ import frc.robot.subsystems.drivetrain.gyro.GyroIO;
 import frc.robot.subsystems.drivetrain.gyro.GyroIONavx;
 import frc.robot.subsystems.drivetrain.gyro.GyroIOSim;
 
+import java.util.function.BooleanSupplier;
+
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
@@ -30,11 +32,11 @@ public abstract class Drivetrain extends SubsystemBase {
     private final DrivetrainInputsAutoLogged inputs = new DrivetrainInputsAutoLogged();
 
 
-    protected Drivetrain() {
+    protected Drivetrain(BooleanSupplier isRedAlliance) {
         if(RobotBase.isReal())
-            gyroIO = new GyroIONavx();
+            gyroIO = new GyroIONavx(isRedAlliance);
         else
-            gyroIO = new GyroIOSim(this::getChassisSpeeds);
+            gyroIO = new GyroIOSim(this::getChassisSpeeds, isRedAlliance);
     }
 
     /**

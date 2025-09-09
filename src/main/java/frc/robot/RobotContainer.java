@@ -4,12 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.swerve.Swerve;
@@ -17,10 +14,12 @@ import frc.robot.subsystems.drivetrain.swerve.Swerve;
 public class RobotContainer {
   public static Drivetrain drivetrain;
   public static CommandXboxController driveController;
-
+    
   public RobotContainer() {
-    drivetrain = new Swerve();
+    drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
+
+    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
     configureBindings();
   }
