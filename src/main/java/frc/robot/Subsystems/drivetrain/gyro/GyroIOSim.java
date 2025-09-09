@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.drivetrain.gyro;
+package frc.robot.subsystems.drivetrain.gyro;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;

@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.drivetrain.mecanum;
+package frc.robot.subsystems.drivetrain.mecanum;
 
 public class MecanumBasic {
 }

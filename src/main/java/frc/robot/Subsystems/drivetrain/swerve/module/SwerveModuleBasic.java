@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.drivetrain.swerve.module;
+package frc.robot.subsystems.drivetrain.swerve.module;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import io.github.captainsoccer.basicmotor.ctre.talonfx.BasicTalonFX;
