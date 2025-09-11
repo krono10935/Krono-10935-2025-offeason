@@ -134,7 +134,7 @@ public class Vision extends SubsystemBase {
    * @return true if the ambiguity is valid
    */
   private boolean isValidAmbiguity(double ambiguity, VisionIO.VisionFrame frame) {
-    return ambiguity <= (frame.numTargets > 1 
+    return ambiguity <= (frame.numTargets() > 1 
           ? VisionConstants.MAX_MULTI_AMBIGUTY
           : VisionConstants.MAX_SINGLE_AMBIGUTY);
   }
@@ -193,21 +193,21 @@ public class Vision extends SubsystemBase {
 
       // Process each vision frame
       for(VisionIO.VisionFrame frame : camera.inputs.visionFrames) {
-        if(!frame.hasTarget) continue; // Skip empty frames
+        if(!frame.hasTarget()) continue; // Skip empty frames
 
-        Pose3d pose = frame.targetPose;
+        Pose3d pose = frame.targetPose();
 
         // Validate location and ambiguity
-        if(!isValidLocation(pose) || !isValidAmbiguity(frame.targetPoseAmbiguity, frame)) {
+        if(!isValidLocation(pose) || !isValidAmbiguity(frame.targetPoseAmbiguity(), frame)) {
           invalidPoses.add(pose);
           continue;
         }
 
         // Compute standard deviations for the measurement
-        Matrix<N3,N1> stdDevs = getStdDevs(frame.avrageDistanceToTargetsMeters, frame.numTargets, camera);
+        Matrix<N3,N1> stdDevs = getStdDevs(frame.avrageDistanceToTargetsMeters(), frame.numTargets(), camera);
 
         // Notify the consumer of a valid pose estimate
-        consumer.acceptNew(pose.toPose2d(), frame.timeStampSeconds, stdDevs);
+        consumer.acceptNew(pose.toPose2d(), frame.timeStampSeconds(), stdDevs);
 
         // Track valid poses for logging
         validPoses.add(pose);

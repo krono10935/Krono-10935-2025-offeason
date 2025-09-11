@@ -11,43 +11,36 @@ import edu.wpi.first.math.geometry.Pose3d;
 public interface VisionIO {
 
     /**
-     * Represents a single "frame" or snapshot of vision data from a camera.
-     * Contains the estimated robot pose, target ambiguity, and metadata.
-     */
-    public class VisionFrame {
-        /** True if at least one target was detected in this frame */
-        public final boolean hasTarget;
-        /** Timestamp when the frame was captured (seconds) */
-        public final double timeStampSeconds;
-        /** Latency between capture and processing (seconds) */
-        public final double latency;
-        /** Estimated 3D pose of the robot */
-        public final Pose3d targetPose;
-        /** Ambiguity/confidence of the pose estimation */
-        public final double targetPoseAmbiguity;
-        /** Average distance to all detected targets (meters) */
-        public final double avrageDistanceToTargetsMeters;
-        /** Number of fiducial targets detected in this frame */
-        public final int numTargets;
+ * Represents a single "frame" or snapshot of vision data from a camera.
+ * Contains the estimated robot pose, target ambiguity, and metadata.
+ */
+public record VisionFrame(
+    /** True if at least one target was detected in this frame */
+    boolean hasTarget,
 
-        /**
-         * Constructs a VisionFrame with the provided data.
-         */
-        public VisionFrame(boolean hasTarget, double timeStampSeconds, double latency, Pose3d targetPose,
-                double targetPoseAmbiguity, double avrageDistanceToTargetsMeters, int numTargets) {
-            this.hasTarget = hasTarget;
-            this.timeStampSeconds = timeStampSeconds;
-            this.latency = latency;
-            this.targetPose = targetPose;
-            this.targetPoseAmbiguity = targetPoseAmbiguity;
-            this.avrageDistanceToTargetsMeters = avrageDistanceToTargetsMeters;
-            this.numTargets = numTargets;
-        }
-    }
+    /** Timestamp when the frame was captured (seconds) */
+    double timeStampSeconds,
 
+    /** Latency between capture and processing (seconds) */
+    double latency,
+
+    /** Estimated 3D pose of the robot */
+    Pose3d targetPose,
+
+    /** Ambiguity/confidence of the pose estimation */
+    double targetPoseAmbiguity,
+
+    /** Average distance to all detected targets (meters) */
+    double avrageDistanceToTargetsMeters,
+
+    /** Number of fiducial targets detected in this frame */
+    int numTargets
+) {
     /** Shared "empty" frame to represent no targets or invalid data */
-    public VisionFrame EMPTY = new VisionFrame(false, 0, 0, new Pose3d(), 1, 0, 0);
-
+    public static final VisionFrame EMPTY = new VisionFrame(
+        false, 0, 0, new Pose3d(), 1, 0, 0
+    );
+}
     /**
      * Container for auto-logged vision data.
      * @see org.littletonrobotics.junction.AutoLog

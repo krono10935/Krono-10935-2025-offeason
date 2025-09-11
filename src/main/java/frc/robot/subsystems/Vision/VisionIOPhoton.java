@@ -57,7 +57,7 @@ public class VisionIOPhoton implements VisionIO {
     public VisionFrame getNewFrame(PhotonPipelineResult result){
         if(!result.hasTargets()){
             // No targets detected → return empty frame
-            return EMPTY;
+            return VisionFrame.EMPTY;
         }
 
         // Set the reference pose for the estimator to improve accuracy
@@ -68,7 +68,7 @@ public class VisionIOPhoton implements VisionIO {
 
         if(estimatedPose.isEmpty()){
             // Pose estimation failed → return empty frame
-            return EMPTY;
+            return VisionFrame.EMPTY;
         }
 
         EstimatedRobotPose pose = estimatedPose.get();
@@ -80,7 +80,7 @@ public class VisionIOPhoton implements VisionIO {
         if (!result.getTargets().isEmpty()) {
             // Compute average distance to targets safely
             avgDistance = result.getTargets().stream()
-                .mapToDouble(t -> t.getBestCameraToTarget().getTranslation().getNorm())
+                .mapToDouble(target -> target.getBestCameraToTarget().getTranslation().getNorm())
                 .average()
                 .orElse(0.0);
 
@@ -117,7 +117,7 @@ public class VisionIOPhoton implements VisionIO {
         
         if(!inputs.isConnected){
             // Camera disconnected → populate with empty frame
-            inputs.visionFrames = new VisionFrame[]{EMPTY};
+            inputs.visionFrames = new VisionFrame[]{VisionFrame.EMPTY};
             inputs.targetIDs = new int[0];
             return;
         }
@@ -127,7 +127,7 @@ public class VisionIOPhoton implements VisionIO {
 
         if (result.isEmpty()) {
             // No new results → populate with empty frame
-            inputs.visionFrames = new VisionFrame[]{EMPTY};
+            inputs.visionFrames = new VisionFrame[]{VisionFrame.EMPTY};
             inputs.targetIDs = new int[0];
             return;
         }
@@ -140,7 +140,7 @@ public class VisionIOPhoton implements VisionIO {
         // Collect all fiducial IDs from all detected targets
         inputs.targetIDs = result.stream()
             .flatMap(r -> r.getTargets().stream())
-            .mapToInt(t -> t.getFiducialId())
+            .mapToInt(target -> target.getFiducialId())
             .toArray();
     }
 
