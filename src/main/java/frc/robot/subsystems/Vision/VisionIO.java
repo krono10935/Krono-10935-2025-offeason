@@ -61,4 +61,5 @@ public record VisionFrame(
      * @param inputs The VisionInputs instance to populate
      */
     public void updateInputs(VisionInputs inputs);
+
 }

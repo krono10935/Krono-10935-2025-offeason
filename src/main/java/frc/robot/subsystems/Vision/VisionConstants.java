@@ -14,7 +14,7 @@ public class VisionConstants {
      */
     public static final double MAX_HEIGHT_DEV = 0.1;
     /**
-     * Max ambiguity for multi-tag targets (0 to 1)
+     * Max ambiguity for multi-tag targets (0,one hunderd precent sure to 1, random.next)
      */
     public static final double MAX_MULTI_AMBIGUTY = 0.3;
     /**
@@ -27,7 +27,6 @@ public class VisionConstants {
     enum CamerasConstants {
         // Define the camera constants for the front camera
         FRONT_CAMERA(
-            PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY,
             "FrontCamera",
             new Transform3d(
@@ -46,7 +45,7 @@ public class VisionConstants {
         /**
          * The main strategy for the camera
          */
-        public final PhotonPoseEstimator.PoseStrategy MAIN_STRATEGY;
+        public static final PhotonPoseEstimator.PoseStrategy MAIN_STRATEGY = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
         
        /**
         * The alternate strategy for the camera
@@ -79,11 +78,13 @@ public class VisionConstants {
                 /**
                  * The minimum standard deviation for Theta (in radians)
                  */
-                public final double MIN_THETA_STD_DEV; 
+                public final double MIN_THETA_STD_DEV;
+                
+                public final double MAX_XY_STD_DEV = 200; // Maximum XY standard deviation (in meters)
+                public final double MAX_THETA_STD_DEV = Math.toRadians(180); // Maximum Theta standard deviation (in radians)
         
                 // Constructor for the camera constants
                 CamerasConstants(
-                PhotonPoseEstimator.PoseStrategy mainStrategy,
                 PhotonPoseEstimator.PoseStrategy alternateStrategy, 
                 String cameraName, 
                 Transform3d robotToCamera,
@@ -92,7 +93,6 @@ public class VisionConstants {
                 double minXYStd,
                 double minThetaStd) {
                     
-                    this.MAIN_STRATEGY = mainStrategy;
         
                     this.ALTERNATE_STRATEGY = alternateStrategy;
         

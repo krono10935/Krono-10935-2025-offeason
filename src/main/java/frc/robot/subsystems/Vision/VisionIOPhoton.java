@@ -39,7 +39,7 @@ public class VisionIOPhoton implements VisionIO {
         // Initialize the pose estimator with main strategy and camera-to-robot transform
         this.poseEstimator = new PhotonPoseEstimator(
                 VisionConstants.FIELD_LAYOUT,
-                camerasConstants.MAIN_STRATEGY,
+                CamerasConstants.MAIN_STRATEGY,
                 camerasConstants.ROBOT_TO_CAMERA);
         // Set fallback strategy for multi-tag detection
         poseEstimator.setMultiTagFallbackStrategy(camerasConstants.ALTERNATE_STRATEGY);
@@ -74,7 +74,7 @@ public class VisionIOPhoton implements VisionIO {
         EstimatedRobotPose pose = estimatedPose.get();
 
         // Initialize default values for ambiguity and average distance
-        double ambiguity = Double.NaN;
+        double ambiguity= 0;
         double avgDistance = 0.0;
 
         if (!result.getTargets().isEmpty()) {

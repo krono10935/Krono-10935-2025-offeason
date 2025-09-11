@@ -83,7 +83,7 @@ public class Vision extends SubsystemBase {
   private final List<VisionCamera> cameras;
 
   /** Consumer that receives valid vision pose estimates */
-  private final VisionConsumer consumer;
+  private final VisionConsumer poseConsumer;
 
   /**
    * Creates a new Vision subsystem.
@@ -95,7 +95,7 @@ public class Vision extends SubsystemBase {
       this.cameras = Arrays.stream(CamerasConstants.values())
           .map(constants -> VisionCamera.fromPhoton(constants,lastPoseSupplier))
           .toList();
-      this.consumer = estimateListener;
+      this.poseConsumer = estimateListener;
   }
 
   /**
@@ -151,7 +151,7 @@ public class Vision extends SubsystemBase {
   private Matrix<N3,N1> getStdDevs(double avragedistance,int numTargets, VisionCamera camera) {
     if(numTargets <= 0) {
       // Return NaN if no targets detected to indicate unknown uncertainty
-      return VecBuilder.fill(Double.NaN, Double.NaN, Double.NaN);
+      return VecBuilder.fill(camera.constants.MAX_XY_STD_DEV, camera.constants.MAX_XY_STD_DEV, camera.constants.MAX_THETA_STD_DEV);
     }
 
     double stdDevFactor = Math.pow(avragedistance, 2)/numTargets;
@@ -184,6 +184,7 @@ public class Vision extends SubsystemBase {
       // Update inputs from camera and log connection status
       camera.updateInputs();
       SmartDashboard.putBoolean(camera.constants.CAMERA_NAME + "/connected", camera.inputs.isConnected);
+      if(!camera.inputs.isConnected) continue; // Skip disconnected cameras
 
       // Collect positions of all detected fiducials
       for(int id: camera.inputs.targetIDs) {
@@ -204,10 +205,10 @@ public class Vision extends SubsystemBase {
         }
 
         // Compute standard deviations for the measurement
-        Matrix<N3,N1> stdDevs = getStdDevs(frame.avrageDistanceToTargetsMeters(), frame.numTargets(), camera);
+        var stdDevs = getStdDevs(frame.avrageDistanceToTargetsMeters(), frame.numTargets(), camera);
 
         // Notify the consumer of a valid pose estimate
-        consumer.acceptNew(pose.toPose2d(), frame.timeStampSeconds(), stdDevs);
+        poseConsumer.acceptNew(pose.toPose2d(), frame.timeStampSeconds(), stdDevs);
 
         // Track valid poses for logging
         validPoses.add(pose);
