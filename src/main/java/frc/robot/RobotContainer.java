@@ -10,17 +10,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.swerve.Swerve;
-import frc.robot.commands.setArmPositionCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.HoldCommand;
-import frc.robot.subsystems.Arm.ArmSubsystem;
-import frc.robot.subsystems.Gripper.Gripper;
-import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
 
 public class RobotContainer {
   public static Drivetrain drivetrain;
   public static CommandXboxController driveController;
-  public static Gripper gripper;
+    
   public RobotContainer() {
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
@@ -28,9 +22,6 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
     configureBindings();
-    gripper = new Gripper();
-
-    new Trigger(()->true).onTrue(new HoldCommand(gripper, GamePiece.None));
   }
 
   private void configureBindings() {}

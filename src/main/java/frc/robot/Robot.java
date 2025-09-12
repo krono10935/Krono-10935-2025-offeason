@@ -12,6 +12,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import io.github.captainsoccer.basicmotor.motorManager.MotorManager;
@@ -22,16 +23,6 @@ public class Robot extends LoggedRobot {
     private Command driveCommand;
 
     private final RobotContainer m_robotContainer;
- 
-  if (isReal()) {
-    Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-    Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-} else {
-  Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-  Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-    
-}
-
 
     public Robot() {
         Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
