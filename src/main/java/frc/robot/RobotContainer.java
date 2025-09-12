@@ -6,8 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.setArmPositionCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.HoldCommand;
+import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Gripper.Gripper;
 import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
 
