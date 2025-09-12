@@ -8,11 +8,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Subsystems.Arm.ArmSubsystem;
 import frc.robot.commands.setArmPositionCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.HoldCommand;
+import frc.robot.subsystems.Gripper.Gripper;
+import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
 
 public class RobotContainer {
   public RobotContainer() {
     configureBindings();
-    
+    gripper = new Gripper();
+
+    new Trigger(()->true).onTrue(new HoldCommand(gripper, GamePiece.None));
     
   }
 
