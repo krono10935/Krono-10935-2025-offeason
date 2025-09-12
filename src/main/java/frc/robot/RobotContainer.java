@@ -14,12 +14,13 @@ import frc.robot.subsystems.Gripper.Gripper;
 import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
 
 public class RobotContainer {
+  Gripper gripper;
+
   public RobotContainer() {
     configureBindings();
     gripper = new Gripper();
 
     new Trigger(()->true).onTrue(new HoldCommand(gripper, GamePiece.None));
-    
   }
 
   private void configureBindings() {}
