@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Arm;
+package frc.robot.subsystems.Arm;
 
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller;
