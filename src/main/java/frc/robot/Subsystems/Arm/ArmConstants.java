@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Arm;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;
 
@@ -29,15 +30,17 @@ public class ArmConstants {
     }
 
 
-    public enum desiredPositions {
-        L1(Math.PI),
-        L2(0.5*Math.PI),
-        L3(2*Math.PI);
+    public enum ArmLevel {
+        HOME(Rotation2d.fromDegrees(0)),
+        L1(Rotation2d.fromDegrees(180)),
+        L2(Rotation2d.fromDegrees(90)),
+        L3(Rotation2d.fromDegrees(360)),
+        UNKNOWN(Rotation2d.fromDegrees(67)); //tuff
 
-        public double pos; // Angle in radians
+        public final Rotation2d angle; // Angle in radians
 
-        private desiredPositions(double pos){
-            this.pos=pos;
+        ArmLevel(Rotation2d angle){
+            this.angle=angle;
         }
     }
 }

@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Arm;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
@@ -8,7 +9,7 @@ import io.github.captainsoccer.basicmotor.rev.BasicSparkMAX;
 
 public class ArmRealMotorIO implements ArmIO{
 
-    BasicMotor motor;
+    private final BasicMotor motor;
 
     public ArmRealMotorIO() {
         motor = new BasicSparkMAX(ArmConstants.config);
@@ -22,18 +23,11 @@ public class ArmRealMotorIO implements ArmIO{
     @Override
     public void update(ArmInputs inputs) {
         inputs.atSetPoint = motor.atSetpoint();
-        inputs.currentPos= motor.getPosition();
-    }
-    @Override
-    public void setMotorPos(double pos){
-        motor.setControl(pos, ControlMode.PROFILED_POSITION);
+        inputs.currentAngle = Rotation2d.fromRotations(motor.getPosition());
     }
 
     @Override
-    public boolean atSetPoint(){
-        return motor.atSetpoint();
+    public void setMotorAngle(Rotation2d Angle) {
+        motor.setControl(Angle.getRotations(), ControlMode.POSITION);
     }
-    
-
-   
 }

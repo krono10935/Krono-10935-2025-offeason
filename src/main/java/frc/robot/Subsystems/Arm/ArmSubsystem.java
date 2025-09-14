@@ -1,19 +1,20 @@
 package frc.robot.Subsystems.Arm;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
 
 public class ArmSubsystem extends SubsystemBase {
     private final ArmIO io;
-    private final ArmInputsAutoLogged inputs  = new ArmInputsAutoLogged();
+    private final ArmInputsAutoLogged inputs = new ArmInputsAutoLogged();
+    private ArmConstants.ArmLevel targetLevel;
 
-    
+
     public ArmSubsystem() {
         io = RobotBase.isReal() ? new ArmRealMotorIO() : new ArmSimIO();
-        
+
     }
 
 
@@ -22,24 +23,29 @@ public class ArmSubsystem extends SubsystemBase {
         io.update(inputs);
         Logger.processInputs(getName(), inputs);
 
-        String currentCommandName = (getCurrentCommand() ==null) ? "Null" : getCurrentCommand().getName();
+        String currentCommandName = (getCurrentCommand() == null) ? "Null" : getCurrentCommand().getName();
         Logger.recordOutput("Arm/CurrentCommand", currentCommandName);
     }
 
-    public void setPos(double pos) {
-        io.setMotorPos(pos);
-    }
-    
-    public void setPosByLevel(ArmConstants.desiredPositions level){
-        io.setMotorPos(level.pos);
+
+    public void setAngleByLevel(ArmConstants.ArmLevel level) {
+        if(level == ArmConstants.ArmLevel.UNKNOWN)
+            return;
+        io.setMotorAngle(level.angle);
+        targetLevel = level;
+        Logger.recordOutput("Arm/Target Level", level.name());
     }
 
-    public double currentPos() {
-        return inputs.currentPos;
+    public Rotation2d currentAngle() {
+        return inputs.currentAngle;
     }
 
-    public boolean atSetPoint(){
-        return io.atSetPoint();
+    public boolean atSetPoint() {
+        return inputs.atSetPoint;
+    }
+
+    public ArmConstants.ArmLevel getTargetLevel(){
+        return targetLevel;
     }
 
 
