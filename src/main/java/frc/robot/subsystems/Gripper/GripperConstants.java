@@ -44,16 +44,10 @@ public class GripperConstants {
         positionConfig.pidConfig.kI = 0; // Integral gain
         positionConfig.pidConfig.kD = 0; // Derivative gain
 
-        positionConfig.feedForwardConfig.setpointFeedForward = 0; // Feedforward for setpoint
-        positionConfig.feedForwardConfig.frictionFeedForward = 0; // Friction feedforward
-
         SlotConfig torqueConfig = motorConfig.slot1Config;
         torqueConfig.pidConfig.kP = 0; // Proportional gain
         torqueConfig.pidConfig.kI = 0; // Integral gain
         torqueConfig.pidConfig.kD = 0; // Derivative gain
-
-        torqueConfig.feedForwardConfig.setpointFeedForward = 0; // Feedforward for setpoint
-        torqueConfig.feedForwardConfig.frictionFeedForward = 0; // Friction feedforward
 
         motorConfig.constraintsConfig.maxOutput = 0; // Maximum output in Volts
         motorConfig.constraintsConfig.minOutput = 0; // Minimum output in Volts
