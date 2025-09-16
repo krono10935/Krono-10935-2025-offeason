@@ -1,11 +1,12 @@
 package frc.robot.Subsystems.Arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
 import io.github.captainsoccer.basicmotor.rev.BasicSparkMAX;
-
+import frc.robot.Subsystems.Arm.ArmConstants;
 
 public class ArmRealMotorIO implements ArmIO{
 
@@ -13,6 +14,9 @@ public class ArmRealMotorIO implements ArmIO{
 
     public ArmRealMotorIO() {
         motor = new BasicSparkMAX(ArmConstants.config);
+        DutyCycleEncoder armDutyCycleEncoder = new DutyCycleEncoder(ArmConstants.DUTY_CYCLE_ENCODER_PORT);
+        motor.resetEncoder(armDutyCycleEncoder.get()+ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET);
+        
 
     }
 
@@ -24,6 +28,7 @@ public class ArmRealMotorIO implements ArmIO{
     public void update(ArmInputs inputs) {
         inputs.atSetPoint = motor.atSetpoint();
         inputs.currentAngle = Rotation2d.fromRotations(motor.getPosition());
+        
     }
 
     @Override

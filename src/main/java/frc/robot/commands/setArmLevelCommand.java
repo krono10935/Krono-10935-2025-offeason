@@ -4,28 +4,30 @@
 
 package frc.robot.commands;
 
+import java.util.logging.Level;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Arm.ArmSubsystem;
+import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
+import frc.robot.Subsystems.Arm.ArmConstants;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class setArmPositionCommand extends Command {
-  /** Creates a new setArmPositionCommand. */
+public class setArmLevelCommand extends Command {
+  /** Creates a new setArmLevelCommand. */
   ArmSubsystem arm;
-  double desiredPos;
-  public setArmPositionCommand(ArmSubsystem arm ,double pos) {
+  ArmLevel desiredLevel;
+  public setArmLevelCommand(ArmSubsystem arm, ArmLevel desiredLevel) {
     // Use addRequirements() here to declare subsystem dependencies.
-
     addRequirements(arm);
-    this.desiredPos=pos;
-    this.arm=arm;
+    this.arm = arm;
+    this.desiredLevel = desiredLevel;
 
-    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.setPos(desiredPos);
+    arm.setAngleByLevel(desiredLevel);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,12 +37,17 @@ public class setArmPositionCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arm.atSetPoint();
+    return false;
   }
+  
+  // set arm level
+  public void setLevel(ArmLevel desiredLevel) {
+    arm.setAngleByLevel(desiredLevel);
+  } 
 }

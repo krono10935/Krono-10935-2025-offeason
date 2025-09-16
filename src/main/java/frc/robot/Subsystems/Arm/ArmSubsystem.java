@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
 
 public class ArmSubsystem extends SubsystemBase {
     private final ArmIO io;
@@ -17,6 +18,17 @@ public class ArmSubsystem extends SubsystemBase {
 
     }
 
+    public ArmLevel getCurrentLevel(){
+        Rotation2d angle = inputs.currentAngle;
+        if (angle.getDegrees()==ArmLevel.HOME.angle.getDegrees())  return ArmLevel.HOME;
+        if (angle.getDegrees()==ArmLevel.L1.angle.getDegrees())    return ArmLevel.L1;
+        if(angle.getDegrees()==ArmLevel.L2.angle.getDegrees())     return ArmLevel.L2;
+        if (angle.getDegrees()==ArmLevel.L3.angle.getDegrees())    return ArmLevel.L3;
+        return ArmLevel.UNKNOWN;
+            
+        
+    }
+
 
     @Override
     public void periodic() {
@@ -25,6 +37,10 @@ public class ArmSubsystem extends SubsystemBase {
 
         String currentCommandName = (getCurrentCommand() == null) ? "Null" : getCurrentCommand().getName();
         Logger.recordOutput("Arm/CurrentCommand", currentCommandName);
+        
+        Logger.recordOutput("Arm/currentLevel", getCurrentLevel().name());
+        Logger.recordOutput("Arm/current angle", inputs.currentAngle.getDegrees());
+        
     }
 
 
