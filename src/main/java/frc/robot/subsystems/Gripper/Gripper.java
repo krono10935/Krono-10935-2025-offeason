@@ -64,6 +64,7 @@ public class Gripper extends SubsystemBase{
      */
     public void setGamePiece(GamePiece gamePiece){
         this.currGamePiece = gamePiece;
+        Logger.recordOutput("Gripper/Gamepiece", gamePiece.name());
     }
 
     public boolean isMotorOverheating(){
