@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain.gyro;
+package frc.robot.Subsystems.drivetrain.gyro;
 
 import java.util.function.BooleanSupplier;
 
@@ -11,7 +11,7 @@ public class GyroIONavx implements GyroIO {
     private final AHRS navx;
     private Rotation2d gyroOffset = Rotation2d.kZero;
 
-    public GyroIONavx(BooleanSupplier isRedAlliance) {
+    public GyroIONavx() {
         navx = new AHRS(NavXComType.kMXP_SPI);
     }
 

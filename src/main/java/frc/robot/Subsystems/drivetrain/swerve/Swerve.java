@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain.swerve;
+package frc.robot.Subsystems.drivetrain.swerve;
 
 
 import java.util.function.BooleanSupplier;
@@ -18,12 +18,11 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.drivetrain.swerve.SwerveInputsAutoLogged;
-import frc.robot.subsystems.drivetrain.Drivetrain;
-import frc.robot.subsystems.drivetrain.DrivetrainConstants;
-import frc.robot.subsystems.drivetrain.swerve.module.SwerveModuleBasic;
-import frc.robot.subsystems.drivetrain.swerve.module.SwerveModuleConstants;
-import frc.robot.subsystems.drivetrain.swerve.module.SwerveModuleIO;
+import frc.robot.Subsystems.drivetrain.Drivetrain;
+import frc.robot.Subsystems.drivetrain.DrivetrainConstants;
+import frc.robot.Subsystems.drivetrain.swerve.module.SwerveModuleBasic;
+import frc.robot.Subsystems.drivetrain.swerve.module.SwerveModuleConstants;
+import frc.robot.Subsystems.drivetrain.swerve.module.SwerveModuleIO;
 
 public class Swerve extends Drivetrain {
     

@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.drivetrain.Drivetrain;
-import frc.robot.subsystems.drivetrain.swerve.Swerve;
+import frc.robot.Subsystems.drivetrain.Drivetrain;
+import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 
 public class RobotContainer {
   public static Drivetrain drivetrain;
