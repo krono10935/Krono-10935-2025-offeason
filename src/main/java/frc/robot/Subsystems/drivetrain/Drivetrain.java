@@ -7,10 +7,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.drivetrain.DrivetrainInputsAutoLogged;
+//import frc.robot.subsystems.drivetrain.DrivetrainInputsAutoLogged;
 import frc.robot.subsystems.drivetrain.gyro.GyroIO;
 import frc.robot.subsystems.drivetrain.gyro.GyroIONavx;
 import frc.robot.subsystems.drivetrain.gyro.GyroIOSim;
@@ -24,6 +23,11 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 public abstract class Drivetrain extends SubsystemBase {
 
@@ -36,6 +40,8 @@ public abstract class Drivetrain extends SubsystemBase {
     private final GyroIO gyroIO;
 
     private final DrivetrainInputsAutoLogged inputs = new DrivetrainInputsAutoLogged();
+
+    private Pose2d pathPlannerTargetPose = Pose2d.kZero;
     RobotConfig config;
 
 
@@ -69,6 +75,21 @@ public abstract class Drivetrain extends SubsystemBase {
             DrivetrainConstants::shouldFlipPath,
             this // Reference to this subsystem to set requirements
     );
+
+        PathPlannerLogging.setLogActivePathCallback(
+                (poses) -> {
+                    var posesArr = poses.toArray(new Pose2d[0]);
+
+                    Logger.recordOutput("DriveTrain/PathPlanner/active path", posesArr);
+                }
+        );
+
+        PathPlannerLogging.setLogTargetPoseCallback(
+                (pose) -> {
+                    Logger.recordOutput("DriveTrain/PathPlanner/target pose", pose);
+                    this.pathPlannerTargetPose = pose;
+                }
+        );
     }
 
     /**
@@ -152,6 +173,10 @@ public abstract class Drivetrain extends SubsystemBase {
     public void reset(Pose2d newPose){
         gyroIO.reset(newPose.getRotation());
         resetPose(newPose);
+    }
+
+    public Pose2d getPathFinalPose(){
+        return pathPlannerTargetPose;
     }
 
     /**
