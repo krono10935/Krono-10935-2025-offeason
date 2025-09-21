@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain;
+package frc.robot.Subsystems.drivetrain;
 
 
 import edu.wpi.first.math.Matrix;
@@ -9,13 +9,9 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.drivetrain.DrivetrainInputsAutoLogged;
-import frc.robot.subsystems.drivetrain.gyro.GyroIO;
-import frc.robot.subsystems.drivetrain.gyro.GyroIONavx;
-import frc.robot.subsystems.drivetrain.gyro.GyroIOSim;
-
-import java.util.function.BooleanSupplier;
-
+import frc.robot.Subsystems.drivetrain.gyro.GyroIO;
+import frc.robot.Subsystems.drivetrain.gyro.GyroIONavx;
+import frc.robot.Subsystems.drivetrain.gyro.GyroIOSim;
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
@@ -32,11 +28,11 @@ public abstract class Drivetrain extends SubsystemBase {
     private final DrivetrainInputsAutoLogged inputs = new DrivetrainInputsAutoLogged();
 
 
-    protected Drivetrain(BooleanSupplier isRedAlliance) {
+    protected Drivetrain() {
         if(RobotBase.isReal())
-            gyroIO = new GyroIONavx(isRedAlliance);
+            gyroIO = new GyroIONavx();
         else
-            gyroIO = new GyroIOSim(this::getChassisSpeeds, isRedAlliance);
+            gyroIO = new GyroIOSim(this::getChassisSpeeds);
     }
 
     /**
@@ -127,5 +123,8 @@ public abstract class Drivetrain extends SubsystemBase {
      * @param newPose
      */
     protected abstract void resetPose(Pose2d newPose);
+
+
+
 }
 

@@ -4,14 +4,11 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants;
-import frc.robot.subsystems.drivetrain.Drivetrain;
-import frc.robot.subsystems.drivetrain.DrivetrainConstants;
+import frc.robot.Subsystems.drivetrain.Drivetrain;
+import frc.robot.Subsystems.drivetrain.DrivetrainConstants;
 
 public class DriveCommand extends Command {
   private final Drivetrain drivetrain;
@@ -21,8 +18,6 @@ public class DriveCommand extends Command {
   private static final double MIN_LINEAR_SPEED = DrivetrainConstants.MIN_LINEAR_SPEED;
   private static final double MAX_ANGULAR_SPEED = DrivetrainConstants.MAX_ANGULAR_SPEED;
   private static final double MIN_ANGULAR_SPEED = DrivetrainConstants.MIN_ANGULAR_SPEED;
-
-  private static final BooleanSupplier isRedAlliance = Constants.isRedSupplier;
   
 
   private static final double DEADBAND = 0.1;
@@ -39,8 +34,8 @@ public class DriveCommand extends Command {
     double speed = lerp(1 - controller.getRightTriggerAxis());
     double angularSpeed = angularLerp(1 - controller.getRightTriggerAxis());
 
-    double xSpeed = deadband(controller.getLeftX()) * speed * (isRedAlliance.getAsBoolean() ? -1 : 1);
-    double ySpeed = deadband(-controller.getLeftY()) * speed * (isRedAlliance.getAsBoolean() ? -1 : 1);
+    double xSpeed = deadband(-controller.getLeftX()) * speed;
+    double ySpeed = deadband(-controller.getLeftY()) * speed;
     double thetaSpeed = deadband(-controller.getRightX()) * angularSpeed;
 
     drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, thetaSpeed, drivetrain.getGyroAngle()));
