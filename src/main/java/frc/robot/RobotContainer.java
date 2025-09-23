@@ -4,14 +4,20 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Arm.setArmLevelCommand;
 import frc.robot.commands.Gripper.HoldCommand;
@@ -19,6 +25,7 @@ import frc.robot.commands.Gripper.IntakeCommand;
 import frc.robot.commands.Gripper.ReleaseCommand;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
+import frc.robot.subsystems.Arm.ArmConstants;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.subsystems.Gripper.Gripper;
@@ -34,6 +41,8 @@ public class RobotContainer {
   private SendableChooser<Command> autoChooser;
   public static Drivetrain drivetrain;
   public static CommandXboxController driveController;
+  private static Command intakeCoralSequence;
+  private static Command scoreCoralSequence;
 
 
 
@@ -45,15 +54,54 @@ public class RobotContainer {
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
     drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
-    
+
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     
     configureBindings();
+    configureCommands();
   }
 
   private void configureBindings() {}
+
+  private void configureCommands(){
+    // Get to feeder and align yourself to it
+    Command alignToFeeder = drivetrain.driveToPosCommand(Constants.FieldConstants.feederPose)
+    .andThen(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
+    
+
+    // Intake coral sequence
+    intakeCoralSequence = new SequentialCommandGroup(
+      // Step one: get to feeder and align
+      alignToFeeder,
+      // Step two: set arm to coral intake level
+      new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel),
+      // Step three: run intake until coral is detected
+      new IntakeCommand(gripper, GamePiece.Coral),
+      // Step four: hold the coral and retract the arm to home
+      new ParallelCommandGroup(new HoldCommand(gripper),
+      new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
+      // Only execute if no gamepiece is held (to prevent intaking multiple gamepieces)
+      ).onlyIf(() -> gripper.getGamePiece() == GamePiece.None);
+
+    Supplier<Pose2d> desiredPanel = () -> Constants.FieldConstants.reefPose; // Dummy, replace by the driverstation's selection for panel
+    // Align to the desired reef panel
+    Command alignToReefPanel = drivetrain.driveToPosCommand(desiredPanel.get())
+    .andThen(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
+    
+    Supplier<ArmLevel> scoreLevelSupplier = () -> ArmLevel.HOME; // Dummy, replace by the driverstation's selection for the scoring level
+    
+    // Score coral sequence
+    scoreCoralSequence = new SequentialCommandGroup(
+      // Step one: align to the desired reef panel
+      alignToReefPanel,
+      // Step two: set arm to the desired scoring level
+      new setArmLevelCommand(armSubsystem, scoreLevelSupplier.get()),
+      // Step three: release the coral
+      new ReleaseCommand(gripper)
+    );
+  }
 
   public Command getAutonomousCommand() {
     try {

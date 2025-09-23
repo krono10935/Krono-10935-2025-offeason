@@ -48,6 +48,7 @@ public class ArmConstants {
         L1(Rotation2d.fromDegrees(180)),
         L2(Rotation2d.fromDegrees(90)),
         L3(Rotation2d.fromDegrees(360)),
+        CoralIntakeLevel(Rotation2d.fromDegrees(169)),
         UNKNOWN(Rotation2d.fromDegrees(67)); //tuff
 
         public final Rotation2d angle; // Angle in radians
