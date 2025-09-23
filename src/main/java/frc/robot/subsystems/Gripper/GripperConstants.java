@@ -39,11 +39,12 @@ public class GripperConstants {
         motorConfig.motorConfig.gearRatio = 1; // Placeholder
         motorConfig.motorConfig.motorType = DCMotor.getNEO(1);
 
+
         SlotConfig positionConfig = motorConfig.slot0Config;
         positionConfig.pidConfig.kP = 0; // Proportional gain
         positionConfig.pidConfig.kI = 0; // Integral gain
         positionConfig.pidConfig.kD = 0; // Derivative gain
-
+        
         SlotConfig torqueConfig = motorConfig.slot1Config;
         torqueConfig.pidConfig.kP = 0; // Proportional gain
         torqueConfig.pidConfig.kI = 0; // Integral gain
@@ -51,5 +52,8 @@ public class GripperConstants {
 
         motorConfig.constraintsConfig.maxOutput = 0; // Maximum output in Volts
         motorConfig.constraintsConfig.minOutput = 0; // Minimum output in Volts
+        motorConfig.simulationConfig.kV = 0;
+        motorConfig.simulationConfig.kA = 0;
+        motorConfig.simulationConfig.momentOfInertia = 1;
     }
 }
