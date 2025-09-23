@@ -1,10 +1,8 @@
-package frc.robot.Subsystems.Arm;
+package frc.robot.subsystems.Arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
-import io.github.captainsoccer.basicmotor.controllers.Controller;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
-import io.github.captainsoccer.basicmotor.measurements.Measurements;
 import io.github.captainsoccer.basicmotor.sim.arm.BasicArmSim;
 
 public class ArmSimIO implements ArmIO{

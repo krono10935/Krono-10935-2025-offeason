@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Arm;
+package frc.robot.subsystems.Arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
@@ -23,10 +23,10 @@ public class ArmConstants {
 
 
         //dummy values for pid
-        config.pidConfig.kP = 5;
-        config.pidConfig.kI = 2;
-        config.pidConfig.kD = 1;
-        config.pidConfig.tolerance=0.01;
+        config.slot0Config.pidConfig.kP = 5;
+        config.slot0Config.pidConfig.kI = 2;
+        config.slot0Config.pidConfig.kD = 1;
+        config.slot0Config.pidConfig.tolerance=0.01;
 
 
         //dummy values for sim
