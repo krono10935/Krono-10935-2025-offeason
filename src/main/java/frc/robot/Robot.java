@@ -87,7 +87,4 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
 
   @Override
   public void testPeriodic() {}
-
-  @Override
-  public void testExit() {}
 }

@@ -8,12 +8,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.subsystems.drivetrain.DrivetrainInputsAutoLogged;
 import frc.robot.subsystems.drivetrain.gyro.GyroIO;
 import frc.robot.subsystems.drivetrain.gyro.GyroIONavx;
 import frc.robot.subsystems.drivetrain.gyro.GyroIOSim;
 
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.AutoLog;
@@ -23,6 +25,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.RobotConfig;
@@ -184,5 +190,13 @@ public abstract class Drivetrain extends SubsystemBase {
      * @param newPose
      */
     protected abstract void resetPose(Pose2d newPose);
+
+    public Command driveToPosCommand(Pose2d targetPose){
+         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(getEstimatedPosition(), targetPose);
+         PathConstraints constraints = new PathConstraints(1.0, 1.0, 1.0, 1.0); //dummy
+         PathPlannerPath path = new PathPlannerPath(waypoints, constraints,null, new GoalEndState(0.0, Rotation2d.fromDegrees(-90)));
+         return AutoBuilder.followPath(path);
+
+    }
 }
 
