@@ -3,13 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
-import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,9 +19,7 @@ import frc.robot.commands.Arm.setArmLevelCommand;
 import frc.robot.commands.Gripper.HoldCommand;
 import frc.robot.commands.Gripper.IntakeCommand;
 import frc.robot.commands.Gripper.ReleaseCommand;
-import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
-import frc.robot.subsystems.Arm.ArmConstants;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.subsystems.Gripper.Gripper;
