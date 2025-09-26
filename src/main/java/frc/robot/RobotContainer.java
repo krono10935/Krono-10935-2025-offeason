@@ -37,6 +37,7 @@ public class RobotContainer {
   public static CommandXboxController driveController;
   private static Command intakeCoralSequence;
   private static Command scoreCoralSequence;
+  private static Command intakeCoralNoPP;
 
 
 
@@ -74,10 +75,25 @@ public class RobotContainer {
       // Step three: run intake until coral is detected
       new IntakeCommand(gripper, GamePiece.Coral),
       // Step four: hold the coral and retract the arm to home
-      new ParallelCommandGroup(new HoldCommand(gripper),
+      new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
       new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
-      // Only execute if no gamepiece is held (to prevent intaking multiple gamepieces)
-      ).onlyIf(() -> gripper.getGamePiece() == GamePiece.None);
+      .until(
+        () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals( ArmLevel.CoralIntakeLevel))
+      );
+      //comment
+    
+      intakeCoralNoPP  = new SequentialCommandGroup(
+        new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel),
+      // Step three: run intake until coral is detected
+      new IntakeCommand(gripper, GamePiece.Coral),
+      // Step four: hold the coral and retract the arm to home
+      new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
+      new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
+      .until(
+        () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals( ArmLevel.CoralIntakeLevel))
+      );
+
+
 
     Supplier<Pose2d> desiredPanel = () -> Constants.FieldConstants.reefPose; // Dummy, replace by the driverstation's selection for panel
     // Align to the desired reef panel
@@ -93,7 +109,10 @@ public class RobotContainer {
       // Step two: set arm to the desired scoring level
       new setArmLevelCommand(armSubsystem, scoreLevelSupplier.get()),
       // Step three: release the coral
-      new ReleaseCommand(gripper)
+      new ReleaseCommand(gripper),
+      drivetrain.runBackCommand(),
+      new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
+      
     );
   }
 

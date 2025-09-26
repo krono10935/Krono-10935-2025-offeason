@@ -9,6 +9,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.subsystems.drivetrain.DrivetrainInputsAutoLogged;
 import frc.robot.subsystems.drivetrain.gyro.GyroIO;
@@ -197,6 +198,14 @@ public abstract class Drivetrain extends SubsystemBase {
          PathPlannerPath path = new PathPlannerPath(waypoints, constraints,null, new GoalEndState(0.0, Rotation2d.fromDegrees(-90)));
          return AutoBuilder.followPath(path);
 
+    }
+    
+    public Command runBackCommand(){
+        return new RunCommand(() -> 
+        drive(
+            new ChassisSpeeds(
+                0.1* DrivetrainConstants.MAX_LINEAR_SPEED, 0.1* DrivetrainConstants.MAX_LINEAR_SPEED, 0)) , this).
+        withTimeout(0.5);
     }
 }
 
