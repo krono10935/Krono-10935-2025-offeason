@@ -6,10 +6,17 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.Gripper.HoldCommand;
+import frc.robot.subsystems.Gripper.Gripper;
 
 public class RobotContainer {
+  Gripper gripper;
+
   public RobotContainer() {
     configureBindings();
+    gripper = new Gripper();
+
+    gripper.setDefaultCommand(new HoldCommand(gripper));
   }
 
   private void configureBindings() {}
