@@ -1,15 +1,17 @@
 package frc.robot.subsystems.Gripper;
 
 import io.github.captainsoccer.basicmotor.rev.BasicSparkMAX;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
 
 public class GripperIOReal implements GripperIO {
     private final BasicMotor motor;
+    private final DigitalInput beamBreak;
 
     public GripperIOReal() {
         motor = new BasicSparkMAX(GripperConstants.motorConfig);
+        beamBreak = new DigitalInput(GripperConstants.BEAM_BREAK_CHANNEL);
     }
 
     @Override
@@ -19,9 +21,21 @@ public class GripperIOReal implements GripperIO {
     }
 
     @Override
-    public void keepPosition() {
+    public void setPosition(double position) {
         // Use slot 0 of the PIDF config for the position mode
-        motor.setControl(motor.getPosition(), ControlMode.POSITION);
+        motor.setControl(position, ControlMode.POSITION);
+    }
+
+    @Override
+    public double getPosition() {
+        return motor.getPosition();
+    }
+
+
+
+    @Override
+    public boolean getBeamBreak() {
+        return beamBreak.get();
     }
 
     @Override
@@ -37,5 +51,6 @@ public class GripperIOReal implements GripperIO {
     @Override
     public void updateInputs(GripperInputs inputs) {
         inputs.temperature = motor.getSensorData().temperature(); // In celsius
+        inputs.seeCoral = !beamBreak.get(); // Beam break returns false when the beam is broken
     }
 }

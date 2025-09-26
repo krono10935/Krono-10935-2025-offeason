@@ -26,7 +26,7 @@ public class Gripper extends SubsystemBase{
      * Make the gripper hold in the current position
      */
     public void keepPosition(){
-        io.keepPosition();
+        io.setPosition(io.getPosition());
     }
 
     /**
@@ -55,6 +55,10 @@ public class Gripper extends SubsystemBase{
      * @return GamePiece for the piece held
      */
     public GamePiece getGamePiece(){
+        if (seeCoral()){
+            currGamePiece = GamePiece.Coral;
+        }
+
         return currGamePiece;
     }
 
@@ -69,6 +73,10 @@ public class Gripper extends SubsystemBase{
 
     public boolean isMotorOverheating(){
         return inputs.temperature >= GripperConstants.MAX_MOTOR_TEMPERATURE;
+    }
+
+    public boolean seeCoral(){
+        return !io.getBeamBreak();
     }
 
     @Override

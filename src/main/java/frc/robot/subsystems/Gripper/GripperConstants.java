@@ -30,6 +30,8 @@ public class GripperConstants {
     public static final double CORAL_EJECT_POWER = 0; // Target power in precentage for the coral's ejection
     public static final ControlMode CORAL_MODE = ControlMode.POSITION;
 
+    public static final int BEAM_BREAK_CHANNEL = 0; // Placeholder, set to the correct channel
+
     public static final BasicMotorConfig motorConfig = new BasicSparkConfig();
     static {
         motorConfig.motorConfig.name = "Gripper motor";
