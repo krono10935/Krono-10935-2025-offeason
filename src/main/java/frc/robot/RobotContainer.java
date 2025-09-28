@@ -19,6 +19,7 @@ import frc.robot.commands.Arm.setArmLevelCommand;
 import frc.robot.commands.Gripper.HoldCommand;
 import frc.robot.commands.Gripper.IntakeCommand;
 import frc.robot.commands.Gripper.ReleaseCommand;
+import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Arm.ArmConstants.ArmLevel;
@@ -42,23 +43,26 @@ public class RobotContainer {
 
 
   public RobotContainer() {
-    armSubsystem = new ArmSubsystem();
-    armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
-    gripper = new Gripper();
-    gripper.setDefaultCommand(new ReleaseCommand(gripper));
+    // armSubsystem = new ArmSubsystem();
+    // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
+    // gripper = new Gripper();
+    // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
-    drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
+    //drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
+    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     
     configureBindings();
-    configureCommands();
+    //configureCommands();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    
+  }
 
   private void configureCommands(){
     // Get to feeder and align yourself to it
