@@ -48,9 +48,9 @@ public class RobotContainer {
     // gripper = new Gripper();
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
-    // driveController = new CommandXboxController(0);
+    driveController = new CommandXboxController(0);
     //drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
-    // drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
+    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
     autoChooser = AutoBuilder.buildAutoChooser();
 

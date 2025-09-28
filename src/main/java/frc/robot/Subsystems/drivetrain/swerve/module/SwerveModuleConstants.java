@@ -15,7 +15,7 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
 
 public enum SwerveModuleConstants {
     FRONT_LEFT(
-            12, 0.18, 10,
+            12, 0.3, 10,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
@@ -27,7 +27,7 @@ public enum SwerveModuleConstants {
 
 
     FRONT_RIGHT(
-            6, -0.01, 4,
+            6, -0.04, 4,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
@@ -39,7 +39,7 @@ public enum SwerveModuleConstants {
 
 
     BACK_LEFT(
-            3, -0.38, 1,
+            3, -0.14, 1,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
@@ -51,7 +51,7 @@ public enum SwerveModuleConstants {
 
 
     BACK_RIGHT(
-            15, -0.48, 13,
+            15, -0.22, 13,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
@@ -93,7 +93,7 @@ public enum SwerveModuleConstants {
         var config = new BasicTalonFXConfig();
 
         config.motorConfig.gearRatio = STEER_GEAR_RATIO;
-        config.motorConfig.idleMode = IdleMode.COAST;
+        config.motorConfig.idleMode = IdleMode.BRAKE;
         config.motorConfig.motorType = DCMotor.getFalcon500(1);
 
         config.currentLimitConfig.statorCurrentLimit = STEER_CURRENT_LIMIT;
