@@ -2,10 +2,13 @@ package frc.robot.subsystems.Gripper;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+
 public interface GripperIO {
     @AutoLog
     class GripperInputs {
         double temperature;
+        boolean seeCoral;
     }
 
     /**
@@ -15,9 +18,14 @@ public interface GripperIO {
     public void setTorque(double torque); 
 
     /**
-     * Keep your position to hold the coral
+     * Set your position
      */
-    public void keepPosition();
+    public void setPosition(double position);
+
+    /**
+     * Get your position to hold the coral
+     */
+    public double getPosition();
 
     /**
      * Set percent output for intake or ejection of coral
@@ -29,6 +37,12 @@ public interface GripperIO {
      * Used to let go of the algae
      */
     public void stopMotor();
+
+    /**
+     * Get the beam break sensor
+     * @return
+     */
+    public boolean getBeamBreak();
 
     /**
      * Update the GripperInputsAutologged
