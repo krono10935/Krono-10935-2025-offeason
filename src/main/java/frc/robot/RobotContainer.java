@@ -21,6 +21,7 @@ import frc.robot.commands.Gripper.IntakeCommand;
 import frc.robot.commands.Gripper.ReleaseCommand;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
+import frc.robot.commands.drivetrain.ResetGyroCommand;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.subsystems.Gripper.Gripper;
@@ -39,6 +40,7 @@ public class RobotContainer {
   private static Command intakeCoralSequence;
   private static Command scoreCoralSequence;
   private static Command intakeCoralNoPP;
+  private static Command resetGyroCommand;
 
 
 
@@ -53,15 +55,16 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
     autoChooser = AutoBuilder.buildAutoChooser();
-
+    resetGyroCommand = new ResetGyroCommand(drivetrain);
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    
     
     configureBindings();
     //configureCommands();
   }
 
   private void configureBindings() {
-    
+    driveController.a().onTrue(resetGyroCommand);
   }
 
   private void configureCommands(){

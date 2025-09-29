@@ -15,48 +15,48 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
 
 public enum SwerveModuleConstants {
     FRONT_LEFT(
-            12, 0.43, 10,
+            12,  0.25, 10,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
             11,
-            new PIDGains(40, 0, 4, 0, 0, 0.001),
+            new PIDGains(100, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(0.29, 0.29)),
 
 
     FRONT_RIGHT(
-            6, 0.47, 4,
+            6, 0, 4,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
             14,
-            new PIDGains(40, 0, 4, 0, 0, 0.001),
+            new PIDGains(100, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(0.29, -0.29)),
 
 
     BACK_LEFT(
-            3, 0.47, 1,
+            3, -0.13, 1,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
             2,
-            new PIDGains(40, 0, 4, 0, 0, 0.001),
+            new PIDGains(100, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(-0.29, 0.29)),
 
 
     BACK_RIGHT(
-            15, -0.46, 13,
+            15, -0.25, 13,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
             7,
-            new PIDGains(40, 0, 4, 0, 0, 0.001),
+            new PIDGains(100, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(-0.29, -0.29));
@@ -93,7 +93,7 @@ public enum SwerveModuleConstants {
         var config = new BasicTalonFXConfig();
 
         config.motorConfig.gearRatio = STEER_GEAR_RATIO;
-        config.motorConfig.idleMode = IdleMode.BRAKE;
+        config.motorConfig.idleMode = IdleMode.COAST;
         config.motorConfig.motorType = DCMotor.getFalcon500(1);
 
         config.currentLimitConfig.statorCurrentLimit = STEER_CURRENT_LIMIT;
