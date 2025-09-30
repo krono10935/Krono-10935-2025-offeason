@@ -21,7 +21,7 @@ public class ArmCalculator {
         double distance = calcDistance(calcHeight(heightCm)); // Find the distance between the robot and the reef center
         double[] coords = calcCoordinates(distance, panel); // Find the coordinates of the robot on the field based on the distance and the panel
 
-        double xCm = coords[0]; 
+        double xCm = coords[0];
         double yCm = coords[1];
 
         return new Translation2d(xCm, yCm);

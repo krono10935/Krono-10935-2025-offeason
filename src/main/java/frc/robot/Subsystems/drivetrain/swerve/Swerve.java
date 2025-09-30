@@ -18,7 +18,6 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.drivetrain.swerve.SwerveInputsAutoLogged;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainConstants;
 import frc.robot.subsystems.drivetrain.swerve.module.SwerveModuleBasic;
@@ -71,11 +70,11 @@ public class Swerve extends Drivetrain {
     @Override
     protected void setChassisSpeed(ChassisSpeeds speeds) {
         var targetSpeeds = kinematics.toWheelSpeeds(speeds);
-        for (int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++){
             //
             targetSpeeds[i].optimize(io[i].getState().angle);
             //
-             targetSpeeds[i].cosineScale(io[i].getState().angle);
+            targetSpeeds[i].cosineScale(io[i].getState().angle);
             io[i].setTargetState(targetSpeeds[i]);
         }
         Logger.recordOutput("drivetrain/swerve/target states", targetSpeeds);
