@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Arm;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;
@@ -10,6 +11,20 @@ public class ArmConstants {
     //port for AbsEncoder which resets pos in the beginning of the game
     public static Integer DUTY_CYCLE_ENCODER_PORT =1 ;
     public static Double DUTY_CYCLE_ENCODER_ZERO_OFFSET = 0.0;
+
+    public static class ArmFeedForwardInputs{
+        Rotation2d AngularVelocity;
+        Rotation2d AngularPositon;
+        Rotation2d AngularAccelaration;
+        public ArmFeedForwardInputs(Rotation2d AngularVelocity, Rotation2d AngularPosition, Rotation2d AngularAccelaration ){
+            this.AngularVelocity = AngularVelocity;
+            this.AngularPositon = AngularPosition;
+            this.AngularAccelaration = AngularAccelaration;
+        }
+
+    }
+    
+
     static {
         //port for AbsEncoder which resets pos in the beginning of the game
     
@@ -22,11 +37,18 @@ public class ArmConstants {
         config.motorConfig.gearRatio = 46;
 
 
+
+
         //dummy values for pid
         config.slot0Config.pidConfig.kP = 5;
         config.slot0Config.pidConfig.kI = 2;
         config.slot0Config.pidConfig.kD = 1;
         config.slot0Config.pidConfig.tolerance=0.01;
+        Double Kg = 0.5;
+
+        config.slot0Config.feedForwardConfig.customFeedForward = new ArmFeedForward(Kg);
+        
+        
 
 
         //dummy values for sim
@@ -57,4 +79,6 @@ public class ArmConstants {
             this.angle=angle;
         }
     }
+
+    
 }
