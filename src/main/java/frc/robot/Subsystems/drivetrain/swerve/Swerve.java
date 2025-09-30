@@ -72,8 +72,10 @@ public class Swerve extends Drivetrain {
     protected void setChassisSpeed(ChassisSpeeds speeds) {
         var targetSpeeds = kinematics.toWheelSpeeds(speeds);
         for (int i=0;i<4;i++){
+            //
             targetSpeeds[i].optimize(io[i].getState().angle);
-            targetSpeeds[i].cosineScale(io[i].getState().angle);
+            //
+             targetSpeeds[i].cosineScale(io[i].getState().angle);
             io[i].setTargetState(targetSpeeds[i]);
         }
         Logger.recordOutput("drivetrain/swerve/target states", targetSpeeds);
@@ -96,13 +98,15 @@ public class Swerve extends Drivetrain {
             this.inputs.moduleStates[i] = io[i].getState();
             modulePositions[i] = io[i].getPosition();
         }
-
+        Logger.recordOutput("swerve real states "  , this.inputs.moduleStates);
+        
         inputs.speeds = kinematics.toChassisSpeeds(this.inputs.moduleStates);
 
         poseEstimator.update(getGyroAngle(), modulePositions);
 
 
         Logger.processInputs("drivetrain/swerve", this.inputs);
+        
     }
 
     public void setBrakeMode(boolean isBrake){

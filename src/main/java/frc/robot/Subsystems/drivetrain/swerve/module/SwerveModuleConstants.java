@@ -15,48 +15,48 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
 
 public enum SwerveModuleConstants {
     FRONT_LEFT(
-            0, 0, 0,
+            12,  0.25, 10,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
-            0,
-            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            11,
+            new PIDGains(60, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(0.29, 0.29)),
 
 
     FRONT_RIGHT(
-            0, 0, 0,
+            6, 0, 4,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
-            0,
-            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            14,
+            new PIDGains(60, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(0.29, -0.29)),
 
 
     BACK_LEFT(
-            0, 0, 0,
+            3, -0.13, 1,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
-            0,
-            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            2,
+            new PIDGains(60, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(-0.29, 0.29)),
 
 
     BACK_RIGHT(
-            0, 0, 0,
+            15, -0.25, 13,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
-            0,
-            new PIDGains(10, 0, 1, 0, 0, 0.001),
+            7,
+            new PIDGains(60, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
             1.7245, 0.15,
             new Translation2d(-0.29, -0.29));

@@ -13,11 +13,13 @@ public class GyroIONavx implements GyroIO {
 
     public GyroIONavx(BooleanSupplier isRedAlliance) {
         navx = new AHRS(NavXComType.kMXP_SPI);
+        
+        
     }
 
     @Override
     public Rotation2d update() {
-        return Rotation2d.fromDegrees(navx.getAngle() + gyroOffset.getDegrees());
+        return Rotation2d.fromDegrees(-navx.getAngle() + gyroOffset.getDegrees());
     }
 
     @Override
