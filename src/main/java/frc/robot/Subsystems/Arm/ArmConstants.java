@@ -8,6 +8,9 @@ import io.github.captainsoccer.basicmotor.BasicMotorConfig;
 =======
 import frc.robot.ArmCalculator;
 import frc.robot.Constants;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 public class ArmConstants {
