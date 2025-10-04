@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
 import java.util.function.Supplier;
 
@@ -9,7 +9,7 @@ import org.photonvision.simulation.VisionSystemSim;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.subsystems.Vision.VisionConstants.CamerasConstants;
+import frc.robot.Subsystems.Vision.VisionConstants.CamerasConstants;
 
 /**
  * A simulated version of the VisionIOPhoton class

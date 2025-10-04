@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Vision.VisionInputsAutoLogged;
-import frc.robot.subsystems.Vision.VisionConstants.CamerasConstants;
+import frc.robot.Subsystems.Vision.VisionConstants.CamerasConstants;
 
 /**
  * Vision subsystem for handling multiple cameras and robot pose estimation.
