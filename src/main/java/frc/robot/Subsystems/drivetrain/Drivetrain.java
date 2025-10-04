@@ -53,34 +53,35 @@ public abstract class Drivetrain extends SubsystemBase {
 
 
     protected Drivetrain(BooleanSupplier isRedAlliance) {
-        if(RobotBase.isReal())
+        if(RobotBase.isReal()) {
             gyroIO = new GyroIONavx(isRedAlliance);
-        else
+        }
+        else {
             gyroIO = new GyroIOSim(this::getChassisSpeeds, isRedAlliance);
-
-
-
+        }
         
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
+        
+        
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            // Handle exception as needed
+            e.printStackTrace();
+        }
 
-    // Configure AutoBuilder last
-    AutoBuilder.configure(
-            this::getEstimatedPosition, // Robot pose supplier
-            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(2, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(2, 0.0, 0.0) // Rotation PID constants
-            ),
-            config, // The robot configuration
-            DrivetrainConstants::shouldFlipPath,
-            this // Reference to this subsystem to set requirements
+        // Configure AutoBuilder last
+        AutoBuilder.configure(
+                this::getEstimatedPosition, // Robot pose supplier
+                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                (speeds, feedforwards) -> drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+                new PPController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                        new PIDConstants(2, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(2, 0.0, 0.0) // Rotation PID constants
+                ),
+                config, // The robot configuration
+                DrivetrainConstants::shouldFlipPath,
+                this // Reference to this subsystem to set requirements
     );
 
         PathPlannerLogging.setLogActivePathCallback(

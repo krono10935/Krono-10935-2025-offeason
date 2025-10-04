@@ -2,8 +2,10 @@ package frc.robot.subsystems.Arm;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;
+import frc.robot.ArmCalculator;
 
 public class ArmConstants {
     public static BasicMotorConfig config = new BasicMotorConfig();
@@ -66,17 +68,25 @@ public class ArmConstants {
 
 
     public enum ArmLevel {
-        HOME(Rotation2d.fromDegrees(0)),
-        L1(Rotation2d.fromDegrees(180)),
-        L2(Rotation2d.fromDegrees(90)),
-        L3(Rotation2d.fromDegrees(360)),
-        CoralIntakeLevel(Rotation2d.fromDegrees(169)),
-        UNKNOWN(Rotation2d.fromDegrees(67)); //tuff
+        HOME(0),
+        L1(0),
+        L2(0),
+        L3(0),
+        CoralIntakeLevel(0),
+        UNKNOWN(67); //tuff
 
-        public final Rotation2d angle; // Angle in radians
+        public final double height;
+        public final Rotation2d angle;
+        public final Translation2d[][] panels;
 
-        ArmLevel(Rotation2d angle){
-            this.angle=angle;
+        ArmLevel(double height){
+            this.height = height;
+            this.angle = ArmCalculator.armAngle(height);
+            this.panels = new Translation2d[6][2];
+
+            for(int i = 0; i < 6; i++){
+                this.panels[i] = ArmCalculator.coordinateTranslation2d(height, i);
+            }
         }
     }
 
