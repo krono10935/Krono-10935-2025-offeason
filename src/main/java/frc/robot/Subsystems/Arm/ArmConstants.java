@@ -77,12 +77,12 @@ public class ArmConstants {
 
         public final double height;
         public final Rotation2d angle;
-        public final Translation2d[] panels;
+        public final Translation2d[][] panels;
 
         ArmLevel(double height){
             this.height = height;
             this.angle = ArmCalculator.armAngle(height);
-            this.panels = new Translation2d[6];
+            this.panels = new Translation2d[6][2];
 
             for(int i = 0; i < 6; i++){
                 this.panels[i] = ArmCalculator.coordinateTranslation2d(height, i);
