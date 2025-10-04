@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.concurrent.TransferQueue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class ArmCalculator {
@@ -23,9 +24,9 @@ public class ArmCalculator {
      */
     public static Translation2d[] coordinateTranslation2d(double heightCm, int panel) {
         double distance = calcDistance(calcHeight(heightCm)); // Find the distance between the robot and the reef center
-        Translation2d coords = calcCoordinates(distance, panel); // Find the coordinates of the robot on the field based on the distance and the panel
+        Translation2d midCoords = calcCoordinates(distance, panel); // Find the coordinates of the robot on the field based on the distance and the panel
 
-        return calcCoordinatesFromMid(coords, panel); // Return the coordinates of the robot on the field
+        return calcCoordinatesFromMid(midCoords, panel); // Return the coordinates of the robot on the field
     }
 
     public static Rotation2d armAngle(double heightCm){
@@ -54,20 +55,20 @@ public class ArmCalculator {
         double dx = (distance + DISTANCE_FROM_CENTER_TO_WALL_REEF) * Math.cos(angle);
         double dy = (distance + DISTANCE_FROM_CENTER_TO_WALL_REEF) * Math.sin(angle);
 
-        return new Translation2d(REEF_CENTER.getX() - dx, REEF_CENTER.getY() + dy);
+        return new Translation2d(REEF_CENTER.getX() - dx - ARM_TO_ROBOT.getX(), REEF_CENTER.getY() + dy - ARM_TO_ROBOT.getY());
     }
 
     private static Translation2d[] calcCoordinatesFromMid(Translation2d midTranslation, int panel) {
         // Panel 0 is the panel in front of the driver station, panels increment clockwise
         double angle = deg2Rad(90 + panel * 60.0);
-        double dx1 = midTranslation.getX() - TUBE_OFFSET * Math.cos(angle);
-        double dy1 = midTranslation.getY() + TUBE_OFFSET * Math.sin(angle);
+        double x1 = midTranslation.getX() - TUBE_OFFSET * Math.cos(angle);
+        double y1 = midTranslation.getY() + TUBE_OFFSET * Math.sin(angle);
 
-        double dx2 = midTranslation.getX() + TUBE_OFFSET * Math.cos(angle);
-        double dy2 = midTranslation.getY() - TUBE_OFFSET * Math.sin(angle);
+        double x2 = midTranslation.getX() + TUBE_OFFSET * Math.cos(angle);
+        double y2 = midTranslation.getY() - TUBE_OFFSET * Math.sin(angle);
 
-        Translation2d coords1 = new Translation2d(dx1, dy1);
-        Translation2d coords2 = new Translation2d(dx2, dy2);
+        Translation2d coords1 = new Translation2d(x1, y1);
+        Translation2d coords2 = new Translation2d(x2, y2);
 
         return new Translation2d[] {coords1, coords2};
     }
