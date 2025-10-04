@@ -4,6 +4,11 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;
+<<<<<<< Updated upstream
+=======
+import frc.robot.ArmCalculator;
+import frc.robot.Constants;
+>>>>>>> Stashed changes
 
 public class ArmConstants {
     public static BasicMotorConfig config = new BasicMotorConfig();
@@ -66,12 +71,21 @@ public class ArmConstants {
 
 
     public enum ArmLevel {
+<<<<<<< Updated upstream
         HOME(Rotation2d.fromDegrees(0)),
         L1(Rotation2d.fromDegrees(180)),
         L2(Rotation2d.fromDegrees(90)),
         L3(Rotation2d.fromDegrees(360)),
         CoralIntakeLevel(Rotation2d.fromDegrees(169)),
         UNKNOWN(Rotation2d.fromDegrees(67)); //tuff
+=======
+        HOME(0),
+        L1(46.99 * Constants.INCH_TO_CM),
+        L2(38.95 * Constants.INCH_TO_CM),
+        L3(31.12 *  Constants.INCH_TO_CM),
+        CoralIntakeLevel(0),
+        UNKNOWN(67); //tuff
+>>>>>>> Stashed changes
 
         public final Rotation2d angle; // Angle in radians
 
