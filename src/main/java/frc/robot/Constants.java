@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 
 public class Constants {
     public static final BooleanSupplier isRedSupplier = () -> true;
+    public static final double INCH_TO_CM = 2.54;
 
     public static final double INCH_TO_CM = 2.54;
     
