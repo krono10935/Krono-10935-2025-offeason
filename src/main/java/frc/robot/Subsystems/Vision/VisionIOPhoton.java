@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
 import static edu.wpi.first.units.Units.Seconds;
 
@@ -12,7 +12,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotController;
-import frc.robot.subsystems.Vision.VisionConstants.CamerasConstants;
+import frc.robot.Subsystems.Vision.VisionConstants.CamerasConstants;
 
 /**
  * Implementation of VisionIO using PhotonVision cameras.
