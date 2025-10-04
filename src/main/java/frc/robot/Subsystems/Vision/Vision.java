@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Vision.VisionInputsAutoLogged;
@@ -67,7 +68,9 @@ public class Vision extends SubsystemBase {
      * @param lastPoseSupplier Supplier for the last estimated robot pose
      */
     public static VisionCamera fromPhoton(CamerasConstants constants, Supplier<Pose2d> lastPoseSupplier) {
-      return new VisionCamera(new VisionIOPhoton(constants, lastPoseSupplier), constants.CAMERA_NAME, constants);
+      return new VisionCamera(RobotBase.isReal() ? new VisionIOPhoton(constants, lastPoseSupplier) : 
+        new VisionIOPhotonSim(constants, lastPoseSupplier), 
+        constants.CAMERA_NAME, constants);
     }
 
     /**
@@ -93,7 +96,7 @@ public class Vision extends SubsystemBase {
    */
   public Vision(VisionConsumer estimateListener, Supplier<Pose2d> lastPoseSupplier) {
       this.cameras = Arrays.stream(CamerasConstants.values())
-          .map(constants -> VisionCamera.fromPhoton(constants,lastPoseSupplier))
+          .map(constants -> VisionCamera.fromPhoton(constants, lastPoseSupplier))
           .toList();
       this.poseConsumer = estimateListener;
   }

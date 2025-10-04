@@ -21,6 +21,7 @@ import frc.robot.Subsystems.Arm.ArmSubsystem;
 import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.Subsystems.Gripper.Gripper;
 import frc.robot.Subsystems.Gripper.GripperConstants.GamePiece;
+import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.drivetrain.Drivetrain;
 import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 import frc.robot.commands.Arm.setArmLevelCommand;
@@ -37,12 +38,14 @@ public class RobotContainer {
   private SendableChooser<Command> autoChooser;
   public static Drivetrain drivetrain;
   public static CommandXboxController driveController;
+  private static Vision vision;
   private static Command intakeCoralSequence;
   private static Command scoreCoralSequence;
   private static Command intakeCoralNoPP;
   private static Command resetGyroCommand;
 
   public RobotContainer() {
+   
     // armSubsystem = new ArmSubsystem();
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
@@ -50,6 +53,7 @@ public class RobotContainer {
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
+    vision = new Vision(drivetrain::addVisionMeasurement, drivetrain::getEstimatedPosition);
     // drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new
     // PIDGains(), new PIDGains()));
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
