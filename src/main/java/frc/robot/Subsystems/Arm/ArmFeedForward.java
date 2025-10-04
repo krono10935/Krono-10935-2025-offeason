@@ -1,6 +1,7 @@
-package frc.robot.subsystems.Arm;
+package frc.robot.Subsystems.Arm;
 import java.util.function.Function;
-import frc.robot.subsystems.Arm.ArmConstants.ArmFeedForwardInputs;
+
+import frc.robot.Subsystems.Arm.ArmConstants.ArmFeedForwardInputs;
 public class ArmFeedForward implements Function<Double,Double> {
     double Kg;
     

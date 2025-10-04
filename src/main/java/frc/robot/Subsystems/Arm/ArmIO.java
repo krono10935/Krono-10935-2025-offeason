@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Arm;
+package frc.robot.Subsystems.Arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.AutoLog;

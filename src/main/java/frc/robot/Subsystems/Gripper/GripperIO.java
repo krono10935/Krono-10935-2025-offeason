@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Gripper;
+package frc.robot.Subsystems.Gripper;
 
 import org.littletonrobotics.junction.AutoLog;
 
@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public interface GripperIO {
     @AutoLog
     class GripperInputs {
-        double temperature;
-        boolean seeCoral;
+        public double temperature;
+        public boolean seeCoral;
     }
 
     /**

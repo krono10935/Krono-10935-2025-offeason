@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain.gyro;
+package frc.robot.Subsystems.drivetrain.gyro;
 
 import java.util.function.BooleanSupplier;
 

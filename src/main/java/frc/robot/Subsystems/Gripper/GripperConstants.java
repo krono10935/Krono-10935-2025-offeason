@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Gripper;
+package frc.robot.Subsystems.Gripper;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;

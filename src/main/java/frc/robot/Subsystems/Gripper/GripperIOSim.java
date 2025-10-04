@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Gripper;
+package frc.robot.Subsystems.Gripper;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import io.github.captainsoccer.basicmotor.BasicMotor;

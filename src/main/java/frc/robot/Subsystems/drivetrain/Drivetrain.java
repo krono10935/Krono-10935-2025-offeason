@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain;
+package frc.robot.Subsystems.drivetrain;
 
 
 import edu.wpi.first.math.Matrix;
@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PPController;
-//import frc.robot.subsystems.drivetrain.DrivetrainInputsAutoLogged;
-import frc.robot.subsystems.drivetrain.gyro.GyroIO;
-import frc.robot.subsystems.drivetrain.gyro.GyroIONavx;
-import frc.robot.subsystems.drivetrain.gyro.GyroIOSim;
+import frc.robot.Subsystems.drivetrain.gyro.GyroIO;
+import frc.robot.Subsystems.drivetrain.gyro.GyroIONavx;
+import frc.robot.Subsystems.drivetrain.gyro.GyroIOSim;
+import frc.robot.Subsystems.drivetrain.DrivetrainInputsAutoLogged;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;

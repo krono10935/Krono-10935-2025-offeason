@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Gripper;
+package frc.robot.Subsystems.Gripper;
 
 import io.github.captainsoccer.basicmotor.rev.BasicSparkMAX;
 import edu.wpi.first.wpilibj.DigitalInput;

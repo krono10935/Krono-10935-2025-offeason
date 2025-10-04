@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Arm;
+package frc.robot.Subsystems.Arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.Logger;
@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Arm.ArmConstants.ArmLevel;
+import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
+import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
 
 public class ArmSubsystem extends SubsystemBase {
     private final ArmIO io;

@@ -7,9 +7,9 @@ package frc.robot.commands.Arm;
 import java.util.logging.Level;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Arm.ArmConstants;
-import frc.robot.subsystems.Arm.ArmSubsystem;
-import frc.robot.subsystems.Arm.ArmConstants.ArmLevel;
+import frc.robot.Subsystems.Arm.ArmConstants;
+import frc.robot.Subsystems.Arm.ArmSubsystem;
+import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class setArmLevelCommand extends Command {

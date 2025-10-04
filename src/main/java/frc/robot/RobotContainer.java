@@ -17,18 +17,18 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Subsystems.Arm.ArmSubsystem;
+import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
+import frc.robot.Subsystems.Gripper.Gripper;
+import frc.robot.Subsystems.Gripper.GripperConstants.GamePiece;
+import frc.robot.Subsystems.drivetrain.Drivetrain;
+import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 import frc.robot.commands.Arm.setArmLevelCommand;
 import frc.robot.commands.Gripper.HoldCommand;
 import frc.robot.commands.Gripper.IntakeCommand;
 import frc.robot.commands.Gripper.ReleaseCommand;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
-import frc.robot.subsystems.Arm.ArmSubsystem;
-import frc.robot.subsystems.Arm.ArmConstants.ArmLevel;
-import frc.robot.subsystems.Gripper.Gripper;
-import frc.robot.subsystems.Gripper.GripperConstants.GamePiece;
-import frc.robot.subsystems.drivetrain.Drivetrain;
-import frc.robot.subsystems.drivetrain.swerve.Swerve;
 import io.github.captainsoccer.basicmotor.gains.PIDGains;
 
 public class RobotContainer {
