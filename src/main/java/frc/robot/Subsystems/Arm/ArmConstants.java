@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.BasicMotorConfig;
 import frc.robot.ArmCalculator;
+import frc.robot.Constants;
 
 public class ArmConstants {
     public static BasicMotorConfig config = new BasicMotorConfig();
@@ -69,9 +70,9 @@ public class ArmConstants {
 
     public enum ArmLevel {
         HOME(0),
-        L1(0),
-        L2(0),
-        L3(0),
+        L1(46.99 * Constants.INCH_TO_CM),
+        L2(38.95 * Constants.INCH_TO_CM),
+        L3(31.12 *  Constants.INCH_TO_CM),
         CoralIntakeLevel(0),
         UNKNOWN(67); //tuff
 

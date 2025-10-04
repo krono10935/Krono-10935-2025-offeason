@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class ArmCalculator {
 
     private static final double ARM_LENGTH = 61; // cm
-    private static final double INCH_TO_CM = 2.54;
+    private static final double INCH_TO_CM = Constants.INCH_TO_CM;
     private static final Translation2d REEF_CENTER = new Translation2d(176 * INCH_TO_CM, 180 * INCH_TO_CM);
     private static final Translation2d ARM_TO_ROBOT = new Translation2d(186, 10); // cm
     private static final double DISTANCE_FROM_CENTER_TO_WALL_REEF = 32.75 * INCH_TO_CM;
