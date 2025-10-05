@@ -58,6 +58,7 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
         // Called when the command is initially scheduled.
         @Override
         public void initialize() {
+            System.out.println("Starting FinishPathCommand to " + drivetrain.getPathFinalPose());
             xController.reset();
             yController.reset();
             thetaController.reset();
@@ -88,6 +89,7 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
         // Called once the command ends or is interrupted.
         @Override
         public void end(boolean interrupted) {
+            System.out.println("Ending FinishPathCommand");
             drivetrain.drive(new ChassisSpeeds());
         }
 

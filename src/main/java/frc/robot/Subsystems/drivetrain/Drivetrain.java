@@ -196,9 +196,10 @@ public abstract class Drivetrain extends SubsystemBase {
     protected abstract void resetPose(Pose2d newPose);
 
     public Command driveToPosCommand(Pose2d targetPose){
+        System.out.println(targetPose);
          List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(getEstimatedPosition(), targetPose);
          PathConstraints constraints = new PathConstraints(1.0, 1.0, 1.0, 1.0); //dummy
-         PathPlannerPath path = new PathPlannerPath(waypoints, constraints,null, new GoalEndState(0.0, Rotation2d.fromDegrees(-90)));
+         PathPlannerPath path = new PathPlannerPath(waypoints, constraints,null, new GoalEndState(0.0, targetPose.getRotation()));
          return AutoBuilder.followPath(path);
 
     }

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Subsystems.Arm.ArmConstants;
 import frc.robot.Subsystems.Arm.ArmSubsystem;
 import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.Subsystems.Gripper.Gripper;
@@ -46,10 +47,10 @@ public class RobotContainer {
 
   public RobotContainer() {
    
-    // armSubsystem = new ArmSubsystem();
+    //armSubsystem = new ArmSubsystem();
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
-    // gripper = new Gripper();
+    //gripper = new Gripper();
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
@@ -64,12 +65,14 @@ public class RobotContainer {
         drivetrain.getEstimatedPosition().getTranslation(), new Rotation2d())));
     //SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    //configureBindings();
-    // configureCommands();
+    configureCommands();
+    configureBindings();
   }
 
   private void configureBindings() {
    driveController.a().onTrue(resetGyroCommand);
+    // driveController.b().onTrue(scoreCoralSequence);
+  
   }
 
   private void configureCommands() {
@@ -102,7 +105,7 @@ public class RobotContainer {
             .until(
                 () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel)));
 
-    Supplier<Pose2d> desiredPanel = () -> Constants.FieldConstants.reefPose; // Dummy, replace by the driverstation's
+    Supplier<Pose2d> desiredPanel = () -> ArmConstants.ArmLevel.L1.panels[0][0]; // Dummy, replace by the driverstation's
                                                                              // selection for panel
     // Align to the desired reef panel
     Command alignToReefPanel = drivetrain.driveToPosCommand(desiredPanel.get())
@@ -113,6 +116,7 @@ public class RobotContainer {
 
     // Score coral sequence
     scoreCoralSequence = new SequentialCommandGroup(
+        new InstantCommand(() -> System.out.println("Scoring to " + scoreLevelSupplier.get().name())),
         // Step one: align to the desired reef panel
         alignToReefPanel,
         // Step two: set arm to the desired scoring level

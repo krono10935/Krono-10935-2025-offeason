@@ -31,8 +31,6 @@ public class GripperIOReal implements GripperIO {
         return motor.getPosition();
     }
 
-
-
     @Override
     public boolean getBeamBreak() {
         return beamBreak.get();

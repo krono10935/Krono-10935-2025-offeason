@@ -75,7 +75,6 @@ public class VisionIOPhotonSim extends VisionIOPhoton {
 
         // Call the parent class to handle the rest of the data update
         super.updateInputs(inputs);
-        System.out.println(lastPoseSupplier.get().toString());
     }
 
     /**

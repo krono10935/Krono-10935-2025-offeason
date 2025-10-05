@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Arm;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import io.github.captainsoccer.basicmotor.BasicMotor;
@@ -70,22 +71,23 @@ public class ArmConstants {
 
     public enum ArmLevel {
         HOME(0),
-        L1(46.99 * Constants.INCH_TO_CM),
-        L2(38.95 * Constants.INCH_TO_CM),
-        L3(31.12 *  Constants.INCH_TO_CM),
+        L1(17.88 * Constants.INCH_TO_CM),
+        L2(31.12 * Constants.INCH_TO_CM),
+        L3(38.95 *  Constants.INCH_TO_CM),
         CoralIntakeLevel(0),
         UNKNOWN(67); //tuff
 
         public final double height;
         public final Rotation2d angle;
-        public final Translation2d[][] panels;
+        public final Pose2d[][] panels;
 
         ArmLevel(double height){
             this.height = height;
             this.angle = ArmCalculator.armAngle(height);
-            this.panels = new Translation2d[6][2];
+            this.panels = new Pose2d[6][2];
 
             for(int i = 0; i < 6; i++){
+                System.out.println(this.name());
                 this.panels[i] = ArmCalculator.coordinateTranslation2d(height, i);
             }
         }
