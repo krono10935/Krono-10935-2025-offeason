@@ -43,7 +43,7 @@ public class ArmConstants {
         config.motorConfig.name = "Arm Motor";
         config.motorConfig.id = 20;
         config.motorConfig.inverted = false;
-        config.motorConfig.idleMode = BasicMotor.IdleMode.BRAKE;
+        config.motorConfig.idleMode = BasicMotor.IdleMode.COAST;
         config.motorConfig.gearRatio = 45;
         config.motorConfig.unitConversion=1;
         config.motorConfig.motorType= DCMotor.getNEO(1);
