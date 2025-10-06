@@ -74,7 +74,9 @@ public class setArmLevelCommand extends Command {
   public boolean isFinished() {
     //System.out.println(arm.getCurrentAngle().getDegrees());
     if (falling) return arm.getCurrentAngle().getRotations() <= desiredLevel.angle.getRotations();
-    return arm.isAtSetPoint();
+    return arm.isAtSetPoint() && 
+    Math.abs(arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations()) <=0.01
+    ;
   }
   
   // set arm level

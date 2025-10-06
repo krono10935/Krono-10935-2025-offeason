@@ -57,10 +57,10 @@ public class ArmConstants {
 
 
         //dummy values for pid
-        config.slot0Config.pidConfig.kP = 30;
+        config.slot0Config.pidConfig.kP = 60;
         config.slot0Config.pidConfig.kI = 0;
         config.slot0Config.pidConfig.kD = 1;
-        config.slot0Config.pidConfig.tolerance=0.002;
+        config.slot0Config.pidConfig.tolerance=0.01;
         config.slot0Config.pidConfig.iZone=0.05;
         config.slot0Config.pidConfig.iMaxAccum=0.35;
         Double Kg = 0.84;

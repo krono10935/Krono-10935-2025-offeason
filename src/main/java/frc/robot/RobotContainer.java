@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,7 +30,9 @@ import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 import frc.robot.commands.Arm.setArmLevelCommand;
 import frc.robot.commands.Gripper.HoldCommand;
 import frc.robot.commands.Gripper.IntakeCommand;
+import frc.robot.commands.Gripper.IntakeCommandNoBeamBreak;
 import frc.robot.commands.Gripper.ReleaseCommand;
+import frc.robot.commands.Gripper.ReleaseCommandNoBeamBreak;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
 import io.github.captainsoccer.basicmotor.gains.PIDGains;
@@ -40,11 +43,13 @@ public class RobotContainer {
   private SendableChooser<Command> autoChooser;
   public static Drivetrain drivetrain;
   public static CommandXboxController driveController;
+  public static CommandXboxController operatorController;
   private static Vision vision;
   private static Command intakeCoralSequence;
   private static Command scoreCoralSequence;
   private static Command intakeCoralNoPP;
   private static Command resetGyroCommand;
+  
 
   public RobotContainer() {
    
@@ -53,11 +58,13 @@ public class RobotContainer {
     armSubsystem = new ArmSubsystem();
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
-    //gripper = new Gripper();
+    gripper = new Gripper();
     System.out.println("gripper good");
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
+    operatorController = new CommandXboxController(1);
+    
     //vision = new Vision(drivetrain::addVisionMeasurement, drivetrain::getEstimatedPosition);
     // drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new
     // PIDGains(), new PIDGains()));
@@ -76,12 +83,22 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-   //driveController.a().onTrue(resetGyroCommand);
+   driveController.a().onTrue(resetGyroCommand);
     
     //driveController.b().onTrue(scoreCoralSequence);
-    driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
-    driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
-    driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    operatorController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
+    operatorController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
+    operatorController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    operatorController.rightBumper().whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
+    operatorController.rightBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
+
+    operatorController.leftBumper().whileTrue(new ReleaseCommandNoBeamBreak(gripper));
+    operatorController.leftBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
+
+
+
+
+
     // driveController.b().toggleOnTrue(new HoldCommand(gripper));
     // driveController.x().onTrue(new IntakeCommand(gripper, GamePiece.Coral).withTimeout(0.2));
     // driveController.y().whileTrue(new ReleaseCommand(gripper));
@@ -147,13 +164,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    try {
-      // PathPlannerPath path = PathPlannerPath.fromPathFile("a");
-      return AutoBuilder.buildAuto("abc");
-
-    } catch (Exception e) {
-      DriverStation.reportError("Big oops:" + e.getMessage(), e.getStackTrace());
-      return Commands.none();
-    }
+    return new SequentialCommandGroup(
+      new RunCommand( () ->drivetrain.drive(new ChassisSpeeds(0.5, 0, 0)),drivetrain).withTimeout(3),
+     new InstantCommand(()-> drivetrain.drive(new ChassisSpeeds())),
+      new setArmLevelCommand(armSubsystem, ArmLevel.L2),
+      new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral).withTimeout(3),
+      new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
+       );
   }
 }
