@@ -50,10 +50,10 @@ public class RobotContainer {
    
    
 
-    // armSubsystem = new ArmSubsystem();
+    armSubsystem = new ArmSubsystem();
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
-    gripper = new Gripper();
+    //gripper = new Gripper();
     System.out.println("gripper good");
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
@@ -79,14 +79,14 @@ public class RobotContainer {
    //driveController.a().onTrue(resetGyroCommand);
     
     //driveController.b().onTrue(scoreCoralSequence);
-    // driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
-    // driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
-    // driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
-    driveController.b().toggleOnTrue(new HoldCommand(gripper));
-    driveController.x().onTrue(new IntakeCommand(gripper, GamePiece.Coral).withTimeout(0.2));
-    driveController.y().whileTrue(new ReleaseCommand(gripper));
+    driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
+    driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
+    driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    // driveController.b().toggleOnTrue(new HoldCommand(gripper));
+    // driveController.x().onTrue(new IntakeCommand(gripper, GamePiece.Coral).withTimeout(0.2));
+    // driveController.y().whileTrue(new ReleaseCommand(gripper));
 
-    driveController.leftBumper().onTrue(new RunCommand(()->gripper.setPercentOutput(-5),gripper));
+    // driveController.leftBumper().onTrue(new RunCommand(()->gripper.setPercentOutput(-5),gripper));
   
   }
 

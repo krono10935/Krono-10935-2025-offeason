@@ -22,7 +22,7 @@ public class setArmLevelCommand extends Command {
   ArmLevel desiredLevel;
   boolean falling;
   boolean isCoast;
-  double fallingError = 0.15;
+  double fallingError = 0.05;
   
   public setArmLevelCommand(ArmSubsystem arm, ArmLevel desiredLevel) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -45,10 +45,7 @@ public class setArmLevelCommand extends Command {
     else {
       arm.stop();
       falling= true;
-      if(desiredLevel == ArmLevel.HOME){
-        arm.setCoast();
-        isCoast=true;
-      }
+      
     }
   
   }
@@ -58,12 +55,7 @@ public class setArmLevelCommand extends Command {
   public void execute() {
     //arm.setArmVelocity(-0.001);
 
-    if(desiredLevel == ArmLevel.HOME 
-    && arm.getCurrentAngle().getRotations() - arm.getTargetLevel().angle.getRotations()<=fallingError && 
-    isCoast){
-      arm.setBrake();
-      isCoast=false;
-    }
+    
     Logger.recordOutput("setArmLevelCommand/target angle", desiredLevel.angle.getDegrees());
     Logger.recordOutput("setArmLevelCommand/error", arm.getTargetLevel().angle.getDegrees()-  arm.getCurrentAngle().getDegrees());
   }
