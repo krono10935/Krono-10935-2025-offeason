@@ -82,7 +82,7 @@ public class SwerveModuleBasic extends SwerveModuleIO {
         var config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        config.MagnetSensor.MagnetOffset = constants.ZERO_OFFSET;
+        config.MagnetSensor.MagnetOffset = -constants.ZERO_OFFSET;
 
         encoder.getConfigurator().apply(config);
         return encoder;
