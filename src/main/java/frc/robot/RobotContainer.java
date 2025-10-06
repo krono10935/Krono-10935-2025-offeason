@@ -47,14 +47,16 @@ public class RobotContainer {
 
   public RobotContainer() {
    
-    //armSubsystem = new ArmSubsystem();
+   
+
+    armSubsystem = new ArmSubsystem();
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
     //gripper = new Gripper();
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
-    vision = new Vision(drivetrain::addVisionMeasurement, drivetrain::getEstimatedPosition);
+    //vision = new Vision(drivetrain::addVisionMeasurement, drivetrain::getEstimatedPosition);
     // drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new
     // PIDGains(), new PIDGains()));
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
@@ -64,14 +66,20 @@ public class RobotContainer {
     resetGyroCommand = new InstantCommand(() -> drivetrain.reset(new Pose2d(
         drivetrain.getEstimatedPosition().getTranslation(), new Rotation2d())));
     //SmartDashboard.putData("Auto Chooser", autoChooser);
+    
 
-    configureCommands();
+
+    //configureCommands();
     configureBindings();
   }
 
   private void configureBindings() {
    driveController.a().onTrue(resetGyroCommand);
-    // driveController.b().onTrue(scoreCoralSequence);
+    
+    //driveController.b().onTrue(scoreCoralSequence);
+    driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
+    driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
+    driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
   
   }
 
@@ -118,12 +126,14 @@ public class RobotContainer {
     scoreCoralSequence = new SequentialCommandGroup(
         new InstantCommand(() -> System.out.println("Scoring to " + scoreLevelSupplier.get().name())),
         // Step one: align to the desired reef panel
-        alignToReefPanel,
+        alignToReefPanel, 
+       
         // Step two: set arm to the desired scoring level
-        new setArmLevelCommand(armSubsystem, scoreLevelSupplier.get()),
+        new setArmLevelCommand(armSubsystem, ArmLevel.L1),
+        new InstantCommand(() -> System.out.println("nigger")),
         // Step three: release the coral
         new ReleaseCommand(gripper),
-        drivetrain.runBackCommand(),
+        
         new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
 
     );

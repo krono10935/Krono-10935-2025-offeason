@@ -24,4 +24,8 @@ public interface ArmIO {
      * set the armMotor position (absolute)
      */
     void setMotorAngle(Rotation2d Angle);
+
+    double getMotorPos();
+
+    void stop();
 }

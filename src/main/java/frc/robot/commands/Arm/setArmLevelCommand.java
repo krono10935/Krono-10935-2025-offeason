@@ -4,7 +4,11 @@
 
 package frc.robot.commands.Arm;
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import java.util.logging.Level;
+
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Arm.ArmConstants;
@@ -16,34 +20,50 @@ public class setArmLevelCommand extends Command {
   /** Creates a new setArmLevelCommand. */
   ArmSubsystem arm;
   ArmLevel desiredLevel;
+  boolean falling;
   public setArmLevelCommand(ArmSubsystem arm, ArmLevel desiredLevel) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
+    System.out.println(desiredLevel == null);
     this.arm = arm;
     this.desiredLevel = desiredLevel;
+    falling = false;
 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.setAngleByLevel(desiredLevel);
+    if(desiredLevel.angle.getRotations()> arm.getCurrentAngle().getRotations()){
+      arm.setAngleByLevel(desiredLevel);
+      falling = false;
+    }
+    else {
+      arm.stop();
+      falling= true;
+    }
+  
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    Logger.recordOutput("setArmLevelCommand/target angle", desiredLevel.angle.getDegrees());
+    Logger.recordOutput("setArmLevelCommand/error", arm.getTargetLevel().angle.getDegrees()-  arm.getCurrentAngle().getDegrees());
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    if (falling) arm.setAngleByLevel(desiredLevel);    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    //System.out.println(arm.getCurrentAngle().getDegrees());
+    if (falling) return arm.getCurrentAngle().getRotations() <= desiredLevel.angle.getRotations();
+    return arm.isAtSetPoint();
   }
   
   // set arm level

@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Arm;
 import java.util.function.Function;
 
+import edu.wpi.first.math.util.Units;
 import frc.robot.Subsystems.Arm.ArmConstants.ArmFeedForwardInputs;
 public class ArmFeedForward implements Function<Double,Double> {
     double Kg;
@@ -11,8 +12,8 @@ public class ArmFeedForward implements Function<Double,Double> {
 
     @Override
     public Double apply(Double Position) {
-        
-        return Double.valueOf(  Kg * Math.cos((Double)Position));
+        System.out.println("pos" + Position);
+        return Double.valueOf(  Kg * Math.sin(Units.rotationsToRadians(Position)));
         
     }
 

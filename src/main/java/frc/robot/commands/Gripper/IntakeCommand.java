@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Gripper;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Gripper.Gripper;
 import frc.robot.Subsystems.Gripper.GripperConstants;
@@ -40,7 +41,7 @@ public class IntakeCommand extends Command {
 
   @Override
   public boolean isFinished(){
-    return true;
+    return RobotBase.isReal()? gripper.seeCoral(): true;
   }
 
   @Override
