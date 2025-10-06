@@ -73,7 +73,7 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    if (!DriverStation.isFMSAttached())m_robotContainer.armSubsystem.resetEncoderZero();
+    //if (!DriverStation.isFMSAttached())m_robotContainer.armSubsystem.resetEncoderZero();
   }
 
   @Override

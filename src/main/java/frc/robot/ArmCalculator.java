@@ -76,15 +76,15 @@ public class ArmCalculator {
         // Panel 0 is the panel in front of the driver station, panels increment clockwise
         double angle = deg2Rad(90 + panel * 60.0);
 
-        double poseAngle = -60 * panel;
+        Rotation2d poseAngle = Rotation2d.fromDegrees(60 * panel);
         double x1 = midTranslation.getX() - TUBE_OFFSET * Math.cos(angle);
         double y1 = midTranslation.getY() + TUBE_OFFSET * Math.sin(angle);
 
         double x2 = midTranslation.getX() + TUBE_OFFSET * Math.cos(angle);
         double y2 = midTranslation.getY() - TUBE_OFFSET * Math.sin(angle);
 
-        Pose2d pose1 = new Pose2d(x1 / 100, y1 / 100, Rotation2d.fromDegrees(poseAngle));
-        Pose2d pose2 = new Pose2d(x2 / 100, y2 / 100, Rotation2d.fromDegrees(poseAngle));
+        Pose2d pose1 = new Pose2d(x1 / 100, y1 / 100, poseAngle); // left
+        Pose2d pose2 = new Pose2d(x2 / 100, y2 / 100, poseAngle); // right
 
         // System.out.println("angle" + pose1.getRotation().getDegrees());
 

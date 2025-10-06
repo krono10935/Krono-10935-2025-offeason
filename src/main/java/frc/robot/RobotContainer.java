@@ -32,6 +32,7 @@ import frc.robot.commands.Gripper.ReleaseCommand;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
 import io.github.captainsoccer.basicmotor.gains.PIDGains;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
   public static ArmSubsystem armSubsystem;
@@ -49,11 +50,13 @@ public class RobotContainer {
    
    
 
-    armSubsystem = new ArmSubsystem();
+    //armSubsystem = new ArmSubsystem();
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
-    //gripper = new Gripper();
-    // gripper.setDefaultCommand(new ReleaseCommand(gripper));
+    gripper = new Gripper();
+    System.out.println("gripper good");
+
+    //gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
     //vision = new Vision(drivetrain::addVisionMeasurement, drivetrain::getEstimatedPosition);
@@ -75,13 +78,28 @@ public class RobotContainer {
 
   private void configureBindings() {
    driveController.a().onTrue(resetGyroCommand);
-    
+
+   driveController.rightBumper().onTrue(new SequentialCommandGroup(
+           new InstantCommand(() -> {Pose2d target = drivetrain.getClosestReefBySide();
+               drivetrain.setPathFinalPose(drivetrain.addArmMeasurement(target, ArmLevel.L1.height,true));}), // right side
+           new FinishPathCommand(drivetrain, new PIDGains(5, 0, 1), new PIDGains(1, 0, 0))
+           )
+    );
+
+    driveController.leftBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> {
+              Pose2d target = drivetrain.getClosestReefBySide();
+              drivetrain.setPathFinalPose(drivetrain.addArmMeasurement(target, ArmLevel.L1.height,false)); // left side
+            }),
+                    new FinishPathCommand(drivetrain, new PIDGains(5, 0, 0), new PIDGains(1, 0, 0))
+            )
+    );
+
     //driveController.b().onTrue(scoreCoralSequence);
     // driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
     // driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
     // driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
     driveController.b().toggleOnTrue(new HoldCommand(gripper));
-    driveController.x().whileTrue(new IntakeCommand(gripper, GamePiece.Coral));
+    driveController.x().onTrue(new IntakeCommand(gripper, GamePiece.Coral));
     driveController.y().whileTrue(new ReleaseCommand(gripper));
   
   }
@@ -133,7 +151,7 @@ public class RobotContainer {
        
         // Step two: set arm to the desired scoring level
         new setArmLevelCommand(armSubsystem, ArmLevel.L1),
-        new InstantCommand(() -> System.out.println("nigger")),
+        new InstantCommand(() -> System.out.println("arm moving")),
         // Step three: release the coral
         new ReleaseCommand(gripper),
         

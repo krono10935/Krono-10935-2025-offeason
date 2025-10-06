@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ArmCalculator;
 import frc.robot.PPController;
 import frc.robot.Subsystems.drivetrain.gyro.GyroIO;
 import frc.robot.Subsystems.drivetrain.gyro.GyroIONavx;
@@ -185,6 +186,10 @@ public abstract class Drivetrain extends SubsystemBase {
         resetPose(newPose);
     }
 
+    public void setPathFinalPose(Pose2d pose) {
+        this.pathPlannerTargetPose = pose;
+    }
+
     public Pose2d getPathFinalPose(){
         return pathPlannerTargetPose;
     }
@@ -211,5 +216,39 @@ public abstract class Drivetrain extends SubsystemBase {
                 0.1* DrivetrainConstants.MAX_LINEAR_SPEED, 0.1* DrivetrainConstants.MAX_LINEAR_SPEED, 0)) , this).
         withTimeout(0.5);
     }
+
+
+    /**
+     * Returns the closest scoring position on the reef based on the robot's current position.
+     * @return The closest reef position.
+     */
+    public Pose2d getClosestReefBySide() {
+        Pose2d robotPose = getEstimatedPosition();
+        Pose2d closest = DrivetrainConstants.mid_reef[0];
+        double minDistance = robotPose.getTranslation().getDistance(closest.getTranslation());
+
+        for (Pose2d position : DrivetrainConstants.mid_reef) {
+            double dist = robotPose.getTranslation().getDistance(position.getTranslation());
+            if (dist < minDistance) {
+                minDistance = dist;
+                closest = position;
+            }
+        }
+        return closest;
+    }
+
+    /**
+     * Calculates the exact position to reach so the arm can place the game piece on the selected reef panel.
+     *
+     * @param mid_reef  The midpoint of the reef panel, where the rotation angle indicates the panel index (every 60 degrees).
+     * @param heightCm  The target height in centimeters that the arm needs to reach.
+     * @param isRight   Boolean flag to select the right (true) or left (false) side pose of the panel.
+     * @return          The adjusted position accounting for arm length and height, for placing the game piece.
+     */
+    public Pose2d addArmMeasurement(Pose2d mid_reef, double heightCm, boolean isRight){
+        int panel = ((int) mid_reef.getRotation().getDegrees() / 60) % 6;
+        return ArmCalculator.coordinateTranslation2d(heightCm, panel)[isRight ? 1 : 0];
+    }
+
 }
 

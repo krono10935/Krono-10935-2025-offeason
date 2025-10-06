@@ -37,6 +37,7 @@ public class DriveCommand extends Command {
 
   @Override
   public void execute() {
+
     double speed = lerp(1 - controller.getRightTriggerAxis());
     double angularSpeed = angularLerp(1 - controller.getRightTriggerAxis());
 
@@ -45,9 +46,8 @@ public class DriveCommand extends Command {
     double thetaSpeed = deadband(-controller.getRightX()) * angularSpeed * 0.3;
 
     drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, thetaSpeed,
-     isRedAlliance.getAsBoolean() ?
-      drivetrain.getGyroAngle():
-       Rotation2d.fromDegrees(drivetrain.getGyroAngle().getDegrees() + 180)));
+            isRedAlliance.getAsBoolean() ? drivetrain.getGyroAngle():
+                    Rotation2d.fromDegrees(drivetrain.getGyroAngle().getDegrees() + 180)));
   }
 
   /**
