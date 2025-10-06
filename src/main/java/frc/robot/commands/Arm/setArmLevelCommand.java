@@ -21,6 +21,9 @@ public class setArmLevelCommand extends Command {
   ArmSubsystem arm;
   ArmLevel desiredLevel;
   boolean falling;
+  boolean isCoast;
+  double fallingError = 0.15;
+  
   public setArmLevelCommand(ArmSubsystem arm, ArmLevel desiredLevel) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
@@ -28,6 +31,7 @@ public class setArmLevelCommand extends Command {
     this.arm = arm;
     this.desiredLevel = desiredLevel;
     falling = false;
+    isCoast=false;
 
   }
 
@@ -41,6 +45,10 @@ public class setArmLevelCommand extends Command {
     else {
       arm.stop();
       falling= true;
+      if(desiredLevel == ArmLevel.HOME){
+        arm.setCoast();
+        isCoast=true;
+      }
     }
   
   }
@@ -48,7 +56,14 @@ public class setArmLevelCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    //arm.setArmVelocity(-0.001);
+
+    if(desiredLevel == ArmLevel.HOME 
+    && arm.getCurrentAngle().getRotations() - arm.getTargetLevel().angle.getRotations()<=fallingError && 
+    isCoast){
+      arm.setBrake();
+      isCoast=false;
+    }
     Logger.recordOutput("setArmLevelCommand/target angle", desiredLevel.angle.getDegrees());
     Logger.recordOutput("setArmLevelCommand/error", arm.getTargetLevel().angle.getDegrees()-  arm.getCurrentAngle().getDegrees());
   }

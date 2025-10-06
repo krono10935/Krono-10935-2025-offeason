@@ -2,6 +2,8 @@ package frc.robot.Subsystems.Arm;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import io.github.captainsoccer.basicmotor.BasicMotor;
@@ -60,6 +62,18 @@ public class ArmRealMotorIO implements ArmIO{
     public void setArmMotorDutyCycle(double duty){
         motor.setControl(duty, ControlMode.VELOCITY);
     }
+
+    @Override
+    public void setBrake(){
+        motor.setIdleMode(io.github.captainsoccer.basicmotor.BasicMotor.IdleMode.BRAKE);
+    }
+
+    @Override
+    public void setCoast(){
+        motor.setIdleMode(io.github.captainsoccer.basicmotor.BasicMotor.IdleMode.COAST);
+    }
+    
+
 
     
 }

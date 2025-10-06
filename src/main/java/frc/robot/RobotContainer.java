@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Subsystems.Arm.ArmConstants;
@@ -49,10 +50,11 @@ public class RobotContainer {
    
    
 
-    armSubsystem = new ArmSubsystem();
+    // armSubsystem = new ArmSubsystem();
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
-    //gripper = new Gripper();
+    gripper = new Gripper();
+    System.out.println("gripper good");
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
@@ -74,15 +76,17 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-   driveController.a().onTrue(resetGyroCommand);
+   //driveController.a().onTrue(resetGyroCommand);
     
     //driveController.b().onTrue(scoreCoralSequence);
     // driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
     // driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
     // driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
     driveController.b().toggleOnTrue(new HoldCommand(gripper));
-    driveController.x().whileTrue(new IntakeCommand(gripper, GamePiece.Coral));
+    driveController.x().onTrue(new IntakeCommand(gripper, GamePiece.Coral).withTimeout(0.2));
     driveController.y().whileTrue(new ReleaseCommand(gripper));
+
+    driveController.leftBumper().onTrue(new RunCommand(()->gripper.setPercentOutput(-5),gripper));
   
   }
 

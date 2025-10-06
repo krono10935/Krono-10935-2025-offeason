@@ -52,5 +52,15 @@ public class ArmSimIO implements ArmIO{
         motor.setControl(duty, ControlMode.VELOCITY);
     }
 
+    @Override
+    public void setBrake(){
+        motor.setIdleMode(io.github.captainsoccer.basicmotor.BasicMotor.IdleMode.BRAKE);
+    }
+
+    @Override
+    public void setCoast(){
+        motor.setIdleMode(io.github.captainsoccer.basicmotor.BasicMotor.IdleMode.COAST);
+
    
+}
 }

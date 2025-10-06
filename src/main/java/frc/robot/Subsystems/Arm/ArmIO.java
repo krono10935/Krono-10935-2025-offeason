@@ -1,6 +1,8 @@
 package frc.robot.Subsystems.Arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import io.github.captainsoccer.basicmotor.BasicMotor.IdleMode;
+
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ArmIO {
@@ -31,4 +33,9 @@ public interface ArmIO {
     Rotation2d getVelocity();
 
     void setArmMotorDutyCycle(double duty);
+
+    void setCoast();
+    void setBrake();
+
+    
 }

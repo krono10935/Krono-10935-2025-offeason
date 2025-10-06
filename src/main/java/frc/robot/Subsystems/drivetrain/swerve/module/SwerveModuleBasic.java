@@ -94,6 +94,6 @@ public class SwerveModuleBasic extends SwerveModuleIO {
         if (canCoder != null)
             Logger.recordOutput("basic module/" + constants.name() + "/magnet health",
                     canCoder.getMagnetHealth().toString());
-            // Logger.recordOutput("basic module/" + constants.name() + "/cancoder pos", canCoder.getAbsolutePosition().getValueAsDouble()  );
+            Logger.recordOutput("basic module/" + constants.name() + "/cancoder pos", canCoder.getAbsolutePosition().getValueAsDouble()  );
     }
 }

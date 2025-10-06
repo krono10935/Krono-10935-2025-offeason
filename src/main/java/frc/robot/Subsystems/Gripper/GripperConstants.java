@@ -22,12 +22,12 @@ public class GripperConstants {
 
     public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_RADIUS * 2 * Math.PI;
 
-    public static final double MAX_VELOCITY = 0; // Maximum velocity in rotations per second
+    public static final double MAX_VELOCITY = 1; // Maximum velocity in rotations per second
 
     public static final double ALGAE_TORQUE = 0; // Target torque for the gripper holding algae
     public static final ControlMode ALGAE_MODE = ControlMode.TORQUE; 
-    public static final double CORAL_INTAKE_POWER = 0; // Target power in percentage for the coral's intake
-    public static final double CORAL_EJECT_POWER = 0; // Target power in precentage for the coral's ejection
+    public static final double CORAL_INTAKE_POWER = -0.5; // Target power in percentage for the coral's intake
+    public static final double CORAL_EJECT_POWER = 5; // Target power in precentage for the coral's ejection
     public static final ControlMode CORAL_MODE = ControlMode.POSITION;
 
     public static final int BEAM_BREAK_CHANNEL = 0; // Placeholder, set to the correct channel
@@ -35,15 +35,16 @@ public class GripperConstants {
     public static final BasicMotorConfig motorConfig = new BasicSparkConfig();
     static {
         motorConfig.motorConfig.name = "Gripper motor";
-        motorConfig.motorConfig.id = 1; // PLaceholder
+        motorConfig.motorConfig.id = 19; // PLaceholder
         motorConfig.motorConfig.inverted = false; // Set to true if the motor is inverted
         motorConfig.motorConfig.idleMode = IdleMode.COAST; // Brake may cause issues with the coral moving around while being held
         motorConfig.motorConfig.gearRatio = 1; // Placeholder
+        motorConfig.motorConfig.unitConversion=1;
         motorConfig.motorConfig.motorType = DCMotor.getNEO(1);
 
 
         SlotConfig positionConfig = motorConfig.slot0Config;
-        positionConfig.pidConfig.kP = 0; // Proportional gain
+        positionConfig.pidConfig.kP = 10; // Proportional gain
         positionConfig.pidConfig.kI = 0; // Integral gain
         positionConfig.pidConfig.kD = 0; // Derivative gain
         
@@ -52,8 +53,8 @@ public class GripperConstants {
         torqueConfig.pidConfig.kI = 0; // Integral gain
         torqueConfig.pidConfig.kD = 0; // Derivative gain
 
-        motorConfig.constraintsConfig.maxOutput = 0; // Maximum output in Volts
-        motorConfig.constraintsConfig.minOutput = 0; // Minimum output in Volts
+        // motorConfig.constraintsConfig.maxOutput = 6; // Maximum output in Volts
+        // motorConfig.constraintsConfig.minOutput = -12; // Minimum output in Volts
         motorConfig.simulationConfig.kV = 0;
         motorConfig.simulationConfig.kA = 0;
         motorConfig.simulationConfig.momentOfInertia = 1;

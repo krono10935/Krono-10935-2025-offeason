@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
+import io.github.captainsoccer.basicmotor.BasicMotor.IdleMode;
+import frc.robot.Utils;
 import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -23,20 +25,24 @@ public class ArmSubsystem extends SubsystemBase {
 
     public ArmLevel getCurrentLevel(){
         Rotation2d angle = inputs.currentAngle;
-        if (angle.getDegrees() == ArmLevel.HOME.angle.getDegrees()){
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.HOME.angle.getDegrees(), ArmLevel.epsilon)){
             return ArmLevel.HOME;
         }
 
-        if (angle.getDegrees() == ArmLevel.L1.angle.getDegrees()){
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.L1.angle.getDegrees(), ArmLevel.epsilon)){
             return ArmLevel.L1;
         }
         
-        if(angle.getDegrees() == ArmLevel.L2.angle.getDegrees()){
+        if(Utils.isEqual(angle.getDegrees(), ArmLevel.L2.angle.getDegrees(), ArmLevel.epsilon)){
             return ArmLevel.L2;
         }
 
-        if (angle.getDegrees() == ArmLevel.L3.angle.getDegrees()){
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.L3.angle.getDegrees(), ArmLevel.epsilon)){
             return ArmLevel.L3;
+        }
+
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.CoralIntakeLevel.angle.getDegrees(), ArmLevel.epsilon)){
+            return ArmLevel.CoralIntakeLevel;
         }
         
         return ArmLevel.UNKNOWN;   
@@ -93,6 +99,13 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setArmVelocity(double duty){
         io.setArmMotorDutyCycle(duty);
+    }
+
+    public void setBrake(){
+        io.setBrake();
+    }
+    public void setCoast(){
+        io.setCoast();
     }
 
 

@@ -22,6 +22,7 @@ public class ArmConstants {
     public static Integer DUTY_CYCLE_ENCODER_PORT =0 ;
     public static Double DUTY_CYCLE_ENCODER_ZERO_OFFSET = 0.0;
 
+
     public static class ArmFeedForwardInputs{
         Rotation2d AngularVelocity;
         Rotation2d AngularPositon;
@@ -111,6 +112,7 @@ public class ArmConstants {
         public final double height;
         public final Rotation2d angle;
         public final Pose2d[][] panels;
+        public static final double epsilon = 3; // Degre
 
         ArmLevel(double height){
             this.height = height;
