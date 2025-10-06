@@ -7,11 +7,11 @@ import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
 
 public class GripperIOReal implements GripperIO {
     private final BasicMotor motor;
-    private final DigitalInput beamBreak;
+    // private final DigitalInput beamBreak;
 
     public GripperIOReal() {
         motor = new BasicSparkMAX(GripperConstants.motorConfig);
-        beamBreak = new DigitalInput(GripperConstants.BEAM_BREAK_CHANNEL);
+        // beamBreak = new DigitalInput(GripperConstants.BEAM_BREAK_CHANNEL);
     }
 
     @Override
@@ -31,10 +31,10 @@ public class GripperIOReal implements GripperIO {
         return motor.getPosition();
     }
 
-    @Override
-    public boolean getBeamBreak() {
-        return beamBreak.get();
-    }
+    // @Override
+    // public boolean getBeamBreak() {
+        // return beamBreak.get();
+    // }
 
     @Override
     public void setPercentOutput(double percent) {
@@ -49,6 +49,6 @@ public class GripperIOReal implements GripperIO {
     @Override
     public void updateInputs(GripperInputs inputs) {
         inputs.temperature = motor.getSensorData().temperature(); // In celsius
-        inputs.seeCoral = !beamBreak.get(); // Beam break returns false when the beam is broken
+        // inputs.seeCoral = !beamBreak.get(); // Beam break returns false when the beam is broken
     }
 }

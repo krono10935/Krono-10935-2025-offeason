@@ -43,7 +43,7 @@ public class ArmConstants {
         config.motorConfig.name = "Arm Motor";
         config.motorConfig.id = 20;
         config.motorConfig.inverted = false;
-        config.motorConfig.idleMode = BasicMotor.IdleMode.COAST;
+        config.motorConfig.idleMode = BasicMotor.IdleMode.BRAKE;
         config.motorConfig.gearRatio = 45;
         config.motorConfig.unitConversion=1;
         config.motorConfig.motorType= DCMotor.getNEO(1);
@@ -56,20 +56,20 @@ public class ArmConstants {
 
 
         //dummy values for pid
-        config.slot0Config.pidConfig.kP = 14;
-        config.slot0Config.pidConfig.kI = 0.07;
-        config.slot0Config.pidConfig.kD = 0;
-        config.slot0Config.pidConfig.tolerance=0.001;
+        config.slot0Config.pidConfig.kP = 30;
+        config.slot0Config.pidConfig.kI = 0;
+        config.slot0Config.pidConfig.kD = 1;
+        config.slot0Config.pidConfig.tolerance=0.002;
         config.slot0Config.pidConfig.iZone=0.05;
-        config.slot0Config.pidConfig.iMaxAccum=0.25;
+        config.slot0Config.pidConfig.iMaxAccum=0.35;
         Double Kg = 0.84;
         config.constraintsConfig.constraintType = ConstraintType.LIMITED;
         config.constraintsConfig.minValue = 0 + ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET;
         config.constraintsConfig.maxValue = 0.4 + ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET;
-        config.slot0Config.profileConfig.maximumMeasurementVelocity= 0.5;
-        config.slot0Config.profileConfig.maximumMeasurementAcceleration = 0.35;
-        config.constraintsConfig.rampRate = 0.05;
-        config.constraintsConfig.maxOutput = 6;
+        config.slot0Config.profileConfig.maximumMeasurementVelocity= 0.7;
+        config.slot0Config.profileConfig.maximumMeasurementAcceleration = 0.6;
+       // config.constraintsConfig.rampRate = 0.05;
+        //config.constraintsConfig.maxOutput = 6;
         config.constraintsConfig.minOutput=-6;
 
         // config.slot0Config.feedForwardConfig.customFeedForward = new ArmFeedForward(0.84);

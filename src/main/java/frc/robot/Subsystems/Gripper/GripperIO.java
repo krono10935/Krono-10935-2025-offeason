@@ -42,7 +42,7 @@ public interface GripperIO {
      * Get the beam break sensor
      * @return
      */
-    public boolean getBeamBreak();
+    // public boolean getBeamBreak();
 
     /**
      * Update the GripperInputsAutologged

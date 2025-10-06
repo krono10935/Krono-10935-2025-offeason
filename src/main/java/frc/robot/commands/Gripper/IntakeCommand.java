@@ -41,7 +41,7 @@ public class IntakeCommand extends Command {
 
   @Override
   public boolean isFinished(){
-    return RobotBase.isReal()? gripper.seeCoral(): true;
+    return true;
   }
 
   @Override

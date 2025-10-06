@@ -28,4 +28,7 @@ public interface ArmIO {
     double getMotorPos();
 
     void stop();
+    Rotation2d getVelocity();
+
+    void setArmMotorDutyCycle(double duty);
 }

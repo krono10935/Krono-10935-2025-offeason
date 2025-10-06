@@ -77,9 +77,12 @@ public class RobotContainer {
    driveController.a().onTrue(resetGyroCommand);
     
     //driveController.b().onTrue(scoreCoralSequence);
-    driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
-    driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
-    driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    // driveController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
+    // driveController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
+    // driveController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    driveController.b().toggleOnTrue(new HoldCommand(gripper));
+    driveController.x().whileTrue(new IntakeCommand(gripper, GamePiece.Coral));
+    driveController.y().whileTrue(new ReleaseCommand(gripper));
   
   }
 

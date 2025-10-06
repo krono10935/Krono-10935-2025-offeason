@@ -87,6 +87,13 @@ public class ArmSubsystem extends SubsystemBase {
     public void stop(){
         io.stop();
     }
+    public Rotation2d getVelocityAngular(){
+        return io.getVelocity();
+    }
+
+    public void setArmVelocity(double duty){
+        io.setArmMotorDutyCycle(duty);
+    }
 
 
 }

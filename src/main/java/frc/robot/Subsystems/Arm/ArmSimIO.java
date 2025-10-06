@@ -42,5 +42,15 @@ public class ArmSimIO implements ArmIO{
         motor.stop();
     }
 
+    @Override
+    public Rotation2d getVelocity(){
+        return Rotation2d.fromRotations(motor.getVelocity());
+    }
+
+    @Override
+    public void setArmMotorDutyCycle(double duty ) {
+        motor.setControl(duty, ControlMode.VELOCITY);
+    }
+
    
 }

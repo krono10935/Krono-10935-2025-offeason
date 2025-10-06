@@ -51,4 +51,15 @@ public class ArmRealMotorIO implements ArmIO{
     public void stop(){
         motor.stop();
     }
+    @Override
+    public Rotation2d getVelocity(){
+        return Rotation2d.fromRotations(motor.getVelocity());
+    }
+
+    @Override
+    public void setArmMotorDutyCycle(double duty){
+        motor.setControl(duty, ControlMode.VELOCITY);
+    }
+
+    
 }

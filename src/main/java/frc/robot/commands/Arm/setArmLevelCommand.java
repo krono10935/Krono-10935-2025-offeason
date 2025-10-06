@@ -48,6 +48,7 @@ public class setArmLevelCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     Logger.recordOutput("setArmLevelCommand/target angle", desiredLevel.angle.getDegrees());
     Logger.recordOutput("setArmLevelCommand/error", arm.getTargetLevel().angle.getDegrees()-  arm.getCurrentAngle().getDegrees());
   }
@@ -55,7 +56,10 @@ public class setArmLevelCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (falling) arm.setAngleByLevel(desiredLevel);    
+    if (falling & Math.abs(
+      arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations())
+       <= ArmConstants.config.slot0Config.pidConfig.tolerance)
+       arm.setAngleByLevel(desiredLevel);    
   }
 
   // Returns true when the command should end.
