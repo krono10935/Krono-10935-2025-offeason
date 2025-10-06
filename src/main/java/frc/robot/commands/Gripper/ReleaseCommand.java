@@ -41,6 +41,6 @@ public class ReleaseCommand extends Command {
 
   @Override
   public boolean isFinished(){
-    return true;
+    return !gripper.seeCoral();
   }
 }
