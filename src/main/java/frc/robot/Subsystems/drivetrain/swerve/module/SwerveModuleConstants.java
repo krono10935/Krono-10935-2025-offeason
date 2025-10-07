@@ -22,7 +22,7 @@ public enum SwerveModuleConstants {
             11,
             new PIDGains(150, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
-            1.7245, 0.15,
+            0,0,
             new Translation2d(0.29, 0.29)),
 
 
@@ -34,7 +34,7 @@ public enum SwerveModuleConstants {
             14,
             new PIDGains(150, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
-            1.7245, 0.15,
+            0,0,
             new Translation2d(0.29, -0.29)),
 
 
@@ -46,7 +46,7 @@ public enum SwerveModuleConstants {
             2,
             new PIDGains(150, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
-            1.7245, 0.15,
+            0,0,
             new Translation2d(-0.29, 0.29)),
 
 
@@ -58,7 +58,7 @@ public enum SwerveModuleConstants {
             7,
             new PIDGains(150, 0, 0, 0, 0, 0.001),
             new FeedForwardsGains(0),
-            1.7245, 0.15,
+            0,0,
             new Translation2d(-0.29, -0.29));
 
 

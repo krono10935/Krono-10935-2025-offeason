@@ -1,6 +1,9 @@
 package frc.robot.Subsystems.Gripper;
 
 import io.github.captainsoccer.basicmotor.rev.BasicSparkMAX;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
@@ -50,5 +53,6 @@ public class GripperIOReal implements GripperIO {
     public void updateInputs(GripperInputs inputs) {
         inputs.temperature = motor.getSensorData().temperature(); // In celsius
         inputs.seeCoral = !beamBreak.get(); // Beam break returns false when the beam is broken
+        Logger.recordOutput("Gripper/BeamBreak", inputs.seeCoral);
     }
 }

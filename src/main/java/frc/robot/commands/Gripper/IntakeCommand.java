@@ -42,6 +42,7 @@ public class IntakeCommand extends Command {
 
   @Override
   public boolean isFinished(){
+    System.out.println(gripper.seeCoral());
     return gripper.seeCoral();
   }
 

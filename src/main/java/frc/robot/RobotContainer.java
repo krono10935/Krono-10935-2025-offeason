@@ -169,10 +169,14 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(
-      new RunCommand( () ->drivetrain.drive(new ChassisSpeeds(0.5, 0, 0)),drivetrain).withTimeout(3),
+      new RunCommand( () ->drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0.5, 0, 0,
+      Constants.isRedSupplier.getAsBoolean() ?
+       drivetrain.getGyroAngle() :
+        Rotation2d.fromDegrees(drivetrain.getGyroAngle().getDegrees() + 180))),
+        drivetrain).withTimeout(3),
      new InstantCommand(()-> drivetrain.drive(new ChassisSpeeds())),
       new setArmLevelCommand(armSubsystem, ArmLevel.L2),
-      new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral).withTimeout(3),
+      new ReleaseCommand(gripper),
       new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
        );
   }

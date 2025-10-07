@@ -57,7 +57,7 @@ public class ArmConstants {
 
 
         //dummy values for pid
-        config.slot0Config.pidConfig.kP = 60;
+        config.slot0Config.pidConfig.kP = 30;
         config.slot0Config.pidConfig.kI = 0;
         config.slot0Config.pidConfig.kD = 1;
         config.slot0Config.pidConfig.tolerance=0.01;
@@ -97,9 +97,9 @@ public class ArmConstants {
 
     public enum ArmLevel {
         HOME(0.05),
-        L1(0.2),
-        L2(0.25),
-        L3(0.35),
+        L1(0.20),
+        L2(0.29),
+        L3(0.39),
         UNKNOWN (0.144),
         CoralIntakeLevel(0.2)
         ;

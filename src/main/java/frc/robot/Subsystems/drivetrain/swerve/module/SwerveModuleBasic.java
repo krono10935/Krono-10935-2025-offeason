@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.drivetrain.swerve.module;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import io.github.captainsoccer.basicmotor.ctre.talonfx.BasicTalonFX;
 import io.github.captainsoccer.basicmotor.sim.motor.BasicMotorSim;
