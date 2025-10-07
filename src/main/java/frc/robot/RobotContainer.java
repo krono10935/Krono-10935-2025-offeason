@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Arm.ArmConstants;
 import frc.robot.Subsystems.Arm.ArmSubsystem;
 import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
@@ -29,7 +31,6 @@ import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.drivetrain.Drivetrain;
 import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 import frc.robot.commands.Arm.setArmLevelCommand;
-import frc.robot.commands.Gripper.HoldCommand;
 import frc.robot.commands.Gripper.IntakeCommand;
 import frc.robot.commands.Gripper.IntakeCommandNoBeamBreak;
 import frc.robot.commands.Gripper.ReleaseCommand;
@@ -50,6 +51,9 @@ public class RobotContainer {
   private static Command scoreCoralSequence;
   private static Command intakeCoralNoPP;
   private static Command resetGyroCommand;
+  private static boolean hasBeamBreak = true;
+  private static BooleanSupplier hasBeamBreakSupplier = () -> hasBeamBreak;
+
   
 
   public RobotContainer() {
@@ -87,23 +91,36 @@ public class RobotContainer {
    driveController.a().onTrue(resetGyroCommand);
     
     //driveController.b().onTrue(scoreCoralSequence);
+
+    new Trigger(hasBeamBreakSupplier)
+        .and(operatorController.rightBumper())
+        .onTrue(new IntakeCommand(gripper, GamePiece.Coral));
+
+    new Trigger(hasBeamBreakSupplier).negate()
+        .and(operatorController.rightBumper())
+        .onTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
+    
+    new Trigger(hasBeamBreakSupplier)
+        .and(operatorController.leftBumper())
+        .onTrue(new ReleaseCommand(gripper));
+
+    new Trigger(hasBeamBreakSupplier).negate()
+        .and(operatorController.leftBumper())
+        .onTrue(new ReleaseCommandNoBeamBreak(gripper));
+
     operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
     operatorController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
     operatorController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
     operatorController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
+
     operatorController.rightTrigger(0.2).onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel));
+    operatorController.leftTrigger(0.2).onTrue(new InstantCommand(() -> hasBeamBreak = !hasBeamBreak));
+    
     // operatorController.rightBumper().whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
     // operatorController.rightBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
 
     // operatorController.leftBumper().whileTrue(new ReleaseCommandNoBeamBreak(gripper));
     // operatorController.leftBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
-
-    operatorController.rightBumper().onTrue(new IntakeCommand(gripper, GamePiece.Coral));
-    operatorController.leftBumper().onTrue(new ReleaseCommand(gripper));
-
-
-
-
 
     // driveController.b().toggleOnTrue(new HoldCommand(gripper));
     // driveController.x().onTrue(new IntakeCommand(gripper, GamePiece.Coral).withTimeout(0.2));
@@ -127,20 +144,20 @@ public class RobotContainer {
         // Step three: run intake until coral is detected
         new IntakeCommand(gripper, GamePiece.Coral),
         // Step four: hold the coral and retract the arm to home
-        new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
+        //new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
             new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
             .until(
-                () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel)));
+                () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel));
 
     intakeCoralNoPP = new SequentialCommandGroup(
         new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel),
         // Step three: run intake until coral is detected
         new IntakeCommand(gripper, GamePiece.Coral),
         // Step four: hold the coral and retract the arm to home
-        new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
+       // new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
             new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
             .until(
-                () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel)));
+                () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel));
 
     Supplier<Pose2d> desiredPanel = () -> ArmConstants.ArmLevel.L1.panels[0][0]; // Dummy, replace by the driverstation's
                                                                              // selection for panel
