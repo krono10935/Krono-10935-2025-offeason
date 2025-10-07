@@ -98,7 +98,7 @@ public class ArmConstants {
     public enum ArmLevel {
         HOME(0.05),
         L1(0.20),
-        L2(0.29),
+        L2(0.27),
         L3(0.39),
         UNKNOWN (0.144),
         CoralIntakeLevel(0.2)

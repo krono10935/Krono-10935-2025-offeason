@@ -87,9 +87,11 @@ public class RobotContainer {
    driveController.a().onTrue(resetGyroCommand);
     
     //driveController.b().onTrue(scoreCoralSequence);
+    operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
     operatorController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
     operatorController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
     operatorController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    operatorController.rightTrigger(0.2).onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel));
     // operatorController.rightBumper().whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
     // operatorController.rightBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
 
