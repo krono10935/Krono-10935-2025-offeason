@@ -38,11 +38,13 @@ public class setArmLevelCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    arm.resetEncoderZero();
     if(desiredLevel.angle.getRotations()> arm.getCurrentAngle().getRotations()){
       arm.setAngleByLevel(desiredLevel);
       falling = false;
     }
     else {
+      arm.targetLevel = desiredLevel;
       arm.stop();
       falling= true;
       
@@ -55,7 +57,8 @@ public class setArmLevelCommand extends Command {
   public void execute() {
     //arm.setArmVelocity(-0.001);
 
-    
+
+    Logger.recordOutput(getName() + "/ is falling", falling);
     Logger.recordOutput("setArmLevelCommand/target angle", desiredLevel.angle.getDegrees());
     Logger.recordOutput("setArmLevelCommand/error", arm.getTargetLevel().angle.getDegrees()-  arm.getCurrentAngle().getDegrees());
   }
@@ -63,17 +66,20 @@ public class setArmLevelCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    
     if (falling & Math.abs(
       arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations())
-       <= ArmConstants.config.slot0Config.pidConfig.tolerance)
-       arm.setAngleByLevel(desiredLevel);    
+       <= ArmConstants.config.slot0Config.pidConfig.tolerance){
+        arm.setAngleByLevel(desiredLevel);
+      if (desiredLevel == ArmLevel.HOME) arm.resetEncoderZero(); 
+     }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     //System.out.println(arm.getCurrentAngle().getDegrees());
-    if (falling) return arm.getCurrentAngle().getRotations() <= desiredLevel.angle.getRotations();
+    if (falling) return arm.getCurrentAngle().getRotations() <= Math.abs(desiredLevel.angle.getRotations());
     return arm.isAtSetPoint() && 
     Math.abs(arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations()) <=0.01
     ;

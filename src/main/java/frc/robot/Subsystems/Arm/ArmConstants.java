@@ -20,7 +20,7 @@ public class ArmConstants {
     
     //port for AbsEncoder which resets pos in the beginning of the game
     public static Integer DUTY_CYCLE_ENCODER_PORT =0 ;
-    public static Double DUTY_CYCLE_ENCODER_ZERO_OFFSET = 0.0;
+    public static Double DUTY_CYCLE_ENCODER_ZERO_OFFSET = 0.47;
 
 
     public static class ArmFeedForwardInputs{
@@ -57,7 +57,7 @@ public class ArmConstants {
 
 
         //dummy values for pid
-        config.slot0Config.pidConfig.kP = 30;
+        config.slot0Config.pidConfig.kP = 55;
         config.slot0Config.pidConfig.kI = 0;
         config.slot0Config.pidConfig.kD = 1;
         config.slot0Config.pidConfig.tolerance=0.01;
@@ -65,13 +65,13 @@ public class ArmConstants {
         config.slot0Config.pidConfig.iMaxAccum=0.35;
         Double Kg = 0.84;
         config.constraintsConfig.constraintType = ConstraintType.LIMITED;
-        config.constraintsConfig.minValue = 0 + ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET;
-        config.constraintsConfig.maxValue = 0.4 + ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET;
+        config.constraintsConfig.minValue = -0.1 ;
+        config.constraintsConfig.maxValue = 0.4;
         config.slot0Config.profileConfig.maximumMeasurementVelocity= 0.7;
         config.slot0Config.profileConfig.maximumMeasurementAcceleration = 0.6;
        // config.constraintsConfig.rampRate = 0.05;
         //config.constraintsConfig.maxOutput = 6;
-        config.constraintsConfig.minOutput=-6;
+        // config.constraintsConfig.minOutput=-6;
 
         // config.slot0Config.feedForwardConfig.customFeedForward = new ArmFeedForward(0.84);
         config.slot0Config.feedForwardConfig.customFeedForward = 
@@ -96,10 +96,11 @@ public class ArmConstants {
 
 
     public enum ArmLevel {
-        HOME(0.05),
-        L1(0.20),
-        L2(0.27),
-        L3(0.39),
+
+        HOME(-0.1),
+        L1(0.15),
+        L2(0.21),
+        L3(0.37),
         UNKNOWN (0.144),
         CoralIntakeLevel(0.2)
         ;

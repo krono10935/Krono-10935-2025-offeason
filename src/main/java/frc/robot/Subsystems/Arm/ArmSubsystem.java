@@ -15,7 +15,7 @@ import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
 public class ArmSubsystem extends SubsystemBase {
     private final ArmIO io;
     private final ArmInputsAutoLogged inputs = new ArmInputsAutoLogged();
-    private ArmConstants.ArmLevel targetLevel;
+    public ArmConstants.ArmLevel targetLevel;
     private static final Alert unknownArmLevelAlert = new Alert("Attempted to set arm level to unknown angle",AlertType.kWarning);
 
 

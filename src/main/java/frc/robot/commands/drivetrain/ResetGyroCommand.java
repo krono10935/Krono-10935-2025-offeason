@@ -7,6 +7,7 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
 import frc.robot.Subsystems.drivetrain.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -24,7 +25,10 @@ public class ResetGyroCommand extends InstantCommand {
   @Override
   public void initialize() {
     drivetrain.reset(
-      new Pose2d(drivetrain.getEstimatedPosition().getTranslation(), new Rotation2d())
+      new Pose2d(drivetrain.getEstimatedPosition().getTranslation(), 
+      Constants.isRedSupplier.getAsBoolean()?
+      new Rotation2d():
+      Rotation2d.fromDegrees(180))
     );
   }
 }

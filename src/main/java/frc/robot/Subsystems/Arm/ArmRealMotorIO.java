@@ -16,27 +16,37 @@ import io.github.captainsoccer.basicmotor.rev.encoders.RevAbsoluteEncoder;
 public class ArmRealMotorIO implements ArmIO{
 
     private final BasicMotor motor;
+    final DutyCycleEncoder armDutyCycleEncoder;
+
 
     public ArmRealMotorIO() {
         motor = new BasicSparkMAX(ArmConstants.config);
-        
-        //while (motor.getMeasurements()==null);
-        // DutyCycleEncoder armDutyCycleEncoder = new DutyCycleEncoder(ArmConstants.DUTY_CYCLE_ENCODER_PORT);
+        armDutyCycleEncoder =  new DutyCycleEncoder(ArmConstants.DUTY_CYCLE_ENCODER_PORT);
+
         // motor.resetEncoder(armDutyCycleEncoder.get()+ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET);
-        // Logger.recordOutput("Arm/absolute encoder offset", armDutyCycleEncoder.get());
+        
         
 
     }
 
     @Override
     public void resetEncoder() {
-        motor.resetEncoder(0);
+        motor.resetEncoder(readAbsEncoderCorrectly());
     }
     @Override
     public void update(ArmInputs inputs) {
         inputs.atSetPoint = motor.atSetpoint();
         inputs.currentAngle = Rotation2d.fromRotations(motor.getPosition());
+        Logger.recordOutput("Arm/absolute encoder offset", armDutyCycleEncoder.get());
+        Logger.recordOutput( "Arm/asbolute encoder reading good" , readAbsEncoderCorrectly());
+
         
+    }
+
+
+    //BLACK MAGIC NO ONE MAY TOUCH BUT EYAL!!!
+    public double readAbsEncoderCorrectly(){
+        return Math.IEEEremainder(1-armDutyCycleEncoder.get()+ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET,1);
     }
 
     public double getMotorPos(){

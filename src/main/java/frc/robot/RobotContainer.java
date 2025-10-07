@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,6 +27,7 @@ import frc.robot.Subsystems.Arm.ArmConstants;
 import frc.robot.Subsystems.Arm.ArmSubsystem;
 import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.Subsystems.Gripper.Gripper;
+import frc.robot.Subsystems.Gripper.GripperConstants;
 import frc.robot.Subsystems.Gripper.GripperConstants.GamePiece;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.drivetrain.Drivetrain;
@@ -67,20 +69,37 @@ public class RobotContainer {
     // System.out.println("gripper good");
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
-    driveController = new CommandXboxController(0);
-    operatorController = new CommandXboxController(1);
+    driveController = new CommandXboxController(1);
+    operatorController = new CommandXboxController(0);
     
     //vision = new Vision(drivetrain::addVisionMeasurement, drivetrain::getEstimatedPosition);
     // drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new
     // PIDGains(), new PIDGains()));
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
-    //autoChooser = AutoBuilder.buildAutoChooser();
+
+    Command croossTheLine = new SequentialCommandGroup(
+        new RunCommand( () 
+      ->drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Utils.calculateXSpeedForAuto(2.5, 5), 
+      0, 0,
+      Constants.isRedSupplier.getAsBoolean() ?
+       drivetrain.getGyroAngle() :
+        Rotation2d.fromDegrees(drivetrain.getGyroAngle().getDegrees() + 180))),
+        drivetrain)).withTimeout(5).andThen(new RunCommand(() -> drivetrain.drive(new ChassisSpeeds())));
+    autoChooser = new SendableChooser<Command>();
+    autoChooser.setDefaultOption("Cross the line",croossTheLine );
+    autoChooser.addOption("L1 score",forwardAutoFactory(5, 5, ArmLevel.L1));
+    autoChooser.addOption("L2 score",forwardAutoFactory(5, 5, ArmLevel.L2));
+    autoChooser.addOption("L3 score",forwardAutoFactory(5, 5, ArmLevel.L3));
+
+    SmartDashboard.putData("chooser", autoChooser);
+    
+    
+  
     
     resetGyroCommand = new InstantCommand(() -> drivetrain.reset(new Pose2d(
         drivetrain.getEstimatedPosition().getTranslation(), new Rotation2d())));
-    //SmartDashboard.putData("Auto Chooser", autoChooser);
-    
+   
 
 
     //configureCommands();
@@ -98,7 +117,7 @@ public class RobotContainer {
 
     new Trigger(hasBeamBreakSupplier).negate()
         .and(operatorController.rightBumper())
-        .onTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
+        .whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
     
     new Trigger(hasBeamBreakSupplier)
         .and(operatorController.leftBumper())
@@ -106,16 +125,23 @@ public class RobotContainer {
 
     new Trigger(hasBeamBreakSupplier).negate()
         .and(operatorController.leftBumper())
-        .onTrue(new ReleaseCommandNoBeamBreak(gripper));
+        .whileTrue(new ReleaseCommandNoBeamBreak(gripper));
 
-    operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
+    .andThen
+    (new InstantCommand(()
+     -> armSubsystem.setAngleByLevel(ArmConstants.ArmLevel.HOME)))
+     .andThen(new InstantCommand(() -> armSubsystem.resetEncoderZero())));
+
     operatorController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
     operatorController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
     operatorController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
 
     operatorController.rightTrigger(0.2).onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel));
     operatorController.leftTrigger(0.2).onTrue(new InstantCommand(() -> hasBeamBreak = !hasBeamBreak));
-    
+
+    Command dropSlowly = new InstantCommand(() -> gripper.setPercentOutput(GripperConstants.WEAK_CORAL_EJECT_POWER));
+    operatorController.pov(180).onTrue(dropSlowly);
     // operatorController.rightBumper().whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
     // operatorController.rightBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
 
@@ -184,17 +210,24 @@ public class RobotContainer {
     );
   }
 
-  public Command getAutonomousCommand() {
+  public Command forwardAutoFactory(double dis, double time, ArmLevel level){
     return new SequentialCommandGroup(
-      new RunCommand( () ->drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0.5, 0, 0,
+      new RunCommand( () 
+      ->drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Utils.calculateXSpeedForAuto(dis, time), 
+      0, 0,
       Constants.isRedSupplier.getAsBoolean() ?
        drivetrain.getGyroAngle() :
         Rotation2d.fromDegrees(drivetrain.getGyroAngle().getDegrees() + 180))),
-        drivetrain).withTimeout(3),
+        drivetrain).withTimeout(time),
      new InstantCommand(()-> drivetrain.drive(new ChassisSpeeds())),
-      new setArmLevelCommand(armSubsystem, ArmLevel.L2),
+      new setArmLevelCommand(armSubsystem, level),
       new ReleaseCommand(gripper),
       new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
        );
   }
+
+  public Command getAutonomousCommand(){
+    return autoChooser.getSelected();
+  }
+
 }

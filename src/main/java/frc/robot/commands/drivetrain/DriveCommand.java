@@ -37,7 +37,7 @@ public class DriveCommand extends Command {
 
   @Override
   public void execute() {
-    double speed = lerp(1 - controller.getRightTriggerAxis());
+    double speed = lerp((1 - controller.getRightTriggerAxis()));
     double angularSpeed = angularLerp(1 - controller.getRightTriggerAxis());
 
     double xSpeed = deadband(-controller.getLeftY()) * speed * 0.6;

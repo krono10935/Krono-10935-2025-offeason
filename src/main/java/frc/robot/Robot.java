@@ -14,6 +14,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
+import frc.robot.commands.drivetrain.ResetGyroCommand;
 import io.github.captainsoccer.basicmotor.motorManager.MotorManager;
 
 public class Robot extends LoggedRobot {
@@ -74,6 +76,10 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
       m_autonomousCommand.cancel();
     }
     if (!DriverStation.isFMSAttached())m_robotContainer.armSubsystem.resetEncoderZero();
+    CommandScheduler.getInstance().schedule(
+      new ResetGyroCommand(
+        m_robotContainer.drivetrain
+      ));
   }
 
   @Override

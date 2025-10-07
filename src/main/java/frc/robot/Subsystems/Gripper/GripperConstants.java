@@ -27,7 +27,8 @@ public class GripperConstants {
     public static final double ALGAE_TORQUE = 0; // Target torque for the gripper holding algae
     public static final ControlMode ALGAE_MODE = ControlMode.TORQUE; 
     public static final double CORAL_INTAKE_POWER = -0.21; // Target power in percentage for the coral's intake
-    public static final double CORAL_EJECT_POWER = -0.21; // Target power in precentage for the coral's ejection
+    public static final double CORAL_EJECT_POWER = -0.21; // Target power in precentage for the coral's ejection'
+    public static final double WEAK_CORAL_EJECT_POWER = CORAL_EJECT_POWER * 0.8; // Target power in precentage for the coral's ejection
     public static final ControlMode CORAL_MODE = ControlMode.POSITION;
 
     public static final int BEAM_BREAK_CHANNEL = 9; // Placeholder, set to the correct channel
