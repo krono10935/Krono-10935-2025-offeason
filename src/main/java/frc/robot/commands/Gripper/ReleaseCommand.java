@@ -43,4 +43,9 @@ public class ReleaseCommand extends Command {
   public boolean isFinished(){
     return !gripper.seeCoral();
   }
+
+  @Override
+  public void end(boolean interrupted){
+    gripper.stopMotor();
+  }
 }
