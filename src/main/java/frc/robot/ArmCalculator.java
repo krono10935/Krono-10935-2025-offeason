@@ -47,9 +47,9 @@ public class ArmCalculator {
     }
 
     private static double calcAngle(double heightCm) {
-        System.out.println("height: " + heightCm);
-        System.err.println("modunigger: " + (heightCm / ARM_LENGTH) % 1);
-        System.out.println("deg:" +rad2Deg(Math.asin((heightCm / ARM_LENGTH) % 1) + Math.PI / 2));
+        // System.out.println("height: " + heightCm);
+        // System.err.println("modunigger: " + (heightCm / ARM_LENGTH) % 1);
+        // System.out.println("deg:" +rad2Deg(Math.asin((heightCm / ARM_LENGTH) % 1) + Math.PI / 2));
         
         return rad2Deg(Math.asin((heightCm / ARM_LENGTH) % 1) + Math.PI / 2); // Find the angle of the arm based on the height and arm length using trigonometry
     }

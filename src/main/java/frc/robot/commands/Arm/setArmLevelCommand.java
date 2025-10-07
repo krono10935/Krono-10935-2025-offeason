@@ -27,7 +27,7 @@ public class setArmLevelCommand extends Command {
   public setArmLevelCommand(ArmSubsystem arm, ArmLevel desiredLevel) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
-    System.out.println(desiredLevel == null);
+    // System.out.println(desiredLevel == null);
     this.arm = arm;
     this.desiredLevel = desiredLevel;
     falling = false;

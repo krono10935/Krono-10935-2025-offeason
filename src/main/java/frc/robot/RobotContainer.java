@@ -60,7 +60,7 @@ public class RobotContainer {
     // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
     // ArmLevel.L1));
     gripper = new Gripper();
-    System.out.println("gripper good");
+    // System.out.println("gripper good");
     // gripper.setDefaultCommand(new ReleaseCommand(gripper));
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(0);
@@ -87,10 +87,10 @@ public class RobotContainer {
    driveController.a().onTrue(resetGyroCommand);
     
     //driveController.b().onTrue(scoreCoralSequence);
-    operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
-    operatorController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
-    operatorController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
-    operatorController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME));
+    operatorController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
+    operatorController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
+    operatorController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
     operatorController.rightTrigger(0.2).onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel));
     // operatorController.rightBumper().whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
     // operatorController.rightBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
@@ -131,7 +131,6 @@ public class RobotContainer {
             new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
             .until(
                 () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel)));
-    // comment
 
     intakeCoralNoPP = new SequentialCommandGroup(
         new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel),
@@ -149,18 +148,17 @@ public class RobotContainer {
     Command alignToReefPanel = drivetrain.driveToPosCommand(desiredPanel.get())
         .andThen(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
 
-    Supplier<ArmLevel> scoreLevelSupplier = () -> ArmLevel.HOME; // Dummy, replace by the driverstation's selection for
-                                                                 // the scoring level
+    // Supplier<ArmLevel> scoreLevelSupplier = () -> ArmLevel.HOME; // Dummy, replace by the driverstation's selection for
 
     // Score coral sequence
     scoreCoralSequence = new SequentialCommandGroup(
-        new InstantCommand(() -> System.out.println("Scoring to " + scoreLevelSupplier.get().name())),
+       // new InstantCommand(() -> System.out.println("Scoring to " + scoreLevelSupplier.get().name())),
         // Step one: align to the desired reef panel
         alignToReefPanel, 
        
         // Step two: set arm to the desired scoring level
         new setArmLevelCommand(armSubsystem, ArmLevel.L1),
-        new InstantCommand(() -> System.out.println("nigger")),
+       // new InstantCommand(() -> System.out.println("bigger")),
         // Step three: release the coral
         new ReleaseCommand(gripper),
         

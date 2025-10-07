@@ -12,7 +12,7 @@ public class ArmFeedForward implements Function<Double,Double> {
 
     @Override
     public Double apply(Double Position) {
-        System.out.println("pos" + Position);
+        // System.out.println("pos" + Position);
         return Double.valueOf(  Kg * Math.sin(Units.rotationsToRadians(Position)));
         
     }
