@@ -31,16 +31,13 @@ public class DriveAutoCommand extends WaitCommand {
   @Override
   public void initialize() {
     dt.drive(new ChassisSpeeds(speed,0,0));
-
+    super.initialize();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or is interrupted. 
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     dt.drive(new ChassisSpeeds());
   }
 

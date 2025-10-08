@@ -108,6 +108,10 @@ public class ArmSubsystem extends SubsystemBase {
         io.setCoast();
     }
 
+    public void setArmByRotation(Rotation2d rotation){
+        io.setMotorAngle(rotation);
+    }
+
 
 }
 

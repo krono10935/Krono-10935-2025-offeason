@@ -10,6 +10,10 @@ import java.util.logging.Level;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Arm.ArmConstants;
 import frc.robot.Subsystems.Arm.ArmSubsystem;
@@ -23,6 +27,9 @@ public class setArmLevelCommand extends Command {
   boolean falling;
   boolean isCoast;
   double fallingError = 0.05;
+  TrapezoidProfile homeProfile = new TrapezoidProfile(new Constraints(0.4, 1));
+  TrapezoidProfile.State setPoint;
+  TrapezoidProfile.State goal;
 
   
   
@@ -40,53 +47,70 @@ public class setArmLevelCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.resetEncoderZero();
-    if(desiredLevel.angle.getRotations()> arm.getCurrentAngle().getRotations()){
-      arm.setAngleByLevel(desiredLevel);
-      falling = false;
-    }
-    else {
-      arm.targetLevel = desiredLevel;
-      arm.stop();
-      falling= true;
+    // arm.resetEncoderZero();
+    // if(desiredLevel.angle.getRotations()> arm.getCurrentAngle().getRotations()){
+    //   arm.setAngleByLevel(desiredLevel);
+    //   falling = false;
+    // }
+    // else {
+    //   arm.targetLevel = desiredLevel;
+    //   arm.stop();
+    //   falling= true;
       
-    }
-  
-  }
+    // }
 
-  // Called every time the scheduler runs while the command is scheduled.
+    // if(desiredLevel == ArmLevel.HOME){
+    //   setPoint = new TrapezoidProfile.State(arm.getCurrentAngle().getRotations(), 0);
+    //   goal = new TrapezoidProfile.State(desiredLevel.angle.getRotations(), 0);
+    // }
+    // else{
+      arm.setAngleByLevel(desiredLevel);
+    // }
+  
+  }  
+
+  
   @Override
   public void execute() {
-    //arm.setArmVelocity(-0.001);
+    
+    // if(desiredLevel == ArmLevel.HOME){
+    //   setPoint = homeProfile.calculate(0.02, setPoint, goal);
+    //   arm.setArmByRotation(Rotation2d.fromRotations( setPoint.position));
+    // }
 
 
-    Logger.recordOutput(getName() + "/ is falling", falling);
-    Logger.recordOutput("setArmLevelCommand/target angle", desiredLevel.angle.getDegrees());
-    Logger.recordOutput("setArmLevelCommand/error", arm.getTargetLevel().angle.getDegrees()-  arm.getCurrentAngle().getDegrees());
+    // Logger.recordOutput(getName() + "/ is falling", falling);
+    // Logger.recordOutput("setArmLevelCommand/target angle", desiredLevel.angle.getDegrees());
+    // Logger.recordOutput("setArmLevelCommand/error", arm.getTargetLevel().angle.getDegrees()-  arm.getCurrentAngle().getDegrees());
+    // SmartDashboard.putBoolean("arm is setpoint", arm.isAtSetPoint());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     
-    if (falling & Math.abs(
-      arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations())
-       <= ArmConstants.config.slot0Config.pidConfig.tolerance){
-        arm.setAngleByLevel(desiredLevel);
-      if (desiredLevel == ArmLevel.HOME){
+    // if (falling & Math.abs(
+    //   arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations())
+    //    <= ArmConstants.config.slot0Config.pidConfig.tolerance){
+    //     arm.setAngleByLevel(desiredLevel);
+    //   if (desiredLevel == ArmLevel.HOME){
                                                                                                                                                                                                         
-        arm.resetEncoderZero(); }
-     }
+    //     arm.resetEncoderZero(); }
+    //  }
+    //  SmartDashboard.putBoolean("arm is at setpoint",  true);
+
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     //System.out.println(arm.getCurrentAngle().getDegrees());
-    if (falling) return arm.getCurrentAngle().getRotations() <= Math.abs(desiredLevel.angle.getRotations());
-    return arm.isAtSetPoint() && 
-    Math.abs(arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations()) <=0.01
-    ;
+    // if(desiredLevel == ArmLevel.HOME){
+    //   return setPoint.position == goal.position && arm.isAtSetPoint() ;
+    // }
+    // else 
+    return arm.isAtSetPoint();
   }
   
   // set arm level

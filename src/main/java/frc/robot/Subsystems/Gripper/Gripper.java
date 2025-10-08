@@ -27,7 +27,7 @@ public class Gripper extends SubsystemBase{
      * Make the gripper hold in the current position
      */
     public void keepPosition(){
-        io.setPosition(io.getPosition());
+        io.setPosition(io.getPosition()-0.25);
     }
 
     /**

@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -45,7 +47,7 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
 public class RobotContainer {
   public static ArmSubsystem armSubsystem;
   public static Gripper gripper;
-  private SendableChooser<Command> autoChooser;
+  private LoggedDashboardChooser<Command> autoChooser;
   public static Drivetrain drivetrain;
   public static CommandXboxController driveController;
   public static CommandXboxController operatorController;
@@ -79,14 +81,15 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
 
-    Command croossTheLine = new DriveAutoCommand(drivetrain, 2, 5);
-    autoChooser = new SendableChooser<Command>();
-    autoChooser.setDefaultOption("Cross the line", croossTheLine );
-    autoChooser.addOption("L1 score",forwardAutoFactory(5, 5, ArmLevel.L1));
+    Command croossTheLine = new DriveAutoCommand(drivetrain, 2, 2);
+    
+    autoChooser = new LoggedDashboardChooser<>("chooser");
+    autoChooser.addDefaultOption("Cross the line", croossTheLine );
+    autoChooser.addOption("L1 score",forwardAutoFactory(1.93, 0.9, ArmLevel.L1));
     autoChooser.addOption("L2 score",forwardAutoFactory(5, 5, ArmLevel.L2));
     autoChooser.addOption("L3 score",forwardAutoFactory(5, 5, ArmLevel.L3));
 
-    SmartDashboard.putData("chooser", autoChooser);
+    SmartDashboard.putData("chooser", autoChooser.getSendableChooser());
   
     
     
@@ -207,18 +210,23 @@ public class RobotContainer {
 
   public Command forwardAutoFactory(double dis, double time, ArmLevel level){
     return new SequentialCommandGroup(
-      new DriveAutoCommand(drivetrain, dis, time)
-        ).alongWith(new setArmLevelCommand(armSubsystem, level)).withTimeout(5).andThen(new RunCommand(() -> drivetrain.drive(new ChassisSpeeds())),
+      new DriveAutoCommand(drivetrain, dis, time).alongWith(new setArmLevelCommand(armSubsystem, level)),
+      new InstantCommand(() -> drivetrain.drive(new ChassisSpeeds())),
 
-      new ReleaseCommand(gripper), new RunCommand(
+      new ReleaseCommand(gripper), 
+      new RunCommand(
         ()-> drivetrain.drive(new ChassisSpeeds(-1,0,0)), drivetrain)
-        .withTimeout(1),
-      new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
-       );
+        .withTimeout(0.5),
+      new setArmLevelCommand(armSubsystem, ArmLevel.HOME),
+      new RunCommand(
+        ()-> drivetrain.drive(new ChassisSpeeds(1,0,0)), drivetrain)
+        .withTimeout(0.5)
+      
+    );
   }
 
   public Command getAutonomousCommand(){
-    return autoChooser.getSelected();
+    return autoChooser.get();
   }
 
 }

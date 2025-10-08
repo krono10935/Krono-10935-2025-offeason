@@ -43,12 +43,12 @@ public class GripperConstants {
         motorConfig.motorConfig.unitConversion=1;
         motorConfig.motorConfig.motorType = DCMotor.getNEO(1);
 
-        ((BasicSparkConfig)motorConfig).currentLimitConfig.stallCurrentLimit = 20;
-        ((BasicSparkConfig)motorConfig).currentLimitConfig.secondaryCurrentLimit = 25;
+        ((BasicSparkConfig)motorConfig).currentLimitConfig.stallCurrentLimit = 30;
+        ((BasicSparkConfig)motorConfig).currentLimitConfig.secondaryCurrentLimit =35;
 
 
         SlotConfig positionConfig = motorConfig.slot0Config;
-        positionConfig.pidConfig.kP = 10; // Proportional gain
+        positionConfig.pidConfig.kP = 30; // Proportional gain
         positionConfig.pidConfig.kI = 0; // Integral gain
         positionConfig.pidConfig.kD = 0; // Derivative gain
         

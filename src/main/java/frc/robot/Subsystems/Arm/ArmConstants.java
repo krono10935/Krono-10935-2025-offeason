@@ -56,23 +56,24 @@ public class ArmConstants {
 
 
         ((BasicSparkConfig)config).currentLimitConfig.freeSpeedCurrentLimit = 20;
-        ((BasicSparkConfig)config).currentLimitConfig.stallCurrentLimit = 30;
-        ((BasicSparkConfig)config).currentLimitConfig.secondaryCurrentLimit = 35;
+        ((BasicSparkConfig)config).currentLimitConfig.stallCurrentLimit = 45;
+        ((BasicSparkConfig)config).currentLimitConfig.secondaryCurrentLimit = 55;
         
 
         //dummy values for pid
-        config.slot0Config.pidConfig.kP = 55;
-        config.slot0Config.pidConfig.kI = 0;
-        config.slot0Config.pidConfig.kD = 1;
-        config.slot0Config.pidConfig.tolerance=0.02;
+        config.slot0Config.pidConfig.kP = 50;
+        config.slot0Config.pidConfig.kI = 0.005;
+        config.slot0Config.pidConfig.kD = 0;
+        config.slot0Config.pidConfig.tolerance=0.012;
         config.slot0Config.pidConfig.iZone=0.05;
-        config.slot0Config.pidConfig.iMaxAccum=0.35;
+        config.slot0Config.pidConfig.iMaxAccum=0.5;
         Double Kg = 0.84;
         config.constraintsConfig.constraintType = ConstraintType.LIMITED;
         config.constraintsConfig.minValue = -0.1 ;
         config.constraintsConfig.maxValue = 0.5;
-        config.slot0Config.profileConfig.maximumMeasurementVelocity= 0.7;
-        config.slot0Config.profileConfig.maximumMeasurementAcceleration = 0.6;
+        config.constraintsConfig.voltageDeadband = 0.05;
+        config.slot0Config.profileConfig.maximumMeasurementVelocity= 0.9;
+        config.slot0Config.profileConfig.maximumMeasurementAcceleration = 0.8;
        // config.constraintsConfig.rampRate = 0.05;
         //config.constraintsConfig.maxOutput = 6;
         // config.constraintsConfig.minOutput=-6;
