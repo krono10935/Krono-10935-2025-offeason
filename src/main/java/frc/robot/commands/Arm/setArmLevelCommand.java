@@ -23,6 +23,8 @@ public class setArmLevelCommand extends Command {
   boolean falling;
   boolean isCoast;
   double fallingError = 0.05;
+
+  
   
   public setArmLevelCommand(ArmSubsystem arm, ArmLevel desiredLevel) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -71,7 +73,9 @@ public class setArmLevelCommand extends Command {
       arm.getCurrentAngle().getRotations() - desiredLevel.angle.getRotations())
        <= ArmConstants.config.slot0Config.pidConfig.tolerance){
         arm.setAngleByLevel(desiredLevel);
-      if (desiredLevel == ArmLevel.HOME) arm.resetEncoderZero(); 
+      if (desiredLevel == ArmLevel.HOME){
+                                                                                                                                                                                                        
+        arm.resetEncoderZero(); }
      }
   }
 

@@ -16,7 +16,7 @@ public class GripperConstants {
     }
 
     public static final double MAX_MOTOR_TEMPERATURE = 40;
-    public static final boolean START_WITH_CORAL = false;
+    public static final boolean START_WITH_CORAL = true;
 
     public static final double WHEEL_RADIUS = 0; // in meters 
 
@@ -42,6 +42,9 @@ public class GripperConstants {
         motorConfig.motorConfig.gearRatio = 1; // Placeholder
         motorConfig.motorConfig.unitConversion=1;
         motorConfig.motorConfig.motorType = DCMotor.getNEO(1);
+
+        ((BasicSparkConfig)motorConfig).currentLimitConfig.stallCurrentLimit = 20;
+        ((BasicSparkConfig)motorConfig).currentLimitConfig.secondaryCurrentLimit = 25;
 
 
         SlotConfig positionConfig = motorConfig.slot0Config;

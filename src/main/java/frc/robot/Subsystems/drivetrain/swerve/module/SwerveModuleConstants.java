@@ -64,7 +64,7 @@ public enum SwerveModuleConstants {
 
     public static final double WHEEL_RADIUS_METERS = 0.0508;
     public static final double DRIVE_GEAR_RATIO = 5.14;
-    public static final int DRIVE_CURRENT_LIMIT = 100;
+    public static final int DRIVE_CURRENT_LIMIT = 80;
 
     /**
      * @return Common drive motor config
@@ -84,7 +84,7 @@ public enum SwerveModuleConstants {
     }
 
     public static final double STEER_GEAR_RATIO = 12.8;
-    public static final int STEER_CURRENT_LIMIT = 60;
+    public static final int STEER_CURRENT_LIMIT = 35;
 
     /**
      * @return Common steer motor config

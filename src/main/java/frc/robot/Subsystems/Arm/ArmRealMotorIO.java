@@ -46,7 +46,7 @@ public class ArmRealMotorIO implements ArmIO{
 
     //BLACK MAGIC NO ONE MAY TOUCH BUT EYAL!!!
     public double readAbsEncoderCorrectly(){
-        return Math.IEEEremainder(1-armDutyCycleEncoder.get()+ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET,1);
+        return Math.IEEEremainder(1-armDutyCycleEncoder.get()+ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET-0.05,1);
     }
 
     public double getMotorPos(){

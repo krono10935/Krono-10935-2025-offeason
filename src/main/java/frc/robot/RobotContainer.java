@@ -37,6 +37,7 @@ import frc.robot.commands.Gripper.IntakeCommand;
 import frc.robot.commands.Gripper.IntakeCommandNoBeamBreak;
 import frc.robot.commands.Gripper.ReleaseCommand;
 import frc.robot.commands.Gripper.ReleaseCommandNoBeamBreak;
+import frc.robot.commands.drivetrain.DriveAutoCommand;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.drivetrain.FinishPathCommand;
 import io.github.captainsoccer.basicmotor.gains.PIDGains;
@@ -78,21 +79,15 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
 
-    Command croossTheLine = new SequentialCommandGroup(
-        new RunCommand( () 
-      ->drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Utils.calculateXSpeedForAuto(2.5, 5), 
-      0, 0,
-      Constants.isRedSupplier.getAsBoolean() ?
-       drivetrain.getGyroAngle() :
-        Rotation2d.fromDegrees(drivetrain.getGyroAngle().getDegrees() + 180))),
-        drivetrain)).withTimeout(5).andThen(new RunCommand(() -> drivetrain.drive(new ChassisSpeeds())));
+    Command croossTheLine = new DriveAutoCommand(drivetrain, 2, 5);
     autoChooser = new SendableChooser<Command>();
-    autoChooser.setDefaultOption("Cross the line",croossTheLine );
+    autoChooser.setDefaultOption("Cross the line", croossTheLine );
     autoChooser.addOption("L1 score",forwardAutoFactory(5, 5, ArmLevel.L1));
     autoChooser.addOption("L2 score",forwardAutoFactory(5, 5, ArmLevel.L2));
     autoChooser.addOption("L3 score",forwardAutoFactory(5, 5, ArmLevel.L3));
 
     SmartDashboard.putData("chooser", autoChooser);
+  
     
     
   
@@ -212,16 +207,12 @@ public class RobotContainer {
 
   public Command forwardAutoFactory(double dis, double time, ArmLevel level){
     return new SequentialCommandGroup(
-      new RunCommand( () 
-      ->drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Utils.calculateXSpeedForAuto(dis, time), 
-      0, 0,
-      Constants.isRedSupplier.getAsBoolean() ?
-       drivetrain.getGyroAngle() :
-        Rotation2d.fromDegrees(drivetrain.getGyroAngle().getDegrees() + 180))),
-        drivetrain).withTimeout(time),
-     new InstantCommand(()-> drivetrain.drive(new ChassisSpeeds())),
-      new setArmLevelCommand(armSubsystem, level),
-      new ReleaseCommand(gripper),
+      new DriveAutoCommand(drivetrain, dis, time)
+        ).alongWith(new setArmLevelCommand(armSubsystem, level)).withTimeout(5).andThen(new RunCommand(() -> drivetrain.drive(new ChassisSpeeds())),
+
+      new ReleaseCommand(gripper), new RunCommand(
+        ()-> drivetrain.drive(new ChassisSpeeds(-1,0,0)), drivetrain)
+        .withTimeout(1),
       new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
        );
   }
