@@ -81,12 +81,12 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
 
-    Command croossTheLine = new DriveAutoCommand(drivetrain, 2, 2);
+    Command croossTheLine = new DriveAutoCommand(drivetrain, 2, 1);
     
     autoChooser = new LoggedDashboardChooser<>("chooser");
     autoChooser.addDefaultOption("Cross the line", croossTheLine );
     autoChooser.addOption("L1 score",forwardAutoFactory(1.93, 0.9, ArmLevel.L1));
-    autoChooser.addOption("L2 score",forwardAutoFactory(5, 5, ArmLevel.L2));
+    autoChooser.addOption("L2 sc  ccore",forwardAutoFactory(5, 5, ArmLevel.L2));
     autoChooser.addOption("L3 score",forwardAutoFactory(5, 5, ArmLevel.L3));
 
     SmartDashboard.putData("chooser", autoChooser.getSendableChooser());
@@ -106,16 +106,17 @@ public class RobotContainer {
 
   private void configureBindings() {
    driveController.a().onTrue(resetGyroCommand);
+   
     
     //driveController.b().onTrue(scoreCoralSequence);
 
-    new Trigger(hasBeamBreakSupplier)
-        .and(operatorController.rightBumper())
-        .onTrue(new IntakeCommand(gripper, GamePiece.Coral));
+    // new Trigger(hasBeamBreakSupplier)
+    //     .and(operatorController.rightBumper())
+    //     .onTrue(new IntakeCommand(gripper, GamePiece.Coral));
 
-    new Trigger(hasBeamBreakSupplier).negate()
-        .and(operatorController.rightBumper())
-        .whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
+    // new Trigger(hasBeamBreakSupplier).negate()
+    //     .and(operatorController.rightBumper())
+    //     .whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
     
     new Trigger(hasBeamBreakSupplier)
         .and(operatorController.leftBumper())
@@ -124,6 +125,8 @@ public class RobotContainer {
     new Trigger(hasBeamBreakSupplier).negate()
         .and(operatorController.leftBumper())
         .whileTrue(new ReleaseCommandNoBeamBreak(gripper));
+
+    operatorController.rightBumper().onTrue(new IntakeCommand(gripper, GamePiece.Coral));
 
     operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
     .andThen

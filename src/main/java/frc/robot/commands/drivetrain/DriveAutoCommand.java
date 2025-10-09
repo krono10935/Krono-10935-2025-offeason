@@ -6,6 +6,7 @@ package frc.robot.commands.drivetrain;
 
 import static edu.wpi.first.units.Units.Seconds;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +19,9 @@ public class DriveAutoCommand extends WaitCommand {
   /** Creates a new DriveAutoCommand. */
   private Drivetrain dt;
   private double speed;
+  private double targetRotation;
+  PIDController rotationPID = new PIDController(0.5, 0, 0);
+
   
   public DriveAutoCommand(Drivetrain dt,  double dis, double time) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,12 +29,16 @@ public class DriveAutoCommand extends WaitCommand {
     this.dt=dt;
     addRequirements(dt);
     speed = Utils.calculateXSpeedForAuto(dis, time);
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    dt.drive(new ChassisSpeeds(speed,0,0));
+    targetRotation=dt.getGyroAngle().getRadians();
+    rotationPID.setSetpoint(targetRotation);
+    rotationPID.enableContinuousInput(-Math.PI, Math.PI);
+   
     super.initialize();
   }
 
@@ -39,6 +47,13 @@ public class DriveAutoCommand extends WaitCommand {
   public void end(boolean interrupted) {
     super.end(interrupted);
     dt.drive(new ChassisSpeeds());
+  }
+
+  @Override 
+  public void execute(){
+    dt.drive(new ChassisSpeeds(
+      speed,0,rotationPID.calculate(dt.getGyroAngle().getRadians())));
+      super.execute();
   }
 
   // Returns true when the command should end.

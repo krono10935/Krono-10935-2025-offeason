@@ -27,7 +27,7 @@ public class Gripper extends SubsystemBase{
      * Make the gripper hold in the current position
      */
     public void keepPosition(){
-        io.setPosition(io.getPosition()-0.25);
+        io.setPosition(io.getPosition()+0.25);
     }
 
     /**
@@ -87,5 +87,9 @@ public class Gripper extends SubsystemBase{
 
         String currentCommandName = getCurrentCommand() == null ? "Null" : getCurrentCommand().getName();
         Logger.recordOutput("Gripper/Current Command ", currentCommandName);
+    }
+
+    public void setPosition(double pos){
+        io.setPosition(pos);
     }
 }

@@ -72,7 +72,7 @@ public class ArmConstants {
         config.constraintsConfig.minValue = -0.1 ;
         config.constraintsConfig.maxValue = 0.5;
         config.constraintsConfig.voltageDeadband = 0.05;
-        config.slot0Config.profileConfig.maximumMeasurementVelocity= 0.9;
+        config.slot0Config.profileConfig.maximumMeasurementVelocity= 1.5;
         config.slot0Config.profileConfig.maximumMeasurementAcceleration = 0.8;
        // config.constraintsConfig.rampRate = 0.05;
         //config.constraintsConfig.maxOutput = 6;

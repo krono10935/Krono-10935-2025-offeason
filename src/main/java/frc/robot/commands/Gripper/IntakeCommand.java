@@ -54,24 +54,27 @@ public class IntakeCommand extends Command {
     } else {
       gripper.setGamePiece(gamePiece);
 
-      switch (gamePiece){
-        case None, Unknown:
+      gripper.keepPosition();
 
-          gripper.stopMotor();
 
-        case Coral:
+      // switch (gamePiece){
+      //   case None, Unknown:
 
-          gripper.keepPosition();
+      //     gripper.stopMotor();
 
-        case Algae:
+      //   case Coral:
 
-          gripper.setTorque(GripperConstants.ALGAE_TORQUE);
+      //       System.out.println("KEEPPP");
 
-        default:
+      //   case Algae:
 
-          gripper.stopMotor();
+      //     gripper.setTorque(GripperConstants.ALGAE_TORQUE);
 
-      }
+      //   default:
+
+      //     gripper.stopMotor();
+
+      // }
     }
   }
 }
