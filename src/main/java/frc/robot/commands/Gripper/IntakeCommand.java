@@ -50,11 +50,11 @@ public class IntakeCommand extends Command {
   public void end(boolean interuptted){
     if (interuptted){
       gripper.setGamePiece(GamePiece.Unknown);
-      gripper.keepPosition();
+      gripper.rollBackGripper();
     } else {
       gripper.setGamePiece(gamePiece);
 
-      gripper.keepPosition();
+      gripper.rollBackGripper();
 
 
       // switch (gamePiece){

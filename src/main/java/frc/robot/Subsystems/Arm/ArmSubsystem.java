@@ -55,8 +55,8 @@ public class ArmSubsystem extends SubsystemBase {
         Logger.processInputs(getName(), inputs);
 
         String currentCommandName = (getCurrentCommand() == null) ? "Null" : getCurrentCommand().getName();
+
         Logger.recordOutput("Arm/CurrentCommand", currentCommandName);
-        
         Logger.recordOutput("Arm/currentLevel", getCurrentLevel().name());
         Logger.recordOutput("Arm/current angle", io.getMotorPos());
         
@@ -71,8 +71,7 @@ public class ArmSubsystem extends SubsystemBase {
         unknownArmLevelAlert.set(false);
         io.setMotorAngle(level.angle);
         targetLevel = level;
-        Logger.recordOutput("Arm/Target Level", level.name());
-        Logger.recordOutput("Arm/Target Level  rot",  targetLevel.angle.getRotations());
+        
     }
 
     public Rotation2d getCurrentAngle() {
@@ -87,9 +86,10 @@ public class ArmSubsystem extends SubsystemBase {
         return targetLevel;
     }
 
-    public void resetEncoderZero(){
-        io.resetEncoder();
-    }
+    // public void resetEncoderZero(){
+    //     io.resetEncoder();
+    // }
+    
     public void stop(){
         io.stop();
     }

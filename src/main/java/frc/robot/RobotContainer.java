@@ -5,22 +5,15 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -31,18 +24,15 @@ import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.Subsystems.Gripper.Gripper;
 import frc.robot.Subsystems.Gripper.GripperConstants;
 import frc.robot.Subsystems.Gripper.GripperConstants.GamePiece;
-import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.drivetrain.Drivetrain;
 import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 import frc.robot.commands.Arm.setArmLevelCommand;
 import frc.robot.commands.Gripper.IntakeCommand;
-import frc.robot.commands.Gripper.IntakeCommandNoBeamBreak;
 import frc.robot.commands.Gripper.ReleaseCommand;
 import frc.robot.commands.Gripper.ReleaseCommandNoBeamBreak;
 import frc.robot.commands.drivetrain.DriveAutoCommand;
 import frc.robot.commands.drivetrain.DriveCommand;
-import frc.robot.commands.drivetrain.FinishPathCommand;
-import io.github.captainsoccer.basicmotor.gains.PIDGains;
+
 
 public class RobotContainer {
   public static ArmSubsystem armSubsystem;
@@ -51,10 +41,6 @@ public class RobotContainer {
   public static Drivetrain drivetrain;
   public static CommandXboxController driveController;
   public static CommandXboxController operatorController;
-  private static Vision vision;
-  private static Command intakeCoralSequence;
-  private static Command scoreCoralSequence;
-  private static Command intakeCoralNoPP;
   private static Command resetGyroCommand;
   private static boolean hasBeamBreak = true;
   private static BooleanSupplier hasBeamBreakSupplier = () -> hasBeamBreak;
@@ -66,57 +52,33 @@ public class RobotContainer {
    
 
     armSubsystem = new ArmSubsystem();
-    // armSubsystem.setDefaultCommand(new setArmLevelCommand(armSubsystem,
-    // ArmLevel.L1));
     gripper = new Gripper();
-    // System.out.println("gripper good");
-    // gripper.setDefaultCommand(new ReleaseCommand(gripper));
+
     drivetrain = new Swerve(Constants.isRedSupplier);
     driveController = new CommandXboxController(1);
     operatorController = new CommandXboxController(0);
     
-    //vision = new Vision(drivetrain::addVisionMeasurement, drivetrain::getEstimatedPosition);
-    // drivetrain.setDefaultCommand(new FinishPathCommand(drivetrain, new
-    // PIDGains(), new PIDGains()));
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
 
 
-    Command croossTheLine = new DriveAutoCommand(drivetrain, 2, 1);
+    Command crossTheLine = new DriveAutoCommand(drivetrain, 2, 1);
     
     autoChooser = new LoggedDashboardChooser<>("chooser");
-    autoChooser.addDefaultOption("Cross the line", croossTheLine );
+    autoChooser.addDefaultOption("Cross the line", crossTheLine );
     autoChooser.addOption("L1 score",forwardAutoFactory(1.93, 0.9, ArmLevel.L1));
-    autoChooser.addOption("L2 sc  ccore",forwardAutoFactory(5, 5, ArmLevel.L2));
+    autoChooser.addOption("L2 score",forwardAutoFactory(5, 5, ArmLevel.L2));
     autoChooser.addOption("L3 score",forwardAutoFactory(5, 5, ArmLevel.L3));
 
     SmartDashboard.putData("chooser", autoChooser.getSendableChooser());
-  
-    
-    
-  
-    
+
     resetGyroCommand = new InstantCommand(() -> drivetrain.reset(new Pose2d(
         drivetrain.getEstimatedPosition().getTranslation(), new Rotation2d())));
    
-
-
-    //configureCommands();
     configureBindings();
   }
 
   private void configureBindings() {
    driveController.a().onTrue(resetGyroCommand);
-   
-    
-    //driveController.b().onTrue(scoreCoralSequence);
-
-    // new Trigger(hasBeamBreakSupplier)
-    //     .and(operatorController.rightBumper())
-    //     .onTrue(new IntakeCommand(gripper, GamePiece.Coral));
-
-    // new Trigger(hasBeamBreakSupplier).negate()
-    //     .and(operatorController.rightBumper())
-    //     .whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
     
     new Trigger(hasBeamBreakSupplier)
         .and(operatorController.leftBumper())
@@ -131,84 +93,17 @@ public class RobotContainer {
     operatorController.a().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
     .andThen
     (new InstantCommand(()
-     -> armSubsystem.setAngleByLevel(ArmConstants.ArmLevel.HOME)))
-     .andThen(new InstantCommand(() -> armSubsystem.resetEncoderZero())));
+     -> armSubsystem.setAngleByLevel(ArmConstants.ArmLevel.HOME))));
 
     operatorController.x().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L1));
     operatorController.y().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L2));
     operatorController.b().onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.L3));
 
-    operatorController.rightTrigger(0.2).onTrue(new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel));
     operatorController.leftTrigger(0.2).onTrue(new InstantCommand(() -> hasBeamBreak = !hasBeamBreak));
 
     Command dropSlowly = new InstantCommand(() -> gripper.setPercentOutput(GripperConstants.WEAK_CORAL_EJECT_POWER));
     operatorController.pov(180).onTrue(dropSlowly);
-    // operatorController.rightBumper().whileTrue(new IntakeCommandNoBeamBreak(gripper, GamePiece.Coral));
-    // operatorController.rightBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
-
-    // operatorController.leftBumper().whileTrue(new ReleaseCommandNoBeamBreak(gripper));
-    // operatorController.leftBumper().onFalse(new InstantCommand(()-> gripper.setPercentOutput(0)));
-
-    // driveController.b().toggleOnTrue(new HoldCommand(gripper));
-    // driveController.x().onTrue(new IntakeCommand(gripper, GamePiece.Coral).withTimeout(0.2));
-    // driveController.y().whileTrue(new ReleaseCommand(gripper));
-
-    // driveController.leftBumper().onTrue(new RunCommand(()->gripper.setPercentOutput(-5),gripper));
   
-  }
-
-  private void configureCommands() {
-    // Get to feeder and align yourself to it
-    Command alignToFeeder = drivetrain.driveToPosCommand(Constants.FieldConstants.feederPose)
-        .andThen(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
-
-    // Intake coral sequence
-    intakeCoralSequence = new SequentialCommandGroup(
-        // Step one: get to feeder and align
-        alignToFeeder,
-        // Step two: set arm to coral intake level
-        new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel),
-        // Step three: run intake until coral is detected
-        new IntakeCommand(gripper, GamePiece.Coral),
-        // Step four: hold the coral and retract the arm to home
-        //new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
-            new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
-            .until(
-                () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel));
-
-    intakeCoralNoPP = new SequentialCommandGroup(
-        new setArmLevelCommand(armSubsystem, ArmLevel.CoralIntakeLevel),
-        // Step three: run intake until coral is detected
-        new IntakeCommand(gripper, GamePiece.Coral),
-        // Step four: hold the coral and retract the arm to home
-       // new ParallelCommandGroup(new HoldCommand(gripper).onlyIf(() -> gripper.getGamePiece() == GamePiece.None),
-            new setArmLevelCommand(armSubsystem, ArmLevel.HOME))
-            .until(
-                () -> armSubsystem.isAtSetPoint() && !armSubsystem.getTargetLevel().equals(ArmLevel.CoralIntakeLevel));
-
-    Supplier<Pose2d> desiredPanel = () -> ArmConstants.ArmLevel.L1.panels[0][0]; // Dummy, replace by the driverstation's
-                                                                             // selection for panel
-    // Align to the desired reef panel
-    Command alignToReefPanel = drivetrain.driveToPosCommand(desiredPanel.get())
-        .andThen(new FinishPathCommand(drivetrain, new PIDGains(), new PIDGains()));
-
-    // Supplier<ArmLevel> scoreLevelSupplier = () -> ArmLevel.HOME; // Dummy, replace by the driverstation's selection for
-
-    // Score coral sequence
-    scoreCoralSequence = new SequentialCommandGroup(
-       // new InstantCommand(() -> System.out.println("Scoring to " + scoreLevelSupplier.get().name())),
-        // Step one: align to the desired reef panel
-        alignToReefPanel, 
-       
-        // Step two: set arm to the desired scoring level
-        new setArmLevelCommand(armSubsystem, ArmLevel.L1),
-       // new InstantCommand(() -> System.out.println("bigger")),
-        // Step three: release the coral
-        new ReleaseCommand(gripper),
-        
-        new setArmLevelCommand(armSubsystem, ArmLevel.HOME)
-
-    );
   }
 
   public Command forwardAutoFactory(double dis, double time, ArmLevel level){
@@ -216,11 +111,14 @@ public class RobotContainer {
       new DriveAutoCommand(drivetrain, dis, time).alongWith(new setArmLevelCommand(armSubsystem, level)),
       new InstantCommand(() -> drivetrain.drive(new ChassisSpeeds())),
 
-      new ReleaseCommand(gripper), 
+      new ReleaseCommand(gripper),
+
       new RunCommand(
         ()-> drivetrain.drive(new ChassisSpeeds(-1,0,0)), drivetrain)
         .withTimeout(0.5),
+
       new setArmLevelCommand(armSubsystem, ArmLevel.HOME),
+
       new RunCommand(
         ()-> drivetrain.drive(new ChassisSpeeds(1,0,0)), drivetrain)
         .withTimeout(0.5)

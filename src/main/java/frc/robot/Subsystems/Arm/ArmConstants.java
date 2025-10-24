@@ -21,6 +21,7 @@ public class ArmConstants {
     //port for AbsEncoder which resets pos in the beginning of the game
     public static Integer DUTY_CYCLE_ENCODER_PORT =0 ;
     public static Double DUTY_CYCLE_ENCODER_ZERO_OFFSET = 0.47;
+    public static final boolean IS_ABS_ENCODER_INVERTED= true;
 
 
     public static class ArmFeedForwardInputs{

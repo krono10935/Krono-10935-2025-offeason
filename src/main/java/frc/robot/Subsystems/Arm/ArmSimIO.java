@@ -17,10 +17,11 @@ public class ArmSimIO implements ArmIO{
         motor = new BasicArmSim(ArmConstants.config);
         
     }
- @Override
-    public void resetEncoder() {
-        motor.resetEncoder(0);
-    }
+//  @Override
+//     public void resetEncoder() {
+//         motor.resetEncoder(0);
+//     }
+
     @Override
     public void update(ArmInputs inputs) {
         inputs.atSetPoint = motor.atSetpoint();

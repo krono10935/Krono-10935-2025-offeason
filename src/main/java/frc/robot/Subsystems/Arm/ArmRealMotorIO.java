@@ -2,8 +2,6 @@ package frc.robot.Subsystems.Arm;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import io.github.captainsoccer.basicmotor.BasicMotor;
@@ -13,6 +11,7 @@ import io.github.captainsoccer.basicmotor.motorManager.MotorManager.ControllerLo
 import io.github.captainsoccer.basicmotor.rev.BasicSparkConfig;
 import io.github.captainsoccer.basicmotor.rev.BasicSparkMAX;
 import io.github.captainsoccer.basicmotor.rev.encoders.RevAbsoluteEncoder;
+import io.github.captainsoccer.basicmotor.BasicMotor.IdleMode;
 
 public class ArmRealMotorIO implements ArmIO{
 
@@ -22,34 +21,25 @@ public class ArmRealMotorIO implements ArmIO{
 
     public ArmRealMotorIO() {
         motor = new BasicSparkMAX(ArmConstants.config);
-
         motor.setControllerLocation(ControllerLocation.RIO);
-        armDutyCycleEncoder =  new DutyCycleEncoder(ArmConstants.DUTY_CYCLE_ENCODER_PORT);
-
-        // motor.resetEncoder(armDutyCycleEncoder.get()+ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET);
         
-        
+        armDutyCycleEncoder = new DutyCycleEncoder(ArmConstants.DUTY_CYCLE_ENCODER_PORT);
+        armDutyCycleEncoder.setInverted(ArmConstants.IS_ABS_ENCODER_INVERTED);
 
+        motor.resetEncoder(armDutyCycleEncoder.get());
     }
 
-    @Override
-    public void resetEncoder() {
-        motor.resetEncoder(readAbsEncoderCorrectly());
-    }
+    // @Override
+    // public void resetEncoder() {
+    //     motor.resetEncoder(armDutyCycleEncoder.get());
+    // }
+
     @Override
     public void update(ArmInputs inputs) {
         inputs.atSetPoint = motor.atGoal();
         inputs.currentAngle = Rotation2d.fromRotations(motor.getPosition());
         Logger.recordOutput("Arm/absolute encoder offset", armDutyCycleEncoder.get());
-        Logger.recordOutput( "Arm/asbolute encoder reading good" , readAbsEncoderCorrectly());
-
         
-    }
-
-
-    //BLACK MAGIC NO ONE MAY TOUCH BUT EYAL!!!
-    public double readAbsEncoderCorrectly(){
-        return Math.IEEEremainder(1-armDutyCycleEncoder.get()+ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET-0.05,1);
     }
 
     public double getMotorPos(){
@@ -78,12 +68,12 @@ public class ArmRealMotorIO implements ArmIO{
 
     @Override
     public void setBrake(){
-        motor.setIdleMode(io.github.captainsoccer.basicmotor.BasicMotor.IdleMode.BRAKE);
+        motor.setIdleMode(IdleMode.BRAKE);
     }
 
     @Override
     public void setCoast(){
-        motor.setIdleMode(io.github.captainsoccer.basicmotor.BasicMotor.IdleMode.COAST);
+        motor.setIdleMode(IdleMode.COAST);
     }
     
 

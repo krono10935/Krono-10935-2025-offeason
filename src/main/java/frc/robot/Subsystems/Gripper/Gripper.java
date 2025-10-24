@@ -26,8 +26,8 @@ public class Gripper extends SubsystemBase{
     /**
      * Make the gripper hold in the current position
      */
-    public void keepPosition(){
-        io.setPosition(io.getPosition()+0.25);
+    public void rollBackGripper(){
+        io.setPosition(io.getPosition() + GripperConstants.MOTOR_OFFSET_TO_STOP_AT);
     }
 
     /**

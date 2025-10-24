@@ -33,6 +33,8 @@ public class GripperConstants {
 
     public static final int BEAM_BREAK_CHANNEL = 9; // Placeholder, set to the correct channel
 
+    public static final double MOTOR_OFFSET_TO_STOP_AT = 0.25; 
+
     public static final BasicMotorConfig motorConfig = new BasicSparkConfig();
     static {
         motorConfig.motorConfig.name = "Gripper motor";
