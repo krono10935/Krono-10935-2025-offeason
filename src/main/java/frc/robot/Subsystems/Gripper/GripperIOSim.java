@@ -7,11 +7,11 @@ import io.github.captainsoccer.basicmotor.sim.motor.BasicMotorSim;
 
 public class GripperIOSim implements GripperIO {
     private final BasicMotor motor;
-    private final DigitalInput beamBreak;
+    //private final DigitalInput beamBreak;
 
     public GripperIOSim() {
         motor = new BasicMotorSim(GripperConstants.motorConfig);
-        beamBreak = new DigitalInput(GripperConstants.BEAM_BREAK_CHANNEL);
+        //beamBreak = new DigitalInput(GripperConstants.BEAM_BREAK_CHANNEL);
     }
 
     @Override
