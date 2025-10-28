@@ -22,7 +22,8 @@ public class GripperIOSim implements GripperIO {
 
     @Override
     public boolean getBeamBreak() {
-        return beamBreak.get();
+        // In our current sim implementation we do not have the ablity to get coral.
+        return false;//beamBreak.get();
     }
 
     @Override

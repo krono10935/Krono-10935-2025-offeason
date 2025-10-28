@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.Arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import io.github.captainsoccer.basicmotor.BasicMotor.IdleMode;
 
 import org.littletonrobotics.junction.AutoLog;
 
@@ -12,10 +11,10 @@ public interface ArmIO {
         public Rotation2d currentAngle; //absolute
     }
 
-    /*
-     * reset the encoder of the arm motor
-     */
-    void resetEncoder();
+    // /*
+    //  * reset the encoder of the arm motor
+    //  */
+    // void resetEncoder();
 
     /*
      * update the auto logged inputs
@@ -30,6 +29,7 @@ public interface ArmIO {
     double getMotorPos();
 
     void stop();
+    
     Rotation2d getVelocity();
 
     void setArmMotorDutyCycle(double duty);
