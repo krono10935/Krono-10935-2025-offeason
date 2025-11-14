@@ -49,9 +49,9 @@ public class ArmConstants {
 
     /* Mechanical zero offset for the absolute encoder (in rotations) */
     public static Double DUTY_CYCLE_ENCODER_ZERO_OFFSET = 0.47;
-    public static final boolean IS_ABS_ENCODER_INVERTED= true;
+    public static final boolean IS_ABS_ENCODER_INVERTED = true;
 
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------- 
     // Helper data structures
     // -----------------------------------------------------------------
     /**
@@ -115,15 +115,14 @@ public class ArmConstants {
 
         // Measurement filters/profile constraints
         config.slot0Config.profileConfig.maximumMeasurementVelocity = 1.5;
-        config.slot0Config.profileConfig.maximumMeasurementAcceleration = 0.8;
+        config.slot0Config.profileConfig.maximumMeasurementAcceleration = 1.3;
        // config.constraintsConfig.rampRate = 0.05;
         //config.constraintsConfig.maxOutput = 6;
         // config.constraintsConfig.minOutput=-6;
 
         // ======================== Feedforward =======================
         // config.slot0Config.feedForwardConfig.customFeedForward = new ArmFeedForward(0.84);
-        config.slot0Config.feedForwardConfig.customFeedForward =
-                (position) -> Math.sin(Units.rotationsToRadians(position)) * 0.4;
+        config.slot0Config.feedForwardConfig.customFeedForward = ArmRealMotorIO::calcFF;
 
         // ========================= Simulation ======================
         // dummy values for sim

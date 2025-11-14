@@ -3,7 +3,9 @@ package frc.robot.Subsystems.Arm;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import io.github.captainsoccer.basicmotor.BasicMotor;
 import io.github.captainsoccer.basicmotor.controllers.Controller.ControlMode;
 import io.github.captainsoccer.basicmotor.measurements.Measurements;
@@ -18,15 +20,25 @@ public class ArmRealMotorIO implements ArmIO{
     private final BasicMotor motor;
     final DutyCycleEncoder armDutyCycleEncoder;
 
+    public static double ff = 0.4;
+
+    public static double calcFF(double rotation){
+        return  Math.sin(Units.rotationsToRadians(rotation)) * ff;
+    }
+
 
     public ArmRealMotorIO() {
         motor = new BasicSparkMAX(ArmConstants.config);
-        motor.setControllerLocation(ControllerLocation.RIO);
+        // motor.setControllerLocation(ControllerLocation.RIO); 
         
         armDutyCycleEncoder = new DutyCycleEncoder(ArmConstants.DUTY_CYCLE_ENCODER_PORT);
         armDutyCycleEncoder.setInverted(ArmConstants.IS_ABS_ENCODER_INVERTED);
 
-        motor.resetEncoder(armDutyCycleEncoder.get());
+        SmartDashboard.putData(motor.getController());
+
+        motor.resetEncoder(armDutyCycleEncoder.get() - ArmConstants.DUTY_CYCLE_ENCODER_ZERO_OFFSET);
+
+        SmartDashboard.putNumber("feedforward", 0.4);
     }
 
     // @Override
@@ -39,6 +51,7 @@ public class ArmRealMotorIO implements ArmIO{
         inputs.atSetPoint = motor.atGoal();
         inputs.currentAngle = Rotation2d.fromRotations(motor.getPosition());
         Logger.recordOutput("Arm/absolute encoder offset", armDutyCycleEncoder.get());
+        ff = SmartDashboard.getNumber("feedForward", ff);
         
     }
 

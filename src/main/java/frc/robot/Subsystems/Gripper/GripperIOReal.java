@@ -42,7 +42,7 @@ public class GripperIOReal implements GripperIO {
 
     @Override
     public void setPercentOutput(double percent) {
-        motor.setPrecentOutput(percent);
+        motor.setPercentOutput(percent);
     }
 
     @Override
