@@ -156,13 +156,13 @@ public class ArmConstants {
 
         public final double height;
         public final Rotation2d angle;
-        public final Pose2d[][] panels;
+        // public final Pose2d[][] panels;
         public static final double epsilon = 3; // Degre
 
-        ArmLevel(double height) {
+        ArmLevel(double height) { // Untested
             this.height = height;
             this.angle = Rotation2d.fromRotations(height);
-            this.panels = new Pose2d[6][2];
+            // this.panels = new Pose2d[6][2];
 
             // for(int i = 0; i < 6; i++){
             //     System.out.println(this.name());
