@@ -142,6 +142,7 @@ public class ArmConstants {
     public enum ArmLevel {
 
         HOME(0.05),
+
         L1(0.15),
         L2(0.21),
         L3(0.37),
