@@ -15,7 +15,7 @@ import io.github.captainsoccer.basicmotor.gains.PIDGains;
 
 public enum SwerveModuleConstants {
     FRONT_LEFT(
-            12,  0.23, 10,
+            12,  0.25, 10,
             new PIDGains(5, 0, 0, 0, 0, 0),
             new FeedForwardsGains(3),
             1.2,
