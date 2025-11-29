@@ -1,0 +1,117 @@
+package frc.robot.Subsystems.Arm;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
+import io.github.captainsoccer.basicmotor.BasicMotor.IdleMode;
+import frc.robot.Utils;
+import frc.robot.Subsystems.Arm.ArmInputsAutoLogged;
+
+public class ArmSubsystem extends SubsystemBase {
+    private final ArmIO io;
+    private final ArmInputsAutoLogged inputs = new ArmInputsAutoLogged();
+    public ArmConstants.ArmLevel targetLevel;
+    private static final Alert unknownArmLevelAlert = new Alert("Attempted to set arm level to unknown angle",AlertType.kWarning);
+
+
+    public ArmSubsystem() {
+        io = RobotBase.isReal() ? new ArmRealMotorIO() : new ArmSimIO();
+    }
+
+    public ArmLevel getCurrentLevel(){
+        Rotation2d angle = inputs.currentAngle;
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.HOME.angle.getDegrees(), ArmLevel.epsilon)){
+            return ArmLevel.HOME;
+        }
+
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.L1.angle.getDegrees(), ArmLevel.epsilon)){
+            return ArmLevel.L1;
+        }
+        
+        if(Utils.isEqual(angle.getDegrees(), ArmLevel.L2.angle.getDegrees(), ArmLevel.epsilon)){
+            return ArmLevel.L2;
+        }
+
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.L3.angle.getDegrees(), ArmLevel.epsilon)){
+            return ArmLevel.L3;
+        }
+
+        if (Utils.isEqual(angle.getDegrees(), ArmLevel.CoralIntakeLevel.angle.getDegrees(), ArmLevel.epsilon)){
+            return ArmLevel.CoralIntakeLevel;
+        }
+        
+        return ArmLevel.UNKNOWN;   
+    }
+
+
+    @Override
+    public void periodic() {
+        io.update(inputs);
+        Logger.processInputs(getName(), inputs);
+
+        String currentCommandName = (getCurrentCommand() == null) ? "Null" : getCurrentCommand().getName();
+
+        Logger.recordOutput("Arm/CurrentCommand", currentCommandName);
+        Logger.recordOutput("Arm/currentLevel", getCurrentLevel().name());
+        Logger.recordOutput("Arm/current angle", io.getMotorPos());
+        
+    }
+
+
+    public void setAngleByLevel(ArmConstants.ArmLevel level) {
+        if(level == ArmConstants.ArmLevel.UNKNOWN){
+            unknownArmLevelAlert.set(true);
+            return;
+        }
+        unknownArmLevelAlert.set(false);
+        io.setMotorAngle(level.angle);
+        targetLevel = level;
+        
+    }
+
+    public Rotation2d getCurrentAngle() {
+        return inputs.currentAngle;
+    }
+
+    public boolean isAtSetPoint() {
+        return inputs.atSetPoint;
+    }
+
+    public ArmConstants.ArmLevel getTargetLevel(){
+        return targetLevel;
+    }
+
+    // public void resetEncoderZero(){
+    //     io.resetEncoder();
+    // }
+    
+    public void stop(){
+        io.stop();
+    }
+    public Rotation2d getVelocityAngular(){
+        return io.getVelocity();
+    }
+
+    public void setArmVelocity(double duty){
+        io.setArmMotorDutyCycle(duty);
+    }
+
+    public void setBrake(){
+        io.setBrake();
+    }
+    public void setCoast(){
+        io.setCoast();
+    }
+
+    public void setArmByRotation(Rotation2d rotation){
+        io.setMotorAngle(rotation);
+    }
+
+
+}
+
