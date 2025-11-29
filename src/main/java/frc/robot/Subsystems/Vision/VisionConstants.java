@@ -1,5 +1,8 @@
 package frc.robot.Subsystems.Vision;
 
+import java.util.function.DoubleSupplier;
+
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 import org.photonvision.PhotonPoseEstimator;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -7,6 +10,8 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionConstants {
       /**
@@ -28,10 +33,10 @@ public class VisionConstants {
         // Define the camera constants for the front camera
         FRONT_CAMERA(
             PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY,
-            "FrontCamera",
+            "dolev",
             new Transform3d(
-                new Translation3d(0.2, 0.0, 0.5),
-                new Rotation3d(0, 0, 0)
+                new Translation3d(0.285, -0.015, 0.11),
+                new Rotation3d(0,  Units.degreesToRadians(-34),0)
                 
             ),
             0.1, // XY standard deviation factor
@@ -66,15 +71,21 @@ public class VisionConstants {
                  * The standard deviation factor for XY
                  */
                 public final double XY_STD_DEV_FACTOR;
+                public final LoggedNetworkNumber MIN_XY_STD_DEV_NETWORK = new LoggedNetworkNumber("/Tuning/XYSTDDEV", 0.1);
         
                 /**
                  * The standard deviation factor for Theta
                  */
                 public final double THETA_STD_DEV_FACTOR;
+
+                public final LoggedNetworkNumber MIN_THETA_STD_DEV_NETWORK = new LoggedNetworkNumber("/Tuning/THETASTDDEV",0.1);
+            
+                
                 /**
                  * The minimum standard deviation for XY (in meters)
                  */
-                public final double MIN_XY_STD_DEV; 
+                public final double MIN_XY_STD_DEV;
+                
                 /**
                  * The minimum standard deviation for Theta (in radians)
                  */

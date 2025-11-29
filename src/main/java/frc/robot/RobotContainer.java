@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -24,6 +25,8 @@ import frc.robot.Subsystems.Arm.ArmConstants.ArmLevel;
 import frc.robot.Subsystems.Gripper.Gripper;
 import frc.robot.Subsystems.Gripper.GripperConstants;
 import frc.robot.Subsystems.Gripper.GripperConstants.GamePiece;
+import frc.robot.Subsystems.Vision.Vision;
+import frc.robot.Subsystems.Vision.Vision.VisionConsumer;
 import frc.robot.Subsystems.drivetrain.Drivetrain;
 import frc.robot.Subsystems.drivetrain.swerve.Swerve;
 import frc.robot.commands.Arm.setArmLevelCommand;
@@ -44,38 +47,39 @@ public class RobotContainer {
   private static Command resetGyroCommand;
   private static boolean hasBeamBreak = true;
   private static BooleanSupplier hasBeamBreakSupplier = () -> hasBeamBreak;
-
+  private static Vision vision;
   
 
   public RobotContainer() {
    
+    Supplier<Pose2d> poseSupplier = () -> new Pose2d();
+    vision = new Vision(VisionConsumer.NO_OP, poseSupplier);
+
+    // armSubsystem = new ArmSubsystem();
+    // gripper = new Gripper();
+
+    // drivetrain = new Swerve(Constants.isRedSupplier);
+    // driveController = new CommandXboxController(1);
+    // operatorController = new CommandXboxController(0);
+    
+    // drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
+    
+
+
+    // Command crossTheLine = new DriveAutoCommand(drivetrain, 2, 1);
+    
+    // autoChooser = new LoggedDashboardChooser<>("chooser");
+    // autoChooser.addDefaultOption("Cross the line", crossTheLine );
+    // autoChooser.addOption("L1 score",forwardAutoFactory(1.93, 0.9, ArmLevel.L1));
+    // autoChooser.addOption("L2 score",forwardAutoFactory(5, 5, ArmLevel.L2));
+    // autoChooser.addOption("L3 score",forwardAutoFactory(5, 5, ArmLevel.L3));
+
+    // SmartDashboard.putData("chooser", autoChooser.getSendableChooser());
+
+    // resetGyroCommand = new InstantCommand(() -> drivetrain.reset(new Pose2d(
+    //     drivetrain.getEstimatedPosition().getTranslation(), new Rotation2d())));
    
-
-    armSubsystem = new ArmSubsystem();
-    gripper = new Gripper();
-
-    drivetrain = new Swerve(Constants.isRedSupplier);
-    driveController = new CommandXboxController(1);
-    operatorController = new CommandXboxController(0);
-    
-    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driveController));
-    
-
-
-    Command crossTheLine = new DriveAutoCommand(drivetrain, 2, 1);
-    
-    autoChooser = new LoggedDashboardChooser<>("chooser");
-    autoChooser.addDefaultOption("Cross the line", crossTheLine );
-    autoChooser.addOption("L1 score",forwardAutoFactory(1.93, 0.9, ArmLevel.L1));
-    autoChooser.addOption("L2 score",forwardAutoFactory(5, 5, ArmLevel.L2));
-    autoChooser.addOption("L3 score",forwardAutoFactory(5, 5, ArmLevel.L3));
-
-    SmartDashboard.putData("chooser", autoChooser.getSendableChooser());
-
-    resetGyroCommand = new InstantCommand(() -> drivetrain.reset(new Pose2d(
-        drivetrain.getEstimatedPosition().getTranslation(), new Rotation2d())));
-   
-    configureBindings();
+    // configureBindings();
   }
 
   private void configureBindings() {

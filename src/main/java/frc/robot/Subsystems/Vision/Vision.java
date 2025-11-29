@@ -160,12 +160,12 @@ public class Vision extends SubsystemBase {
     double stdDevFactor = Math.pow(avragedistance, 2)/numTargets;
 
     double stdDevLinear = Math.max(
-      stdDevFactor * camera.constants.XY_STD_DEV_FACTOR,
+      stdDevFactor * camera.constants.MIN_XY_STD_DEV_NETWORK.get(),
       camera.constants.MIN_XY_STD_DEV
     );
 
     double stdDevAngular = Math.max(
-      stdDevFactor * camera.constants.THETA_STD_DEV_FACTOR,
+      stdDevFactor * camera.constants.MIN_THETA_STD_DEV_NETWORK.get(),
       camera.constants.MIN_THETA_STD_DEV
     );
 
@@ -222,5 +222,7 @@ public class Vision extends SubsystemBase {
     Logger.recordOutput("Vision/Target Locations", targetLocations.toArray(new Translation3d[0]));
     Logger.recordOutput("Vision/Valid Poses", validPoses.toArray(new Pose3d[0]));
     Logger.recordOutput("Vision/Rejected Poses", invalidPoses.toArray(new Pose3d[0]));
+    if (!invalidPoses.isEmpty())
+    Logger.recordOutput("Vision/LastRejectedPose", invalidPoses.get(invalidPoses.size() -1));
   }
 }
